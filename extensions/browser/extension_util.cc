@@ -12,6 +12,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "build/chromeos_buildflags.h"
+#include "components/aib/aib_net_features.h"
 #include "components/crx_file/id_util.h"
 #include "components/download/public/common/download_item.h"
 #include "components/user_prefs/user_prefs.h"
@@ -697,6 +698,13 @@ bool IsExtensionDownload(const download::DownloadItem& download_item) {
   }
 
   if (download_item.GetMimeType() == Extension::kMimeType) {
+    // AI Browser: optionally save CRX files from websites as plain files.
+    // Downloads started by the Web Store installer are left alone.
+    if (aib::features::ShouldDownloadCrxAsRegularFile() &&
+        download_item.GetDownloadSource() !=
+            download::DownloadSource::EXTENSION_INSTALLER) {
+      return false;
+    }
     return true;
   }
   return false;

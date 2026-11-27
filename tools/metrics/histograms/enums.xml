@@ -9845,6 +9845,7 @@ from previous Chrome versions.
   <int value="-1526740682"
       label="EnableHistorySyncOptinExpansionPill:disabled"/>
   <int value="-1526650436" label="GaiaAndAvatarCustomization:disabled"/>
+  <int value="-1525800851" label="AibExtensionMimeHandling:disabled"/>
   <int value="-1525432906" label="AllowLegacyMV2Extensions:disabled"/>
   <int value="-1525286543"
       label="DeviceBoundSessionsForRestrictedSites:enabled"/>
@@ -19793,6 +19794,7 @@ from previous Chrome versions.
   <int value="1395175083" label="PrivacyGuide:enabled"/>
   <int value="1395345678" label="EnableSandboxLogging:disabled"/>
   <int value="1396445782" label="enable-webgpu-testing:disabled"/>
+  <int value="1396606079" label="AibExtensionMimeHandling:enabled"/>
   <int value="1397053154" label="ContextualSearchLiteralSearchTap:enabled"/>
   <int value="1397069250" label="NetworkService:disabled"/>
   <int value="1397169840" label="EnableMultiMonitorsInCrd:enabled"/>

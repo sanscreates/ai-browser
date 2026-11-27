@@ -5245,6 +5245,14 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibExtensionMimeHandlingParams0[] = {
+    {"mode", "download-as-file"}};
+const FeatureEntry::FeatureParam kAibExtensionMimeHandlingParams1[] = {
+    {"mode", "always-prompt-install"}};
+const FeatureEntry::FeatureVariation kAibExtensionMimeHandlingVariations[] = {
+    {" - Download as regular file", kAibExtensionMimeHandlingParams0, nullptr},
+    {" - Always prompt for install", kAibExtensionMimeHandlingParams1, nullptr},
+};
 const FeatureEntry::FeatureParam kAibSpoofWebGLInfoParams0[] = {
     {"vendor", ""}, {"renderer", ""}};
 const FeatureEntry::FeatureParam kAibSpoofWebGLInfoParams1[] = {
@@ -14191,6 +14199,14 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibDisableSearchEngineCollectionDescription,
      kOsAll,
      FEATURE_VALUE_TYPE(aib::features::kAibDisableSearchEngineCollection)},
+
+    {"aib-extension-mime-handling",
+     flag_descriptions::kAibExtensionMimeHandlingName,
+     flag_descriptions::kAibExtensionMimeHandlingDescription,
+     kOsDesktop,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibExtensionMimeHandling,
+                                    kAibExtensionMimeHandlingVariations,
+                                    "AibExtensionMimeHandling")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

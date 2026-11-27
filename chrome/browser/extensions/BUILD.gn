@@ -581,6 +581,7 @@ source_set("extensions") {
     "//chrome/browser/update_client",
     "//chrome/common",
     "//chrome/common/extensions/api:extensions_features",
+    "//components/aib:aib_features",
     "//components/bookmarks/browser",
     "//components/bookmarks/managed",
     "//components/content_settings/core/browser",

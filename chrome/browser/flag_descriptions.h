@@ -8683,6 +8683,12 @@ inline constexpr char kAibDisableSearchEngineCollectionName[] =
 inline constexpr char kAibDisableSearchEngineCollectionDescription[] =
     "Stop websites from adding themselves as search engines.";
 
+// AI Browser.
+inline constexpr char kAibExtensionMimeHandlingName[] =
+    "Handling of extension (CRX) downloads";
+inline constexpr char kAibExtensionMimeHandlingDescription[] =
+    "Choose how CRX files downloaded from websites are handled.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

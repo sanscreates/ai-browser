@@ -43,6 +43,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/extensions/extension_constants.h"
 #include "chrome/common/pref_names.h"
+#include "components/aib/aib_net_features.h"
 #include "components/crx_file/id_util.h"
 #include "components/enterprise/browser/reporting/common_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -388,6 +389,12 @@ bool ExtensionManagement::IsInstallationExplicitlyBlocked(
 bool ExtensionManagement::IsOffstoreInstallAllowed(
     const GURL& url,
     const GURL& referrer_url) const {
+  // AI Browser: optionally let any site offer a CRX. The user still has to
+  // accept the regular extension install prompt.
+  if (aib::features::ShouldAlwaysPromptForCrxInstall()) {
+    return true;
+  }
+
   // No allowed install sites specified, disallow by default.
   if (!global_settings_->install_sources.has_value())
     return false;
