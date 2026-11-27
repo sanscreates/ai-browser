@@ -675,7 +675,11 @@ void ClientSideDetectionServiceBase::SendClientReportPhishingRequest(
     ClientReportPhishingRequestCallback callback,
     const std::string& access_token) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!IsEnabled()) {
+  // AI Browser: client-side phishing verdicts (URL plus page features) are
+  // never sent to Safe Browsing; every page is answered locally as "not
+  // phishing".
+  constexpr bool kAllowPhishingReportPings = false;
+  if (!kAllowPhishingReportPings || !IsEnabled()) {
     if (!callback.is_null()) {
       base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE, base::BindOnce(std::move(callback), GURL(verdict->url()),

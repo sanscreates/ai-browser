@@ -425,9 +425,8 @@ SafeBrowsingUIManager* SafeBrowsingServiceImpl::CreateUIManager() {
 }
 
 void SafeBrowsingServiceImpl::RegisterAllDelayedAnalysis() {
-#if BUILDFLAG(FULL_SAFE_BROWSING)
-  RegisterBinaryIntegrityAnalysis();
-#endif
+  // AI Browser: the delayed analyses only feed incident reporting, which is
+  // disabled, so don't spend startup time on them.
 }
 
 SBProtocolConfig SafeBrowsingServiceImpl::GetSBProtocolConfig() const {

@@ -302,11 +302,9 @@ IncidentReportingService::UploadContext::~UploadContext() = default;
 
 // static
 bool IncidentReportingService::IsEnabledForProfile(Profile* profile) {
-  if (profile->IsOffTheRecord())
-    return false;
-  if (!IsSafeBrowsingEnabled(*profile->GetPrefs()))
-    return false;
-  return IsExtendedReportingEnabled(*profile->GetPrefs());
+  // AI Browser: incident reports (binary integrity, download and
+  // environment data) are never collected or uploaded.
+  return false;
 }
 
 IncidentReportingService::IncidentReportingService(
