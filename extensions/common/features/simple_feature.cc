@@ -23,6 +23,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "components/crx_file/id_util.h"
+#include "extensions/common/aib_content_blocker.h"
 #include "extensions/common/extension_api.h"
 #include "extensions/common/extension_features.h"
 #include "extensions/common/extension_id.h"
@@ -784,8 +785,10 @@ Feature::Availability SimpleFeature::GetManifestAvailability(
   // See http://crbug.com/41105605 for more details.
   // Component extensions can access any feature.
   // NOTE: Deliberately does not match EXTERNAL_COMPONENT.
+  // AI Browser: nor the built-in content blocker, which is third-party code.
   if (component_extensions_auto_granted() &&
-      location == ManifestLocation::kComponent) {
+      location == ManifestLocation::kComponent &&
+      !IsAibContentBlocker(hashed_id)) {
     return CreateAvailability(AvailabilityResult::kIsAvailable);
   }
 

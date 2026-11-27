@@ -13,6 +13,7 @@
 #include "base/memory/stack_allocated.h"
 #include "base/no_destructor.h"
 #include "content/public/common/url_constants.h"
+#include "extensions/common/aib_content_blocker.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/error_utils.h"
 #include "extensions/common/extension_features.h"
@@ -116,8 +117,12 @@ void PermissionsData::SetPolicyDelegate(PolicyDelegate* delegate) {
 bool PermissionsData::CanExecuteScriptEverywhere(
     const ExtensionId& extension_id,
     mojom::ManifestLocation location) {
-  if (location == mojom::ManifestLocation::kComponent)
+  // AI Browser: the built-in content blocker is a component extension but
+  // only gets a regular extension's scripting access.
+  if (location == mojom::ManifestLocation::kComponent &&
+      !IsAibContentBlocker(extension_id)) {
     return true;
+  }
 
   const ExtensionsClient::ScriptingAllowlist& allowlist =
       ExtensionsClient::Get()->GetScriptingAllowlist();
@@ -514,7 +519,8 @@ bool PermissionsData::CanCaptureVisiblePage(
     // blocked host in a different page and then capture that, but it's better
     // than nothing (and policy hosts can set their x-frame options
     // accordingly).
-    if (location_ != mojom::ManifestLocation::kComponent &&
+    if ((location_ != mojom::ManifestLocation::kComponent ||
+         IsAibContentBlocker(extension_id_)) &&
         IsPolicyBlockedHostUnsafe(origin_url)) {
       if (error)
         *error = extension_misc::kPolicyBlockedScripting;
@@ -689,7 +695,8 @@ PermissionsData::PageAccess PermissionsData::CanRunOnPage(
     PatternMatchMode match_mode,
     std::string* error) const {
   runtime_lock_.AssertAcquired();
-  if (location_ != mojom::ManifestLocation::kComponent &&
+  if ((location_ != mojom::ManifestLocation::kComponent ||
+       IsAibContentBlocker(extension_id_)) &&
       IsPolicyBlockedHostUnsafe(document_url)) {
     if (error)
       *error = extension_misc::kPolicyBlockedScripting;
