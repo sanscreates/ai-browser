@@ -1,0 +1,19 @@
+# Copyright 2026 The AI Browser Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# AI Browser's own feature switches (chrome://flags entries live in
+# chrome/browser/about_flags.cc). Only depends on //base so that chrome,
+# components and content can all use it.
+component("aib_features") {
+  output_name = "aib_features"
+  defines = [ "IS_AIB_FEATURES_IMPL" ]
+  sources = [
+    "aib_features_export.h",
+    "aib_net_features.cc",
+    "aib_net_features.h",
+    "aib_ui_features.cc",
+    "aib_ui_features.h",
+  ]
+  deps = [ "//base" ]
+}

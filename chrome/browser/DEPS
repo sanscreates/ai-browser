@@ -47,6 +47,7 @@ include_rules = [
   "+components/actor/core",
   "+components/actor/public",
   "+components/affiliations",
+  "+components/aib",
   "+components/allocation_recorder",
   "+components/android_autofill/browser",
   "+components/app_constants/constants.h",

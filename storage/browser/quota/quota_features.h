@@ -23,6 +23,10 @@ extern const base::FeatureParam<double> kShouldRemainAvailableRatio;
 
 COMPONENT_EXPORT(STORAGE_BROWSER) BASE_DECLARE_FEATURE(kStaticStorageQuota);
 
+// AI Browser: size the incognito storage quota like a regular profile's.
+COMPONENT_EXPORT(STORAGE_BROWSER)
+BASE_DECLARE_FEATURE(kAibIncreaseIncognitoStorageQuota);
+
 }  // namespace features
 
 }  // namespace storage

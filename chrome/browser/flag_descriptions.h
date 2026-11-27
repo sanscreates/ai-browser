@@ -8665,6 +8665,12 @@ inline constexpr char kAibDisableLinkDragDescription[] =
     "Links and selected text can't be dragged; pressing on a link selects its "
     "text instead.";
 
+// AI Browser.
+inline constexpr char kAibKeepOldHistoryName[] = "Keep old history";
+inline constexpr char kAibKeepOldHistoryDescription[] =
+    "Never delete local browsing history automatically (Chromium removes "
+    "entries older than 90 days).";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

@@ -1295,6 +1295,7 @@ source_set("core") {
     "//chrome/services/speech/buildflags",
     "//components/actor/core",
     "//components/actor/public/mojom:mojo_bindings",
+    "//components/aib:aib_features",
     "//components/application_locale_storage",
     "//components/autofill/content/browser",
     "//components/blocked_content",

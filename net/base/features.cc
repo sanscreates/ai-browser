@@ -1274,4 +1274,30 @@ BASE_FEATURE(kQuicDefaultPragueCubic, base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBlockCredentialsInPacFileFetcher,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+// AI Browser features. See features.h.
+BASE_FEATURE(kAibReferrerPolicy, base::FEATURE_DISABLED_BY_DEFAULT);
+
+constexpr base::FeatureParam<AibReferrerPolicyMode>::Option
+    kAibReferrerPolicyModeOptions[] = {
+        {AibReferrerPolicyMode::kNoCrossOrigin, "no-cross-origin"},
+        {AibReferrerPolicyMode::kMinimal, "minimal"},
+};
+
+BASE_FEATURE_ENUM_PARAM(AibReferrerPolicyMode,
+                        kAibReferrerPolicyMode,
+                        &kAibReferrerPolicy,
+                        "mode",
+                        AibReferrerPolicyMode::kNoCrossOrigin,
+                        &kAibReferrerPolicyModeOptions);
+
+BASE_FEATURE(kAibMaxConnectionsPerHost, base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE_PARAM(int,
+                   kAibMaxConnectionsPerHostCount,
+                   &kAibMaxConnectionsPerHost,
+                   "connections",
+                   6);
+
+BASE_FEATURE(kAibDisableTlsGrease, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace net::features

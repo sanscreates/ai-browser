@@ -143,6 +143,7 @@ static_library("browser") {
     "//base",
     "//base:i18n",
     "//build:ios_buildflags",
+    "//components/aib:aib_features",
     "//components/crash/core/common:crash_key",
     "//components/database_utils",
     "//components/favicon/core:database",

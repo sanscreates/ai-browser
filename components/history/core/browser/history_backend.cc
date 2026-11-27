@@ -47,6 +47,7 @@
 #include "base/tracing/protos/chrome_track_event.pbzero.h"
 #include "build/build_config.h"
 #include "build/ios_buildflags.h"
+#include "components/aib/aib_net_features.h"
 #include "components/favicon/core/favicon_backend.h"
 #include "components/favicon/core/favicon_types.h"
 #include "components/history/core/browser/download_constants.h"
@@ -1372,7 +1373,10 @@ void HistoryBackend::InitImpl(
   BeginSingletonTransaction();
 
   // Start expiring old stuff.
-  expirer_.StartExpiringOldStuff(base::Days(kExpireDaysThreshold));
+  // AI Browser: with kAibKeepOldHistory, local history never expires.
+  if (!base::FeatureList::IsEnabled(aib::features::kAibKeepOldHistory)) {
+    expirer_.StartExpiringOldStuff(base::Days(kExpireDaysThreshold));
+  }
 }
 
 void HistoryBackend::CloseAllDatabases() {
@@ -1590,6 +1594,10 @@ void HistoryBackend::AddPagesWithDetails(const URLRows& urls,
 }
 
 bool HistoryBackend::IsExpiredVisitTime(const base::Time& time) const {
+  // AI Browser: nothing counts as expired when old history is kept.
+  if (base::FeatureList::IsEnabled(aib::features::kAibKeepOldHistory)) {
+    return false;
+  }
   return time < expirer_.GetCurrentExpirationTime();
 }
 

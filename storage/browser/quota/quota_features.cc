@@ -37,5 +37,12 @@ constexpr base::FeatureParam<double> kShouldRemainAvailableRatio{
 // A kill switch for the new reported quota being a static value.
 BASE_FEATURE(kStaticStorageQuota, base::FEATURE_ENABLED_BY_DEFAULT);
 
+// AI Browser: when enabled, incognito profiles get their quota from the same
+// formula regular profiles use, with system memory standing in for disk size
+// (incognito data lives in memory). This hides the smaller incognito limit
+// from sites, at the cost of letting a site use more memory.
+BASE_FEATURE(kAibIncreaseIncognitoStorageQuota,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace storage

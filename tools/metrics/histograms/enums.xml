@@ -11688,6 +11688,7 @@ from previous Chrome versions.
   <int value="-994044484" label="TemporaryUnexpireFlagsM76:disabled"/>
   <int value="-993583908" label="GuestOsFiles:disabled"/>
   <int value="-993476089" label="AutoScreenBrightness:disabled"/>
+  <int value="-992644388" label="AibKeepOldHistory:disabled"/>
   <int value="-992554993" label="TemporaryHoldingSpacePreviews:disabled"/>
   <int value="-992325472" label="NtpRealboxCr23Theming:enabled"/>
   <int value="-991416218" label="PdfViewerPresentationMode:enabled"/>
@@ -21799,6 +21800,7 @@ from previous Chrome versions.
   <int value="1988522019" label="LensOverlayLatencyOptimizations:enabled"/>
   <int value="1988810119" label="AutofillDropdownLayout:enabled"/>
   <int value="1989051182" label="view-passwords:enabled"/>
+  <int value="1989673828" label="AibKeepOldHistory:enabled"/>
   <int value="1989739884" label="CustomizeChromeWallpaperSearch:enabled"/>
   <int value="1989877247" label="ToolbarGlicButtonResizing:enabled"/>
   <int value="1989877708" label="PostScriptPrinting:enabled"/>

@@ -27,6 +27,15 @@ namespace features {
 // Allows loading Top Chrome Webium.
 BASE_FEATURE(kDebugTopChromeWebUI, base::FEATURE_DISABLED_BY_DEFAULT);
 
+// AI Browser: when enabled with a non-empty "value" param, that value replaces
+// the Accept header Chromium sends for frame navigations and their prefetches.
+BASE_FEATURE(kAibHttpAcceptHeader, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE_PARAM(std::string,
+                   kAibHttpAcceptHeaderValue,
+                   &kAibHttpAcceptHeader,
+                   "value",
+                   "");
+
 // Capture Android key event objects to send them to the web contents when the
 // IME sends composition texts.
 BASE_FEATURE(kAndroidCaptureKeyEvents, base::FEATURE_ENABLED_BY_DEFAULT);

@@ -26,6 +26,10 @@ namespace features {
 
 // All features in alphabetical order. The features should be documented
 // alongside the definition of their values in the .cc file.
+// AI Browser: custom Accept header for navigation requests.
+CONTENT_EXPORT BASE_DECLARE_FEATURE(kAibHttpAcceptHeader);
+CONTENT_EXPORT BASE_DECLARE_FEATURE_PARAM(std::string,
+                                          kAibHttpAcceptHeaderValue);
 CONTENT_EXPORT BASE_DECLARE_FEATURE(kAndroidCaptureKeyEvents);
 CONTENT_EXPORT BASE_DECLARE_FEATURE(kAndroidDevToolsFrontend);
 CONTENT_EXPORT BASE_DECLARE_FEATURE(

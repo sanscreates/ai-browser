@@ -278,6 +278,7 @@
 #include "url/url_features.h"
 
 // AI Browser feature headers.
+#include "components/aib/aib_net_features.h"
 #include "third_party/blink/public/common/aib_features.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -14172,6 +14173,12 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibDisableLinkDragDescription,
      kOsAll,
      FEATURE_VALUE_TYPE(blink::features::kAibDisableLinkDrag)},
+
+    {"aib-keep-old-history",
+     flag_descriptions::kAibKeepOldHistoryName,
+     flag_descriptions::kAibKeepOldHistoryDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(aib::features::kAibKeepOldHistory)},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

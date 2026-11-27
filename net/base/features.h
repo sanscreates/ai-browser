@@ -1251,6 +1251,26 @@ NET_EXPORT BASE_DECLARE_FEATURE(kQuicDefaultPragueCubic);
 // verified safe.
 NET_EXPORT BASE_DECLARE_FEATURE(kBlockCredentialsInPacFileFetcher);
 
+// AI Browser: optional referrer trimming on top of the page's referrer policy.
+// Applied by URLRequestJob::ApplyAibReferrerPolicy().
+enum class AibReferrerPolicyMode {
+  // No referrer is sent to other origins; same-origin requests are unchanged.
+  kNoCrossOrigin,
+  // Only the origin is sent within the same site, and nothing across sites.
+  kMinimal,
+};
+NET_EXPORT BASE_DECLARE_FEATURE(kAibReferrerPolicy);
+NET_EXPORT BASE_DECLARE_FEATURE_PARAM(AibReferrerPolicyMode,
+                                      kAibReferrerPolicyMode);
+
+// AI Browser: overrides the per-host connection limit of the normal socket
+// pool (upstream: 6). The value is clamped to [1, 99].
+NET_EXPORT BASE_DECLARE_FEATURE(kAibMaxConnectionsPerHost);
+NET_EXPORT BASE_DECLARE_FEATURE_PARAM(int, kAibMaxConnectionsPerHostCount);
+
+// AI Browser: turns off TLS GREASE (RFC 8701) values in the ClientHello.
+NET_EXPORT BASE_DECLARE_FEATURE(kAibDisableTlsGrease);
+
 }  // namespace net::features
 
 #endif  // NET_BASE_FEATURES_H_
