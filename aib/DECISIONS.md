@@ -62,3 +62,13 @@ Each candidate was tried with `gn gen`:
 ## D10. Locales
 - **Keep-list:** `aib_keep_locales` (a new GN arg in build/config/locales.gni) defaults to en-US plus 22 widely used languages (ar, de, en-GB, es, es-419, fr, hi, id, it, ja, ko, nl, pl, pt-BR, pt-PT, ru, sv, tr, uk, vi, zh-CN, zh-TW). Other system languages fall back to English UI. Set `aib_keep_locales = []` to ship all 54 desktop locales.
 - **`translate_genders = false`:** Chromium 160 ships four packs per locale (default plus feminine, masculine and neuter variants for strings that address the user). We ship one, so those strings use the default wording. `gn gen` shows 92 locale bundle entries with gender variants versus 23 without; size deltas are measured in BENCHMARKS.md once built.
+
+## D11. Performance build flags and runtime defaults
+- **CPU target:** no `-mcpu` flag added. Our clang already uses `-target-cpu apple-m1` (ARMv8.4-A) for `arm64-apple-macos` (checked with `clang -###`), the baseline every Apple silicon Mac supports. No M5-only tuning, so one build runs everywhere.
+- **Kept:** official + ThinLTO + PGO (D4), `symbol_level=0`, stripping.
+- **Memory Saver default left off:** it only discards tabs after long inactivity, which our benchmark can't measure. The brief says changes without measured benefit get reverted, so we didn't make it.
+- **`enable_on_device_translation=false` isn't a supported configuration** (live_caption depends on it unconditionally). TranslateKit's model component is unregistered instead (b253b4e63c), so no models download.
+- **No sandbox, site-isolation or JIT-safety changes.** Nothing trades security for speed.
+
+## D12. Build-time UI rebrand
+`aib/scripts/rebrand_strings.py` rewrites "Chromium" → "AI Browser" in the branded string files and their translations at build time instead of committing those edits: every upstream roll touches the 80+ .xtb files, so committed edits would conflict constantly. grit computes the remapped translation IDs, and coverage was verified unchanged.
