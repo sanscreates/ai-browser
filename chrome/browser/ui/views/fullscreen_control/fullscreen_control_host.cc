@@ -5,6 +5,7 @@
 #include "chrome/browser/ui/views/fullscreen_control/fullscreen_control_host.h"
 
 #include "base/check_deref.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/user_metrics.h"
@@ -17,6 +18,7 @@
 #include "chrome/browser/ui/fullscreen/browser_window_fullscreen_controller.h"
 #include "chrome/browser/ui/views/exclusive_access/exclusive_access_bubble_views.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/aib/aib_ui_features.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/events/event.h"
@@ -64,6 +66,10 @@ constexpr base::TimeDelta kTouchPopupTimeout = base::Seconds(10);
 constexpr base::TimeDelta kKeyPressPopupDelay = base::Seconds(1);
 
 bool IsExitUiEnabled() {
+  // AI Browser: kAibHideFullscreenExitUi removes the exit button.
+  if (base::FeatureList::IsEnabled(aib::features::kAibHideFullscreenExitUi)) {
+    return false;
+  }
 #if BUILDFLAG(IS_MAC)
   // Exit UI is unnecessary, since Mac uses the OS fullscreen such that window
   // menu and controls reveal when the cursor is moved to the top.

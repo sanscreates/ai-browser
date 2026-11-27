@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
+#include "components/aib/aib_ui_features.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/display/screen.h"
 #include "ui/display/types/display_constants.h"
@@ -129,6 +130,10 @@ void BrowserViewExclusiveAccessContext::UpdateExclusiveAccessBubble(
     // ...TYPE_NONE indicates deleting the bubble, except when used with
     // download.
     should_close_bubble |= params.type == EXCLUSIVE_ACCESS_BUBBLE_TYPE_NONE;
+    // AI Browser: kAibHideFullscreenExitUi never shows the "Press Esc to
+    // exit" style bubble. Download notifications are still shown.
+    should_close_bubble |=
+        base::FeatureList::IsEnabled(aib::features::kAibHideFullscreenExitUi);
 #if BUILDFLAG(IS_CHROMEOS)
     // Immersive mode allows the toolbar to be shown, so do not show the
     // bubble. However, do show the bubble in a managed guest session (see

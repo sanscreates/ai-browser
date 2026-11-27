@@ -8424,6 +8424,7 @@ from previous Chrome versions.
   <int value="-1949364473" label="webview-disable-app-recovery"/>
   <int value="-1948829132" label="ContextHub:enabled"/>
   <int value="-1948236151" label="DrawPredictedInkPoint:disabled"/>
+  <int value="-1947937214" label="AibHideFullscreenExitUi:disabled"/>
   <int value="-1947165979" label="GridTabSwitcherSurfaceColorUpdate:enabled"/>
   <int value="-1946713268" label="AdjustGetOrCreate2DCanvasProvider:enabled"/>
   <int value="-1946595906" label="enable-push-api-background-mode"/>
@@ -19903,6 +19904,7 @@ from previous Chrome versions.
       label="DesktopPWAsFlashAppNameInsteadOfOrigin:enabled"/>
   <int value="1420007919" label="SyncTrustedVaultPassphrasePromo:disabled"/>
   <int value="1420438813" label="LensOverlayTranslateButton:enabled"/>
+  <int value="1421082662" label="AibHideFullscreenExitUi:enabled"/>
   <int value="1421267643" label="HoldingSpaceRefresh:disabled"/>
   <int value="1421620678" label="simple-clear-browsing-data-support-string"/>
   <int value="1422421509" label="SetTimeoutWithoutClamp:disabled"/>

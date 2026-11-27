@@ -8783,6 +8783,12 @@ inline constexpr char kAibHideExtensionsMenuName[] = "Hide extensions menu";
 inline constexpr char kAibHideExtensionsMenuDescription[] =
     "Hide the extensions (puzzle piece) button and pinned extensions.";
 
+// AI Browser.
+inline constexpr char kAibHideFullscreenExitUiName[] =
+    "Hide fullscreen exit UI";
+inline constexpr char kAibHideFullscreenExitUiDescription[] =
+    "Hide the 'Press Esc to exit full screen' bubble and the exit button.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
