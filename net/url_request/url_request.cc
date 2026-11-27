@@ -647,8 +647,9 @@ void URLRequest::Start() {
   // AI Browser: requests to hosts rewritten by our domain scrubber are
   // blocked before any delegate, proxy or socket sees them.
   if (IsAibScrubbedHost(url().host())) {
-    net_log_.AddEventWithStringParams(NetLogEventType::CANCELLED, "source",
-                                      "aib_scrubbed_host");
+    net_log_.AddEventWithStringParams(NetLogEventType::CANCELLED,
+                                      "aib_scrubbed_host",
+                                      url().possibly_invalid_spec());
     StartJob(std::make_unique<URLRequestErrorJob>(this, ERR_BLOCKED_BY_CLIENT));
     return;
   }

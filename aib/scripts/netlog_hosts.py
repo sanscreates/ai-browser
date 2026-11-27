@@ -89,6 +89,7 @@ def main():
   # resolver (Chromium upgrades the system resolver to its DoH endpoint), so
   # traffic to them is DNS, not something sent to a service.
   doh_hosts = set()
+  blocked = set()
   for ev in log.get('events', []):
     name = types.get(ev.get('type'))
     params = ev.get('params') or {}
@@ -98,6 +99,11 @@ def main():
         if h:
           doh_hosts.add(h.lower())
     host = None
+    if name == 'CANCELLED' and 'aib_scrubbed_host' in params:
+      # A request our network stack blocked (scrubbed Google endpoint):
+      # never sent, but it shows a leftover code path.
+      blocked.add((host_of(params['aib_scrubbed_host']) or '').lower())
+      continue
     if name == 'URL_REQUEST_START_JOB':
       host = host_of(params.get('url', ''))
     elif name in ('HOST_RESOLVER_MANAGER_REQUEST', 'HOST_RESOLVER_DNS_TASK'):
@@ -148,6 +154,11 @@ def main():
       unsolicited.append(h)
     tops = ', '.join(sorted(r['tops']))[:80]
     print(f"| {h} | {r['idle']} | {r['browse']} | {tops} | {verdict} |")
+  if blocked:
+    print()
+    print('Blocked before sending (scrubbed hosts; not network traffic):')
+    for h in sorted(blocked):
+      print(f'  - {h}')
   print()
   print(f'unsolicited hosts: {len(unsolicited)}')
   for h in unsolicited:
