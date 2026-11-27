@@ -1,7 +1,7 @@
 #!/bin/bash
 # Build AI Browser end to end:
-#   fetch deps -> apply dep patches -> prune -> scrub -> gn gen -> autoninja
-#   -> unscrub (always) -> package
+#   fetch deps -> apply dep patches -> prune -> scrub -> rebrand strings
+#   -> gn gen -> autoninja -> unrebrand + unscrub (always) -> package
 #
 # Usage: aib/scripts/build.sh [--skip-fetch] [--out out/aib] [--keep-scrubbed]
 #                             [--no-package]
@@ -80,8 +80,13 @@ SCRUB_STATE=$(python3 aib/scripts/scrub_domains.py status)
 if [[ "$SCRUB_STATE" == clean* ]]; then
   python3 aib/scripts/scrub_domains.py apply
 fi
+# UI strings: "Chromium" -> "AI Browser" (after scrubbing; undone first).
+if [[ "$(python3 aib/scripts/rebrand_strings.py status)" == clean* ]]; then
+  python3 aib/scripts/rebrand_strings.py apply
+fi
 unscrub() {
   if [[ $KEEP_SCRUBBED == 0 ]]; then
+    python3 "$REPO/aib/scripts/rebrand_strings.py" revert || true
     python3 "$REPO/aib/scripts/scrub_domains.py" revert || true
   fi
 }

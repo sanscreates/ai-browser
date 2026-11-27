@@ -55,7 +55,7 @@ aib/scripts/bench.sh --label "my build"  # vs the same-commit Chromium snapshot
 ```
 
 ## Working on the code
-- Never commit while scrubbed: `aib/scripts/scrub_domains.py status` must say `clean`. `build.sh` reverts on exit unless `--keep-scrubbed` is used.
+- Never commit while scrubbed or rebranded: `aib/scripts/scrub_domains.py status` and `aib/scripts/rebrand_strings.py status` must both say `clean`. `build.sh` reverts both on exit unless `--keep-scrubbed` is used.
 - Before rebasing onto a new Chromium: `scrub_domains.py revert`, `prune_binaries.py restore`, then `git rebase`, then regenerate the lists (`scrub_domains.py generate`, `prune_binaries.py generate --out out/aib`) and review the diffs.
 - New chrome://flags entries: `aib/scripts/register_flag.py spec.json` writes all four registration files.
 - Carry our changes to a fresh checkout: `aib/scripts/export_patches.sh`, then `git am aib/patches/*.patch`.
