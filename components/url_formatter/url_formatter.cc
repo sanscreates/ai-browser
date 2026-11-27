@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
 #include "base/numerics/safe_conversions.h"
@@ -19,6 +20,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_local_storage.h"
 #include "build/build_config.h"
+#include "components/aib/aib_net_features.h"
 #include "components/url_formatter/spoof_checks/idn_spoof_checker.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/icu/source/common/unicode/uidna.h"
@@ -384,8 +386,19 @@ IDNConversionResult IDNToUnicodeWithAdjustmentsImpl(
 IDNConversionResult IDNToUnicodeWithAdjustments(
     std::string_view host,
     base::OffsetAdjuster::Adjustments* adjustments) {
-  return IDNToUnicodeWithAdjustmentsImpl(host, adjustments,
-                                         /*ignore_spoof_check_results=*/false);
+  IDNConversionResult result = IDNToUnicodeWithAdjustmentsImpl(
+      host, adjustments, /*ignore_spoof_check_results=*/false);
+  // AI Browser: with kAibForcePunycodeHostnames, IDN hosts are shown in their
+  // ASCII (punycode) form. The spoof check data in |result| is kept as is.
+  if (result.has_idn_component &&
+      base::FeatureList::IsEnabled(
+          aib::features::kAibForcePunycodeHostnames)) {
+    if (adjustments) {
+      adjustments->clear();
+    }
+    result.result = std::u16string(host.begin(), host.end());
+  }
+  return result;
 }
 
 IDNConversionResult UnsafeIDNToUnicodeWithAdjustments(

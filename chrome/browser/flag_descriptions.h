@@ -8671,6 +8671,12 @@ inline constexpr char kAibKeepOldHistoryDescription[] =
     "Never delete local browsing history automatically (Chromium removes "
     "entries older than 90 days).";
 
+// AI Browser.
+inline constexpr char kAibForcePunycodeHostnamesName[] =
+    "Force punycode hostnames";
+inline constexpr char kAibForcePunycodeHostnamesDescription[] =
+    "Display internationalized domain names in punycode (xn--) form.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

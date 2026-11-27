@@ -14180,6 +14180,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsAll,
      FEATURE_VALUE_TYPE(aib::features::kAibKeepOldHistory)},
 
+    {"aib-force-punycode-hostnames",
+     flag_descriptions::kAibForcePunycodeHostnamesName,
+     flag_descriptions::kAibForcePunycodeHostnamesDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(aib::features::kAibForcePunycodeHostnames)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

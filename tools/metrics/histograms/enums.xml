@@ -9242,6 +9242,7 @@ from previous Chrome versions.
   <int value="-1701760225" label="ApiPrintingMarginsAndScale:disabled"/>
   <int value="-1701123067" label="ShowManagedUi:enabled"/>
   <int value="-1700764114" label="HelpAppBackgroundPage:enabled"/>
+  <int value="-1700548559" label="AibForcePunycodeHostnames:disabled"/>
   <int value="-1700394124" label="NtpCustomizeChromeAutoOpen:enabled"/>
   <int value="-1700227008" label="EnterpriseProfileBadgingForMenu:disabled"/>
   <int value="-1700165599" label="HomeButtonRemoval:disabled"/>
@@ -21032,6 +21033,7 @@ from previous Chrome versions.
   <int value="1764208497" label="AndroidUnknownGamepadExtraAxes:enabled"/>
   <int value="1764243510"
       label="EnableClientCertificateProvisioningOnAndroid:enabled"/>
+  <int value="1764493273" label="AibForcePunycodeHostnames:enabled"/>
   <int value="1764618580" label="MojoLinuxChannelSharedMem:disabled"/>
   <int value="1765184717"
       label="HighlightManagedPrefDisclaimerAndroid:disabled"/>
