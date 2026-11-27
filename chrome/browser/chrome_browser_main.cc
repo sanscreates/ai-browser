@@ -1991,7 +1991,8 @@ int ChromeBrowserMainParts::PreMainMessageLoopRunImpl() {
     // `profile` may be nullptr even on first run, for example when the
     // "BrowserSignin" policy is set to "Force". If so, skip the auto import.
     if (profile) {
-      first_run::AutoImport(profile, master_prefs_->import_bookmarks_path);
+      // AI Browser: never silently import data from other browsers on first
+      // run; the user can import from settings whenever they want.
 
       if (base::FeatureList::IsEnabled(features::kBookmarksImportOnFirstRun) &&
           !master_prefs_->import_bookmarks_dict.empty()) {
