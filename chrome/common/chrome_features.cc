@@ -255,7 +255,8 @@ BASE_FEATURE(kForcedAppRelaunchOnPlaceholderUpdate,
 #endif  // BUILDFLAG(IS_CHROMEOS)
 
 // Controls whether the actor component of Glic is enabled.
-BASE_FEATURE(kGlicActor, base::FEATURE_ENABLED_BY_DEFAULT);
+// AI Browser: off (no Gemini agent).
+BASE_FEATURE(kGlicActor, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kGlicActorApcComparison, base::FEATURE_ENABLED_BY_DEFAULT);
 
@@ -305,7 +306,8 @@ const base::FeatureParam<std::string>
         "https://gemini.google.com/app"};
 
 // Controls whether the Actor UI components are enabled.
-BASE_FEATURE(kGlicActorUi, base::FEATURE_ENABLED_BY_DEFAULT);
+// AI Browser: off (no Gemini agent).
+BASE_FEATURE(kGlicActorUi, base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kGlicConfirmTabClose, base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Controls theming updates for Actor UI, including the tab indicator spinner
@@ -532,14 +534,8 @@ BASE_FEATURE(kGlicMessageFirstFre, base::FEATURE_DISABLED_BY_DEFAULT);
 // IMPORTANT: this feature should never be expired! It is used as the main
 // kill-switch for Glic and can be used in the future to handle unsupported
 // Chrome versions.
-BASE_FEATURE(kGlic,
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS) || \
-    BUILDFLAG(IS_ANDROID)
-             base::FEATURE_ENABLED_BY_DEFAULT
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT
-#endif
-);
+// AI Browser: Gemini in Chrome (Glic) is off everywhere.
+BASE_FEATURE(kGlic, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kGlicBackgroundActuation,
 #if BUILDFLAG(IS_ANDROID)
