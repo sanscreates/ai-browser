@@ -12,14 +12,6 @@
 
 namespace {
 
-bool IsUserConsentedToAnonymousDataCollectionAndAllowedToFetchFromRemoteService(
-    PrefService* pref_service) {
-  std::unique_ptr<unified_consent::UrlKeyedDataCollectionConsentHelper> helper =
-      unified_consent::UrlKeyedDataCollectionConsentHelper::
-          NewAnonymizedDataCollectionConsentHelper(pref_service);
-  return helper->IsEnabled();
-}
-
 bool ShouldOverrideCheckingUserPermissionsToFetchHintsForTesting() {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   return command_line->HasSwitch(
@@ -46,13 +38,9 @@ bool IsUserPermittedToFetchFromRemoteOptimizationGuide(
     return true;
   }
 
-  if (!ShouldSkipGoogleApiKeyConfigurationCheck() &&
-      !google_apis::IsGoogleChromeAPIKeyUsed()) {
-    return false;
-  }
-
-  return IsUserConsentedToAnonymousDataCollectionAndAllowedToFetchFromRemoteService(
-      pref_service);
+  // AI Browser: never fetch hints or models from the remote Optimization
+  // Guide service.
+  return false;
 }
 
 }  // namespace optimization_guide

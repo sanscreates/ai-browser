@@ -45,10 +45,12 @@ constexpr auto enabled_by_default_mobile_only =
 
 // Enables the syncing of the Optimization Hints component, which provides
 // hints for what optimizations can be applied on a page load.
-BASE_FEATURE(kOptimizationHints, base::FEATURE_ENABLED_BY_DEFAULT);
+// AI Browser: the Optimization Guide (hints, prediction models, model
+// execution and quality logging) is Google-backed; all of it is off.
+BASE_FEATURE(kOptimizationHints, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables the prediction of optimization targets.
-BASE_FEATURE(kOptimizationTargetPrediction, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kOptimizationTargetPrediction, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // This feature flag does not turn off any behavior, it is only used for
 // experiment parameters.
@@ -72,10 +74,10 @@ BASE_FEATURE(kBuildTFLiteModelExecutionTaskOnLoadingThread,
 // Service.
 BASE_FEATURE(kOptimizationGuideFetchingForSRP,
              "OptimizationHintsFetchingSRP",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Kill switch for disabling model quality logging.
-BASE_FEATURE(kModelQualityLogging, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kModelQualityLogging, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // An emergency kill switch feature to stop serving certain model versions per
 // optimization target. This is useful in exceptional situations when a bad
@@ -86,7 +88,7 @@ BASE_FEATURE(kOptimizationGuidePredictionModelKillswitch,
 
 // Whether to enable model execution.
 BASE_FEATURE(kOptimizationGuideModelExecution,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Force show the AI page and all AI feature sub-pages in settings, even if they
 // would be unavailable otherwise. This is meant for development and test
