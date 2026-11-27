@@ -323,13 +323,14 @@ std::string WebDistillerViewerSource::GetContentSecurityPolicy(
     case network::mojom::CSPDirectiveName::MediaSrc:
       return "media-src http: https:;";
     case network::mojom::CSPDirectiveName::FontSrc:
-      return "font-src https://fonts.gstatic.com;";
+      // AI Browser: no Google web fonts.
+      return "font-src 'self';";
     case network::mojom::CSPDirectiveName::FormAction:
       return "form-action 'none';";
     case network::mojom::CSPDirectiveName::BaseURI:
       return "base-uri 'none';";
     case network::mojom::CSPDirectiveName::StyleSrc:
-      return "style-src 'self' https://fonts.googleapis.com;";
+      return "style-src 'self';";
     case network::mojom::CSPDirectiveName::ChildSrc:
       return "child-src *;";
     case network::mojom::CSPDirectiveName::RequireTrustedTypesFor:

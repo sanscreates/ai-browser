@@ -60,13 +60,13 @@ TEST_F(WebDistillerViewerSourceTest, ContentSecurityPolicy) {
             source.GetContentSecurityPolicy(CSPDirectiveName::ImgSrc));
   EXPECT_EQ("media-src http: https:;",
             source.GetContentSecurityPolicy(CSPDirectiveName::MediaSrc));
-  EXPECT_EQ("font-src https://fonts.gstatic.com;",
+  EXPECT_EQ("font-src 'self';",
             source.GetContentSecurityPolicy(CSPDirectiveName::FontSrc));
   EXPECT_EQ("form-action 'none';",
             source.GetContentSecurityPolicy(CSPDirectiveName::FormAction));
   EXPECT_EQ("base-uri 'none';",
             source.GetContentSecurityPolicy(CSPDirectiveName::BaseURI));
-  EXPECT_EQ("style-src 'self' https://fonts.googleapis.com;",
+  EXPECT_EQ("style-src 'self';",
             source.GetContentSecurityPolicy(CSPDirectiveName::StyleSrc));
   EXPECT_EQ("child-src *;",
             source.GetContentSecurityPolicy(CSPDirectiveName::ChildSrc));
