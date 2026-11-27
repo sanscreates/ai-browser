@@ -8764,6 +8764,13 @@ inline constexpr char kAibShowAvatarButtonName[] = "Show profile button";
 inline constexpr char kAibShowAvatarButtonDescription[] =
     "Choose when the profile (avatar) toolbar button is shown.";
 
+// AI Browser.
+inline constexpr char kAibHideCrashedBubbleName[] =
+    "Hide 'Restore pages?' bubble";
+inline constexpr char kAibHideCrashedBubbleDescription[] =
+    "Don't offer to restore pages after the browser didn't shut down "
+    "correctly.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

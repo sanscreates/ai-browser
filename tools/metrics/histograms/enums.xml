@@ -19052,6 +19052,7 @@ from previous Chrome versions.
   <int value="1186830151" label="EnableFullscreenToAnyScreenAndroid:enabled"/>
   <int value="1187038472" label="AudioRendererMixerImmediatePause:enabled"/>
   <int value="1187103825" label="OmniboxSuggestionsWrapAround:enabled"/>
+  <int value="1187135201" label="AibHideCrashedBubble:disabled"/>
   <int value="1187692916" label="TheoraVideoCodec:enabled"/>
   <int value="1187868655" label="FloatingWorkspaceV2:disabled"/>
   <int value="1188109510" label="AssistantAudioEraser:enabled"/>
@@ -21947,6 +21948,7 @@ from previous Chrome versions.
   <int value="2017916099"
       label="ReadAnythingReadAloudExperimentalPlaybackUi:enabled"/>
   <int value="2018206979" label="FilesLocalImageSearch:disabled"/>
+  <int value="2018715072" label="AibHideCrashedBubble:enabled"/>
   <int value="2018956925" label="UseAAudioDriver:disabled"/>
   <int value="2019319052" label="EnableVariableRefreshRate:disabled"/>
   <int value="2019412678" label="ContinuousOverviewScrollAnimation:disabled"/>

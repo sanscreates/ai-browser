@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -212,8 +213,11 @@ void AddInfoBarsIfNecessary(BrowserWindowInterface* browser,
   }
 
   // Web apps should not display the session restore bubble (crbug.com/40800614)
+  // AI Browser: kAibHideCrashedBubble suppresses it everywhere.
   const bool should_display_bubble =
-      !is_web_app && HasPendingUncleanExit(browser->GetProfile());
+      !is_web_app &&
+      !base::FeatureList::IsEnabled(aib::features::kAibHideCrashedBubble) &&
+      HasPendingUncleanExit(browser->GetProfile());
   base::UmaHistogramBoolean("Startup.CrashBubbleShown", should_display_bubble);
   if (should_display_bubble) {
     ShowSessionCrashedBubbleIfNotOffTheRecordProfile(
