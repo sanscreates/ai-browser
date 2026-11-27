@@ -311,5 +311,7 @@ TemplateURLService* ChromeLocationBarModelDelegate::GetTemplateURLService() {
 // static
 void ChromeLocationBarModelDelegate::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(omnibox::kPreventUrlElisionsInOmnibox, false);
+  // AI Browser: show full URLs (scheme and www) in the address bar by
+  // default, so users see exactly where they are.
+  registry->RegisterBooleanPref(omnibox::kPreventUrlElisionsInOmnibox, true);
 }
