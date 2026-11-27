@@ -49,6 +49,7 @@
 #include "cc/trees/layer_tree_host.h"
 #include "services/metrics/public/cpp/ukm_recorder.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/thread_safe_browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/gpu/gpu.mojom-blink.h"
@@ -1474,6 +1475,12 @@ String HTMLCanvasElement::ToDataURLInternal(
       ImageEncoderUtils::ToEncodingMimeType(mime_type);
 
   scoped_refptr<StaticBitmapImage> image_bitmap = Snapshot(source_buffer);
+  // AI Browser: encode a slightly perturbed copy against canvas
+  // fingerprinting.
+  if (image_bitmap &&
+      base::FeatureList::IsEnabled(features::kAibCanvasImageDataNoise)) {
+    image_bitmap = AibCopyWithReadbackNoise(std::move(image_bitmap));
+  }
   if (image_bitmap) {
     std::unique_ptr<ImageDataBuffer> data_buffer =
         ImageDataBuffer::Create(image_bitmap);

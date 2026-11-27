@@ -4,11 +4,13 @@
 
 #include "third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.h"
 
+#include "base/feature_list.h"
 #include "base/location.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/types/optional_util.h"
 #include "build/build_config.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/task_type.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h"
@@ -19,6 +21,7 @@
 #include "third_party/blink/renderer/core/html/canvas/canvas_rendering_context.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "third_party/blink/renderer/platform/graphics/skia/skia_utils.h"
+#include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/image-encoders/image_encoder_utils.h"
@@ -142,6 +145,13 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(
   // necessary. May return nullptr if GPU context lost or readback buffer
   // allocation failed.
   image_ = image->MakeUnaccelerated();
+
+  // AI Browser: encode a slightly perturbed copy against canvas
+  // fingerprinting. This covers toBlob() and OffscreenCanvas.convertToBlob().
+  if (image_ &&
+      base::FeatureList::IsEnabled(features::kAibCanvasImageDataNoise)) {
+    image_ = AibCopyWithReadbackNoise(std::move(image_));
+  }
 
   if (image_) {
     skia_image_ = image_->PaintImageForCurrentFrame().GetSwSkImage();

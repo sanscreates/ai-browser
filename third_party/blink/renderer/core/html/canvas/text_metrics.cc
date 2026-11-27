@@ -160,6 +160,27 @@ void TextMetrics::PopulateVerticalMetrics(const SimpleFontData& font_data,
   }
 }
 
+void TextMetrics::AibScaleForPrivacy(double factor) {
+  width_ *= factor;
+  actual_bounding_box_left_ *= factor;
+  actual_bounding_box_right_ *= factor;
+  font_bounding_box_ascent_ *= factor;
+  font_bounding_box_descent_ *= factor;
+  actual_bounding_box_ascent_ *= factor;
+  actual_bounding_box_descent_ *= factor;
+  em_height_ascent_ *= factor;
+  em_height_descent_ *= factor;
+  if (baselines_->hasAlphabetic()) {
+    baselines_->setAlphabetic(baselines_->alphabetic() * factor);
+  }
+  if (baselines_->hasHanging()) {
+    baselines_->setHanging(baselines_->hanging() * factor);
+  }
+  if (baselines_->hasIdeographic()) {
+    baselines_->setIdeographic(baselines_->ideographic() * factor);
+  }
+}
+
 const HeapVector<Member<DOMRectReadOnly>> TextMetrics::getSelectionRects(
     uint32_t start,
     uint32_t end,

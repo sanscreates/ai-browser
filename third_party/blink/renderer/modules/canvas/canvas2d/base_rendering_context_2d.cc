@@ -60,6 +60,7 @@
 #include "gpu/config/gpu_feature_type.h"
 #include "skia/ext/legacy_display_globals.h"
 #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/metrics/document_update_reason.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom-blink-forward.h"
@@ -79,6 +80,7 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/node.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/web_feature.h"
 #include "third_party/blink/renderer/core/html/canvas/canvas_font_cache.h"
 #include "third_party/blink/renderer/core/html/canvas/canvas_performance_monitor.h"
@@ -1692,6 +1694,10 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
       SkIRect bounds =
           snapshot->PaintImageForCurrentFrame().GetSkImageInfo().bounds();
       DCHECK(!bounds.intersect(SkIRect::MakeXYWH(sx, sy, sw, sh)));
+    } else if (base::FeatureList::IsEnabled(
+                   features::kAibCanvasImageDataNoise)) {
+      // AI Browser: perturb the returned pixels against canvas fingerprinting.
+      AibAddReadbackNoise(image_data->GetSkPixmap());
     }
   }
 
@@ -2465,7 +2471,16 @@ void BaseRenderingContext2D::DrawTextInternal(
 }
 
 TextMetrics* BaseRenderingContext2D::measureText(const String& text) {
-  return MakeGarbageCollected<TextMetrics>(*shapeText(text));
+  TextMetrics* metrics = MakeGarbageCollected<TextMetrics>(*shapeText(text));
+  // AI Browser: scale the metrics by a tiny per-context factor so that text
+  // measurements can't be used as a stable fingerprint.
+  if (base::FeatureList::IsEnabled(features::kAibMeasureTextNoise)) {
+    if (ExecutionContext* context = GetTopExecutionContext()) {
+      metrics->AibScaleForPrivacy(
+          AibGeometryNoiseFactor(context->GetExecutionContextToken().value()));
+    }
+  }
+  return metrics;
 }
 
 ShapedText* BaseRenderingContext2D::shapeText(const String& text) {

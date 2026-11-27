@@ -277,6 +277,9 @@
 #include "ui/native_theme/features/native_theme_features.h"
 #include "url/url_features.h"
 
+// AI Browser feature headers.
+#include "third_party/blink/public/common/aib_features.h"
+
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/enterprise/connectors/device_trust/device_trust_features.h"
 #include "chrome/browser/finds/core/finds_features.h"
@@ -14115,6 +14118,18 @@ const FeatureEntry kFeatureEntries[] = {
      kOsAll,
      FEATURE_VALUE_TYPE(
          autofill::features::kAutofillRegionalizedPrivatePassesUxRefine)},
+
+    {"aib-canvas-image-data-noise",
+     flag_descriptions::kAibCanvasImageDataNoiseName,
+     flag_descriptions::kAibCanvasImageDataNoiseDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(blink::features::kAibCanvasImageDataNoise)},
+
+    {"aib-measure-text-noise",
+     flag_descriptions::kAibMeasureTextNoiseName,
+     flag_descriptions::kAibMeasureTextNoiseDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(blink::features::kAibMeasureTextNoise)},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

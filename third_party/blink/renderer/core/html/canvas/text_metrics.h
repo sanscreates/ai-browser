@@ -101,6 +101,10 @@ class CORE_EXPORT TextMetrics final : public ScriptWrappable {
 
   const Font* GetFont() const { return shaped_text_->GetFont(); }
 
+  // AI Browser: multiplies every exposed metric by `factor` (close to 1.0) to
+  // blunt measureText() fingerprinting. Shaping-based queries are unchanged.
+  void AibScaleForPrivacy(double factor);
+
   void Trace(Visitor*) const override;
 
  private:

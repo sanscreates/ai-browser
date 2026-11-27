@@ -198,6 +198,16 @@
     "expiry_milestone": 170
   },
   {
+    "name": "aib-canvas-image-data-noise",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
+    "name": "aib-measure-text-noise",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aim-3p-entrypoint",
     "owners": [ "manukh@chromium.org", "chrome-desktop-search@google.com" ],
     "expiry_milestone": 160

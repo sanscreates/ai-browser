@@ -8619,6 +8619,19 @@ inline constexpr char kAntivirusTelemetryForDownloadsDescription[] =
 // Don't just add flags to the end, put them in the alphabetical order.
 // ============================================================================
 
+// AI Browser.
+inline constexpr char kAibCanvasImageDataNoiseName[] = "Canvas readback noise";
+inline constexpr char kAibCanvasImageDataNoiseDescription[] =
+    "Slightly changes a few pixels whenever a page reads canvas pixels "
+    "(getImageData, toDataURL, toBlob), so canvas fingerprints differ between "
+    "sessions.";
+
+// AI Browser.
+inline constexpr char kAibMeasureTextNoiseName[] = "Canvas measureText noise";
+inline constexpr char kAibMeasureTextNoiseDescription[] =
+    "Scales canvas measureText() results by a tiny per-page factor, so they "
+    "can't be used as a fingerprint.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

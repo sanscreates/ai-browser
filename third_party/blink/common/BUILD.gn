@@ -135,6 +135,7 @@ source_set("common") {
   sources = [
     # NOTE: Please do not add public headers that need to be referenced from
     # outside WebKit, add them in public/common instead.
+    "aib_features.cc",
     "associated_interfaces/associated_interface_provider.cc",
     "associated_interfaces/associated_interface_registry.cc",
     "blob/blob_url.cc",

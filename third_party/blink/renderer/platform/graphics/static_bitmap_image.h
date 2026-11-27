@@ -16,6 +16,8 @@
 #include "third_party/skia/include/core/SkRefCnt.h"
 #include "ui/gfx/hdr_metadata.h"
 
+class SkPixmap;
+
 namespace gpu {
 namespace gles2 {
 class GLES2Interface;
@@ -152,6 +154,18 @@ struct DowncastTraits<StaticBitmapImage> {
     return image.IsStaticBitmapImage();
   }
 };
+
+// AI Browser: canvas readback noise. Nudges one color channel of a small,
+// content-dependent subset of the visible pixels by one step. The choice uses
+// a per-process seed, so repeated readbacks of the same content agree within a
+// session but differ across sessions. Only 8-bit RGBA/BGRA pixmaps are
+// modified; other formats are left untouched.
+PLATFORM_EXPORT void AibAddReadbackNoise(const SkPixmap& pixmap);
+
+// AI Browser: returns an unaccelerated copy of `image` with
+// AibAddReadbackNoise() applied, or `image` itself if no copy could be made.
+PLATFORM_EXPORT scoped_refptr<StaticBitmapImage> AibCopyWithReadbackNoise(
+    scoped_refptr<StaticBitmapImage> image);
 
 }  // namespace blink
 

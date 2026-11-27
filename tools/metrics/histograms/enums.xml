@@ -8015,6 +8015,7 @@ from previous Chrome versions.
   <int value="-2057849190" label="SyncPointGraphValidation:enabled"/>
   <int value="-2056436874" label="WebFeedAwareness:disabled"/>
   <int value="-2056351013" label="AutofillUpdatedCardUnmaskPromptUi:enabled"/>
+  <int value="-2056208772" label="AibMeasureTextNoise:disabled"/>
   <int value="-2056198604" label="InterestFeedV2Hearts:disabled"/>
   <int value="-2054871630"
       label="PasswordsAccountStorageRevisedOptInFlow:enabled"/>
@@ -8492,6 +8493,7 @@ from previous Chrome versions.
   <int value="-1927080237" label="Vulkan:enabled"/>
   <int value="-1926746234"
       label="DirectSocketsUdpSendRequireMulticastPermissionPolicy:disabled"/>
+  <int value="-1926886302" label="AibCanvasImageDataNoise:disabled"/>
   <int value="-1926236767" label="DynamicColorButtonsAndroid:enabled"/>
   <int value="-1926124919" label="WebViewOriginTrials:enabled"/>
   <int value="-1925573731" label="CreateShortcutIgnoresManifest:enabled"/>
@@ -10686,6 +10688,7 @@ from previous Chrome versions.
   <int value="-1289087296" label="FoldableJankFix:enabled"/>
   <int value="-1289078823"
       label="EnableDesksTrackpadSwipeImprovements:enabled"/>
+  <int value="-1288577532" label="AibMeasureTextNoise:enabled"/>
   <int value="-1288130734" label="OpenVR:disabled"/>
   <int value="-1287511172"
       label="OmniboxUIExperimentHideSteadyStateUrlSchemeAndSubdomains:disabled"/>
@@ -17716,6 +17719,7 @@ from previous Chrome versions.
   <int value="782167080" label="enable-new-qp-input-view"/>
   <int value="782318640" label="OmniboxResizingPrioritization:enabled"/>
   <int value="782380882" label="SRIMessageSignatureEnforcement:enabled"/>
+  <int value="783033010" label="AibCanvasImageDataNoise:enabled"/>
   <int value="783270752" label="AndroidHistoryManager:enabled"/>
   <int value="784664314" label="CompanyEntityIconAdjustment:disabled"/>
   <int value="784856302" label="EnableBorderlessPrinting:disabled"/>
