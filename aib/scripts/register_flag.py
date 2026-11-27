@@ -22,6 +22,8 @@ Spec keys:
   feature_name BASE_FEATURE string name, e.g. "AibPopupsToTabs"
   include      header declaring the feature
   variations   optional [{"label": "Always", "params": {"mode": "always"}}]
+  string_switch  instead of a feature: C++ switch constant for a text-box
+               flag (STRING_VALUE_TYPE); switch_name is its string value.
 """
 
 import json
@@ -108,7 +110,8 @@ def add_include(s, header):
 
 def register(spec):
   sid, name = spec['id'], spec['name']
-  feature, fname = spec['feature'], spec['feature_name']
+  feature = spec.get('feature')
+  fname = spec.get('feature_name')
   os_mask = spec.get('os', 'kOsAll')
 
   # flag_descriptions.h
@@ -128,7 +131,9 @@ def register(spec):
   if f'{{"{name}",' not in a:
     a = add_include(a, spec['include'])
     value = f'FEATURE_VALUE_TYPE({feature})'
-    if spec.get('variations'):
+    if spec.get('string_switch'):
+      value = f'STRING_VALUE_TYPE({spec["string_switch"]}, "")'
+    elif spec.get('variations'):
       if VAR_MARK not in a:
         anchor = '// When adding a new choice, add it to the end of the list.\n'
         a = a.replace(anchor, VAR_MARK + '\n' + anchor, 1)
@@ -136,10 +141,10 @@ def register(spec):
       vars_ = []
       for i, v in enumerate(spec['variations']):
         pname = f'k{sid}Params{i}'
-        params = ', '.join(f'{{{cstr(k)}, {cstr(val)}}}'
-                           for k, val in v['params'].items())
+        params = ',\n'.join(f'    {{{cstr(k)}, {cstr(val)}}}'
+                             for k, val in v['params'].items())
         arrs.append(f'const FeatureEntry::FeatureParam {pname}[] = {{\n'
-                    f'    {params}}};\n')
+                    f'{params}}};\n')
         vars_.append(f'    {{{cstr(" - " + v["label"])}, {pname}, nullptr}},\n')
       code = (''.join(arrs) +
               f'const FeatureEntry::FeatureVariation k{sid}Variations[] = {{\n'
@@ -176,8 +181,9 @@ def register(spec):
   e = read(ENUMS)
   start = e.index('<enum name="LoginCustomFlags">')
   end = e.index('</enum>', start)
-  for suffix in ('disabled', 'enabled'):
-    label = f'{fname}:{suffix}'
+  labels = ([spec['switch_name']] if spec.get('string_switch') else
+            [f'{fname}:{suffix}' for suffix in ('disabled', 'enabled')])
+  for label in labels:
     if f'label="{label}"' in e[start:end]:
       continue
     # Same value generate_flag_enums.py computes: low 32 bits, signed.
