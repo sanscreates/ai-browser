@@ -392,15 +392,19 @@ const ui::ThemeProvider* BrowserWidget::GetBaseThemeProvider() const {
 
 ui::ColorProviderKey::ThemeInitializerSupplier* BrowserWidget::GetCustomTheme()
     const {
+  BrowserWindowInterface* browser = browser_view_->browser();
+  auto* theme_service =
+      ThemeServiceFactory::GetForProfile(browser->GetProfile());
+
   // Do not return any custom theme if this is an incognito browser, an
   // enterprise isolated mode browser, or if there is a user color override
   // (e.g. Focus Mode).
-  if (IsIncognitoBrowser() || IsEnterpriseIsolatedModeBrowser() ||
-      user_color_override().has_value()) {
+  // AI Browser: kAibIncognitoThemes may theme Incognito like the profile.
+  if ((IsIncognitoBrowser() && !theme_service->ShouldApplyThemeToIncognito()) ||
+      IsEnterpriseIsolatedModeBrowser() || user_color_override().has_value()) {
     return nullptr;
   }
 
-  BrowserWindowInterface* browser = browser_view_->browser();
   auto* app_controller = web_app::AppBrowserController::From(browser);
   // Ignore the system theme for web apps with window-controls-overlay as the
   // display_override so the web contents can blend with the overlay by using
@@ -410,8 +414,6 @@ ui::ColorProviderKey::ThemeInitializerSupplier* BrowserWidget::GetCustomTheme()
                          app_controller->AppUsesWindowControlsOverlay())) {
     return app_controller->GetThemeSupplier();
   }
-  auto* theme_service =
-      ThemeServiceFactory::GetForProfile(browser->GetProfile());
   return theme_service->UsingDeviceTheme() ? nullptr
                                            : theme_service->GetThemeSupplier();
 }

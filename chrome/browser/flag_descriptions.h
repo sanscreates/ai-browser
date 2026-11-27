@@ -8794,6 +8794,11 @@ inline constexpr char kAibCloseConfirmationName[] = "Confirm closing windows";
 inline constexpr char kAibCloseConfirmationDescription[] =
     "Ask before closing a window that has several tabs open.";
 
+// AI Browser.
+inline constexpr char kAibIncognitoThemesName[] = "Themes in Incognito";
+inline constexpr char kAibIncognitoThemesDescription[] =
+    "Apply your browser theme to Incognito windows too.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

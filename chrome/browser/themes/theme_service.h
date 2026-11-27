@@ -159,6 +159,11 @@ class ThemeService : public KeyedService,
   // Virtual for testing.
   virtual bool UsingPolicyTheme() const;
 
+  // AI Browser: whether Incognito windows of this profile should use the
+  // profile's theme instead of the built-in Incognito colors
+  // (kAibIncognitoThemes). Only true when the user picked a theme or color.
+  bool ShouldApplyThemeToIncognito() const;
+
   // Gets the id of the last installed theme. (The theme may have been further
   // locally customized.)
   virtual std::string GetThemeID() const;

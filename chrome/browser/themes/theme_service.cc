@@ -15,6 +15,7 @@
 #include "base/auto_reset.h"
 #include "base/command_line.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
@@ -55,6 +56,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -613,6 +615,13 @@ bool ThemeService::UsingSystemTheme() const {
   return UsingDefaultTheme();
 }
 
+bool ThemeService::ShouldApplyThemeToIncognito() const {
+  // AI Browser: with the default look, Incognito keeps its dark colors so it
+  // stays easy to tell apart from a normal window.
+  return base::FeatureList::IsEnabled(aib::features::kAibIncognitoThemes) &&
+         !UsingDeviceTheme() && (!UsingDefaultTheme() || !GetIsBaseline());
+}
+
 void ThemeService::OnBackgroundColorExtracted(SkColor color) {
   SetUserColorAndBrowserColorVariant(
       color, ui::mojom::BrowserColorVariant::kTonalSpot);
@@ -710,8 +719,11 @@ const ui::ThemeProvider& ThemeService::GetThemeProviderForProfile(
   if (profile->IsEnterpriseIsolatedModeProfile()) {
     return service->default_theme_provider_;
   }
-  return profile->IsIncognitoBranded() ? service->incognito_theme_provider_
-                                       : service->original_theme_provider_;
+  // AI Browser: kAibIncognitoThemes may theme Incognito like the profile.
+  return profile->IsIncognitoBranded() &&
+                 !service->ShouldApplyThemeToIncognito()
+             ? service->incognito_theme_provider_
+             : service->original_theme_provider_;
 }
 
 // static
@@ -842,7 +854,9 @@ ui::ColorProviderKey ThemeService::GetColorProviderKey(
   CHECK_EQ(profile->GetOriginalProfile(), profile_, base::NotFatalUntil::M163);
 
   ui::ColorProviderKey key = base_key;
-  const bool is_incognito = profile->IsIncognitoBranded();
+  // AI Browser: kAibIncognitoThemes may theme Incognito like the profile.
+  const bool is_incognito =
+      profile->IsIncognitoBranded() && !ShouldApplyThemeToIncognito();
   const bool is_isolated = profile->IsEnterpriseIsolatedModeProfile();
   if (is_incognito || is_isolated) {
     return GetIncognitoOrIsolatedColorProviderKey(std::move(key), is_incognito);

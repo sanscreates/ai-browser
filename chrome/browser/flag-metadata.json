@@ -273,6 +273,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-incognito-themes",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-increase-incognito-storage-quota",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

@@ -14390,6 +14390,12 @@ const FeatureEntry kFeatureEntries[] = {
                                     kAibCloseConfirmationVariations,
                                     "AibCloseConfirmation")},
 
+    {"aib-incognito-themes",
+     flag_descriptions::kAibIncognitoThemesName,
+     flag_descriptions::kAibIncognitoThemesDescription,
+     kOsDesktop,
+     FEATURE_VALUE_TYPE(aib::features::kAibIncognitoThemes)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
