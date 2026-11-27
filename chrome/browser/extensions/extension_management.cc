@@ -57,6 +57,7 @@
 #include "extensions/browser/managed_installation_mode.h"
 #include "extensions/browser/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
+#include "extensions/common/aib_content_blocker.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_urls.h"
 #include "extensions/common/manifest_constants.h"
@@ -693,7 +694,9 @@ const std::string ExtensionManagement::BlockedInstallMessage(
 }
 
 ExtensionIdSet ExtensionManagement::GetForcePinnedList() const {
-  ExtensionIdSet force_pinned_list;
+  // AI Browser: the built-in content blocker's button is always on the
+  // toolbar. Entries without a loaded action are ignored by the toolbar.
+  ExtensionIdSet force_pinned_list = {kAibContentBlockerExtensionId};
   for (const auto& entry : settings_by_id_) {
     if (entry.second->toolbar_pin == ManagedToolbarPinMode::kForcePinned) {
       force_pinned_list.insert(entry.first);

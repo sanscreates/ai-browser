@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/views/extensions/extension_context_menu_controller.h"
 #include "chrome/browser/ui/views/extensions/extensions_menu_button.h"
 #include "chrome/grit/generated_resources.h"
+#include "extensions/common/aib_content_blocker.h"
 #include "extensions/common/extension_features.h"
 #include "ui/accessibility/platform/ax_platform.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -202,6 +203,13 @@ ExtensionMenuItemView::~ExtensionMenuItemView() = default;
 void ExtensionMenuItemView::UpdatePinButton(bool is_force_pinned,
                                             bool is_pinned) {
   if (!pin_button_) {
+    return;
+  }
+
+  // AI Browser: the built-in content blocker is always pinned without being
+  // managed by an administrator, so it has no pin button.
+  if (extensions::IsAibContentBlocker(view_model_->GetId())) {
+    pin_button_->SetVisible(false);
     return;
   }
 

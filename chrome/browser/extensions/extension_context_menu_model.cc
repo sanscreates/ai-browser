@@ -60,6 +60,7 @@
 #include "extensions/browser/permissions_manager.h"
 #include "extensions/browser/uninstall_reason.h"
 #include "extensions/buildflags/buildflags.h"
+#include "extensions/common/aib_content_blocker.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_features.h"
 #include "extensions/common/extension_usage.h"
@@ -897,7 +898,9 @@ void ExtensionContextMenuModel::InitMenuWithFeature(
     AddSeparator(ui::NORMAL_SEPARATOR);
   }
 
-  if (can_show_icon_in_toolbar) {
+  // AI Browser: the built-in content blocker can't be unpinned and isn't
+  // pinned by an administrator, so it gets no pin item.
+  if (can_show_icon_in_toolbar && !IsAibContentBlocker(extension->id())) {
     if (IsExtensionForcePinned(*extension, profile_)) {
       AddItemWithStringIdAndIcon(
           TOGGLE_VISIBILITY, IDS_EXTENSIONS_PINNED_BY_ADMIN,
@@ -1014,7 +1017,8 @@ void ExtensionContextMenuModel::InitMenu(const Extension* extension,
   }
 
   if (can_show_icon_in_toolbar &&
-      source_ == ContextMenuSource::kToolbarAction) {
+      source_ == ContextMenuSource::kToolbarAction &&
+      !IsAibContentBlocker(extension->id())) {
     int visibility_string_id =
         GetVisibilityStringId(profile_, extension, is_pinned_);
     CHECK_NE(-1, visibility_string_id, base::NotFatalUntil::M161);

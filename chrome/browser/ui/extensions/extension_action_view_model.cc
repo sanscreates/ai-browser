@@ -44,6 +44,7 @@
 #include "extensions/browser/permissions/site_permissions_helper.h"
 #include "extensions/browser/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
+#include "extensions/common/aib_content_blocker.h"
 #include "extensions/common/api/extension_action/action_info.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_features.h"
@@ -118,7 +119,10 @@ ExtensionActionViewModel::HoverCardState::AdminPolicy GetHoverCardPolicyState(
     Profile& profile,
     const extensions::ExtensionId& extension_id) {
   auto* const model = ToolbarActionsModel::Get(&profile);
-  if (model->IsActionForcePinned(extension_id)) {
+  // AI Browser: the built-in content blocker is pinned by the browser, not by
+  // an administrator.
+  if (model->IsActionForcePinned(extension_id) &&
+      !extensions::IsAibContentBlocker(extension_id)) {
     return ExtensionActionViewModel::HoverCardState::AdminPolicy::
         kPinnedByAdmin;
   }
