@@ -338,6 +338,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-remove-tab-strip-grab-handle",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-scroll-tabs",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

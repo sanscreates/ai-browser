@@ -14192,6 +14192,7 @@ from previous Chrome versions.
   <int value="-266049865" label="AccessibilityLabeledBy:enabled"/>
   <int value="-265765164" label="FeedFollowUiUpdate:disabled"/>
   <int value="-265697837" label="PhoneHub:disabled"/>
+  <int value="-265601386" label="AibRemoveTabStripGrabHandle:disabled"/>
   <int value="-265475987" label="NtpWallpaperSearchButton:disabled"/>
   <int value="-265074126" label="Prewarm:disabled"/>
   <int value="-265041545" label="WifiConcurrency:enabled"/>
@@ -19703,6 +19704,7 @@ from previous Chrome versions.
   <int value="1359972809" label="enable-gesture-deletion"/>
   <int value="1360774969"
       label="RecordPermissionExpirationTimestamps:disabled"/>
+  <int value="1360147253" label="AibRemoveTabStripGrabHandle:enabled"/>
   <int value="1360969228" label="RevampedContextMenu:enabled"/>
   <int value="1361047396" label="disable-click-delay"/>
   <int value="1361073386" label="ContentSuggestionsNotifications:enabled"/>

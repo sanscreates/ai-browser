@@ -14418,6 +14418,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibHideTabCloseButtons)},
 
+    {"aib-remove-tab-strip-grab-handle",
+     flag_descriptions::kAibRemoveTabStripGrabHandleName,
+     flag_descriptions::kAibRemoveTabStripGrabHandleDescription,
+     kOsDesktop,
+     FEATURE_VALUE_TYPE(aib::features::kAibRemoveTabStripGrabHandle)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

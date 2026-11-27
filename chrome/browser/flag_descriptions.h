@@ -8809,6 +8809,12 @@ inline constexpr char kAibHideTabCloseButtonsName[] = "Hide tab close buttons";
 inline constexpr char kAibHideTabCloseButtonsDescription[] =
     "Remove the close (X) button from tabs.";
 
+// AI Browser.
+inline constexpr char kAibRemoveTabStripGrabHandleName[] =
+    "Remove tab strip drag space";
+inline constexpr char kAibRemoveTabStripGrabHandleDescription[] =
+    "Don't reserve empty window-drag space at the end of the tab strip.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

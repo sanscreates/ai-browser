@@ -48,6 +48,7 @@
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/clipboard/clipboard_constants.h"
@@ -103,6 +104,11 @@ class FrameGrabHandle : public views::View {
 
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override {
+    // AI Browser: kAibRemoveTabStripGrabHandle gives this space to tabs.
+    if (base::FeatureList::IsEnabled(
+            aib::features::kAibRemoveTabStripGrabHandle)) {
+      return gfx::Size();
+    }
     // Reserve some space for the frame to be grabbed by, even if the tabstrip
     // is full.
     // TODO(tbergquist): Define this relative to the NTB insets again.
