@@ -43,6 +43,7 @@ PID=$!
 sleep "$IDLE"
 
 PHASE_START=$(python3 -c 'import time; print(int(time.time() * 1000))')
+echo "$PHASE_START" > "$WORK/phase_start.txt"
 for url in "${SITES[@]}"; do
   # A second launch with the same profile hands the URL to the running
   # instance (process singleton) and exits.
