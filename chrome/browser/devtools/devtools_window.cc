@@ -1559,8 +1559,10 @@ GURL DevToolsWindow::GetDevToolsURL(Profile* profile,
                                     bool browser_connection) {
   std::string url;
 
-  std::string remote_base =
-      "?remoteBase=" + DevToolsUI::GetRemoteBaseURL().spec();
+  // AI Browser: give the bundled frontend no remote base, so it never
+  // fetches resources (e.g. CSS documentation data) from the Google-hosted
+  // DevTools frontend.
+  std::string remote_base = "?remoteBase=";
 
   const std::string valid_frontend =
       frontend_url.empty() ? chrome::kChromeUIDevToolsURL : frontend_url;
