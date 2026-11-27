@@ -1,0 +1,49 @@
+# Registrable domains whose hosts aib/scripts/scrub_domains.py rewrites to
+# <host>.aib-invalid at build time. Curated by us from
+# `scrub_domains.py survey` over our tree: Google-operated service, API,
+# content, ad, analytics and telemetry endpoints. `name.*` matches common
+# TLDs and ccTLDs (google.com, google.de, google.co.uk, google.com.au, ...).
+#
+# Deliberately NOT listed: chromium.org / googlesource.com (source and docs
+# links, plus build-time fetches), android.com (XML namespaces), and
+# example/test domains.
+
+google.*
+googleapis.com
+gstatic.com
+googleusercontent.com
+googlevideo.com
+googleadservices.com
+googlesyndication.com
+googletagmanager.com
+googletagservices.com
+google-analytics.com
+doubleclick.net
+gvt1.com
+gvt2.com
+gvt3.com
+ggpht.com
+googlezip.net
+1e100.net
+goo.gl
+g.co
+youtube.com
+youtube-nocookie.com
+youtu.be
+ytimg.com
+appspot.com
+withgoogle.com
+googleblog.com
+chrome.com
+chromewebstore.com
+crashlytics.com
+firebaseio.com
+firebaseapp.com
+app-measurement.com
+recaptcha.net
+privacysandbox.com
+
+# Exact hosts never rewritten (`!host`): identifiers, not endpoints.
+!type.googleapis.com     # protobuf Any type-URL namespace
+!type.googleprod.com     # protobuf Any type-URL namespace (internal variant)
+!schemas.google.com      # XML namespace URIs
