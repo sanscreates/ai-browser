@@ -240,8 +240,10 @@ void AccountConsistencyModeManager::Shutdown() {
 // static
 void AccountConsistencyModeManager::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kSigninAllowedOnNextStartup, true);
-  registry->RegisterBooleanPref(prefs::kSigninAllowedOnNextStartupCache, true);
+  // AI Browser: browser sign-in to Google is off by default. This also turns
+  // off Desktop Identity Consistency and its Gaia cookie-jar fetches.
+  registry->RegisterBooleanPref(prefs::kSigninAllowedOnNextStartup, false);
+  registry->RegisterBooleanPref(prefs::kSigninAllowedOnNextStartupCache, false);
 }
 
 // static
