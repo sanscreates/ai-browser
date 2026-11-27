@@ -8846,6 +8846,7 @@ from previous Chrome versions.
   <int value="-1824539611" label="U2fPermissionPrompt:disabled"/>
   <int value="-1824166290"
       label="ComputePressureRateObfuscationMitigation:disabled"/>
+  <int value="-1823407480" label="AibKeepWindowWithLastTab:disabled"/>
   <int value="-1823280112" label="sparky-server-url:enabled"/>
   <int value="-1823193038" label="QuietNotificationPrompts:disabled"/>
   <int value="-1823073826" label="TabGroupsSave:disabled"/>
@@ -14958,6 +14959,7 @@ from previous Chrome versions.
   <int value="-33240310" label="AppShimNotificationAttribution:enabled"/>
   <int value="-33052443" label="EnableInputProtection:disabled"/>
   <int value="-32712825" label="CrOSEnforceSystemAec:disabled"/>
+  <int value="-32593715" label="AibKeepWindowWithLastTab:enabled"/>
   <int value="-32583212" label="AlwaysDrawCompositedToolbarHairline:disabled"/>
   <int value="-31484570"
       label="(Obsolete) EnforceAshExtensionKeeplist:disabled"/>

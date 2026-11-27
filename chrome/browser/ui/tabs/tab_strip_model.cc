@@ -90,6 +90,7 @@
 #include "chrome/browser/ui/web_applications/web_app_tabbed_utils.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/commerce/core/commerce_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -1591,6 +1592,8 @@ void TabStripModel::CloseTab(tabs::TabHandle tab, uint32_t close_types) {
 
   tabs::TabInterface* tab_ptr = tab.Get();
   CHECK(ContainsTab(tab_ptr));
+  // AI Browser: keep the window open when this is its last tab.
+  MaybeAddTabToKeepWindowOpen(/*closing_tab_count=*/1);
   CloseTabs({tab_ptr->GetContents()}, close_types);
 }
 
@@ -1600,6 +1603,8 @@ void TabStripModel::CloseWebContents(content::WebContents* contents,
 
   CHECK(contents);
   CHECK_NE(GetIndexOfWebContents(contents), kNoTab);
+  // AI Browser: keep the window open when this is its last tab.
+  MaybeAddTabToKeepWindowOpen(/*closing_tab_count=*/1);
   CloseTabs({contents}, close_types);
 }
 
@@ -4164,9 +4169,17 @@ TabStripModel::GetGroupsDestroyedFromRemovingTabs(
 void TabStripModel::ExecuteCloseTabs(
     base::RepeatingCallback<std::vector<tabs::TabHandle>()> get_tabs_to_close,
     uint32_t close_types) {
+  // AI Browser: resolve the tabs before a replacement tab is added (which
+  // changes the selection and re-enters this model), then take the guard.
+  std::vector<tabs::TabHandle> tab_handles_to_close;
+  {
+    ReentrancyCheck resolve_reentrancy_check(&reentrancy_guard_);
+    tab_handles_to_close = std::move(get_tabs_to_close).Run();
+  }
+  MaybeAddTabToKeepWindowOpen(static_cast<size_t>(std::ranges::count_if(
+      tab_handles_to_close,
+      [](tabs::TabHandle handle) { return handle.Get() != nullptr; })));
   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
-  const std::vector<tabs::TabHandle> tab_handles_to_close =
-      std::move(get_tabs_to_close).Run();
 
   std::vector<tabs::TabInterface*> tabs_to_close;
   std::vector<content::WebContents*> web_contents_to_close;
@@ -4769,6 +4782,19 @@ std::vector<tabs::TabInterface*> TabStripModel::GetTabsAtIndices(
 tabs::TabInterface* TabStripModel::GetTabForWebContents(
     const content::WebContents* contents) const {
   return GetTabAtIndex(GetIndexOfWebContents(contents));
+}
+
+void TabStripModel::MaybeAddTabToKeepWindowOpen(size_t closing_tab_count) {
+  // AI Browser: when the user closes every tab of a normal window, add a New
+  // Tab page first so the window stays open. Closing the window itself (and
+  // quitting) goes through CloseAllTabs(), which sets `closing_all_`.
+  if (!base::FeatureList::IsEnabled(aib::features::kAibKeepWindowWithLastTab) ||
+      closing_all_ || closing_tab_count == 0 ||
+      closing_tab_count != static_cast<size_t>(count()) ||
+      !delegate_->IsNormalWindow()) {
+    return;
+  }
+  delegate_->AddTabAt(GURL(), -1, /*foreground=*/true);
 }
 
 void TabStripModel::CloseTabs(base::span<content::WebContents* const> items,

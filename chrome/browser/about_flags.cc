@@ -14309,6 +14309,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsAll,
      FEATURE_VALUE_TYPE(aib::features::kAibPopupsToTabs)},
 
+    {"aib-keep-window-with-last-tab",
+     flag_descriptions::kAibKeepWindowWithLastTabName,
+     flag_descriptions::kAibKeepWindowWithLastTabDescription,
+     kOsDesktop,
+     FEATURE_VALUE_TYPE(aib::features::kAibKeepWindowWithLastTab)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

@@ -1250,6 +1250,12 @@ class TabStripModel {
   void CloseTabs(base::span<content::WebContents* const> items,
                  uint32_t close_types);
 
+  // AI Browser: if kAibKeepWindowWithLastTab is enabled and the user is about
+  // to close all `closing_tab_count` tabs of a normal window, adds a New Tab
+  // page so the window stays open. Must be called outside the reentrancy
+  // guard, since adding a tab re-enters this model.
+  void MaybeAddTabToKeepWindowOpen(size_t closing_tab_count);
+
   // Executes a call to CloseTabs on the web contentses contained in tabs
   // returned from `get_tabs_to_close`. This is a helper method
   // bound by ExecuteCloseTabsCommand in order to properly

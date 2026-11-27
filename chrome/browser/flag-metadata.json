@@ -263,6 +263,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-keep-window-with-last-tab",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-max-connections-per-host",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

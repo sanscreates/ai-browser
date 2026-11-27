@@ -45,6 +45,7 @@
 #include "chrome/browser/ui/web_applications/web_app_tabbed_utils.h"
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 #include "chrome/common/chrome_switches.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/contextual_tasks/public/features.h"
 #include "components/feature_engagement/public/feature_constants.h"
 #include "components/reading_list/core/reading_list_model.h"
@@ -476,7 +477,11 @@ void BrowserTabStripModelDelegate::CloseTab(
 
   // Only consider pausing the close operation if this is the last remaining
   // tab (since otherwise closing it won't close the browser window).
-  if (model->count() <= 1) {
+  // AI Browser: with kAibKeepWindowWithLastTab, a normal window stays open.
+  const bool keeps_window_open =
+      base::FeatureList::IsEnabled(aib::features::kAibKeepWindowWithLastTab) &&
+      IsNormalWindow();
+  if (model->count() <= 1 && !keeps_window_open) {
     // Closing this tab will close the current window. See if the browser wants
     // to prompt the user before the browser is allowed to close.
     const UnloadController::WarnBeforeClosingResult result =

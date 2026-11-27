@@ -8748,6 +8748,12 @@ inline constexpr char kAibPopupsToTabsName[] = "Popups to tabs";
 inline constexpr char kAibPopupsToTabsDescription[] =
     "Open window.open() popups as foreground tabs instead of popup windows.";
 
+// AI Browser.
+inline constexpr char kAibKeepWindowWithLastTabName[] =
+    "Keep window open with last tab";
+inline constexpr char kAibKeepWindowWithLastTabDescription[] =
+    "Closing the last tab opens a New Tab page instead of closing the window.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
