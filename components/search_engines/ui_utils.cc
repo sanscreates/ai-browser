@@ -217,23 +217,14 @@ template_url_starter_pack_data::StarterPackIdSet GetDisabledStarterPackIds(
     bool gemini_enabled) {
   template_url_starter_pack_data::StarterPackIdSet disabled_starter_pack_ids;
 
-  // Skip @gemini if feature disabled.
-  if (!gemini_enabled) {
-    disabled_starter_pack_ids.Put(
-        template_url_starter_pack_data::StarterPackId::kGemini);
-  }
-
-  // Skip @page if feature disabled.
-  if (!omnibox_feature_configs::ContextualSearch::Get().starter_pack_page) {
-    disabled_starter_pack_ids.Put(
-        template_url_starter_pack_data::StarterPackId::kPage);
-  }
-
-  // Skip @aimode if feature disabled.
-  if (!ai_mode_enabled) {
-    disabled_starter_pack_ids.Put(
-        template_url_starter_pack_data::StarterPackId::kAiMode);
-  }
+  // AI Browser: the Gemini, AI Mode and @page (contextual AI) shortcuts are
+  // never offered, whatever the features say.
+  disabled_starter_pack_ids.Put(
+      template_url_starter_pack_data::StarterPackId::kGemini);
+  disabled_starter_pack_ids.Put(
+      template_url_starter_pack_data::StarterPackId::kPage);
+  disabled_starter_pack_ids.Put(
+      template_url_starter_pack_data::StarterPackId::kAiMode);
 
   return disabled_starter_pack_ids;
 }

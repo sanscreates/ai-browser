@@ -254,23 +254,14 @@ void FeaturedSearchProvider::AddFeaturedKeywordMatches(
     if (turl->starter_pack_id() !=
             template_url_starter_pack_data::StarterPackId::kNone &&
         turl->is_active() == TemplateURLData::ActiveStatus::kTrue) {
-      // Skip @gemini if feature disabled.
+      // AI Browser: the Gemini, AI Mode and @page (contextual AI) shortcuts
+      // are never offered.
       if (turl->starter_pack_id() ==
-              template_url_starter_pack_data::StarterPackId::kGemini &&
-          !client_->IsGeminiStarterPackEnabled()) {
-        continue;
-      }
-      // Skip @page if feature disabled.
-      if (turl->starter_pack_id() ==
-              template_url_starter_pack_data::StarterPackId::kPage &&
-          !omnibox_feature_configs::ContextualSearch::Get().starter_pack_page) {
-        continue;
-      }
-      // Skip @aimode if feature disabled.
-      if (turl->starter_pack_id() ==
-              template_url_starter_pack_data::StarterPackId::kAiMode &&
-          !OmniboxFieldTrial::IsAimStarterPackEnabled(
-              client_->GetAimEligibilityService())) {
+              template_url_starter_pack_data::StarterPackId::kGemini ||
+          turl->starter_pack_id() ==
+              template_url_starter_pack_data::StarterPackId::kPage ||
+          turl->starter_pack_id() ==
+              template_url_starter_pack_data::StarterPackId::kAiMode) {
         continue;
       }
       // The history starter pack engine is disabled in incognito mode.
@@ -415,7 +406,9 @@ bool FeaturedSearchProvider::ShouldShowIPH(IphType iph_type) const {
 }
 
 bool FeaturedSearchProvider::ShouldShowGeminiIPHMatch() const {
-  if (!client_->IsGeminiStarterPackEnabled() ||
+  // AI Browser: never promote the @gemini shortcut.
+  constexpr bool kOfferGeminiShortcut = false;
+  if (!kOfferGeminiShortcut || !client_->IsGeminiStarterPackEnabled() ||
       !OmniboxFieldTrial::IsStarterPackIPHEnabled() ||
       !ShouldShowIPH(IphType::kGemini)) {
     return false;
