@@ -469,8 +469,10 @@ void NetworkTimeTracker::UpdateNetworkTime(base::Time network_time,
 }
 
 bool NetworkTimeTracker::AreTimeFetchesEnabled() const {
-  return is_initialized() &&
-         base::FeatureList::IsEnabled(kNetworkTimeServiceQuerying);
+  // AI Browser: never query Google's time service (it is queried in the
+  // background, e.g. after certificate date errors). The system clock is
+  // used as-is.
+  return false;
 }
 
 NetworkTimeTracker::FetchBehavior NetworkTimeTracker::GetFetchBehavior() const {
