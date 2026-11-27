@@ -218,6 +218,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-remove-client-hints",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-spoof-webgl-info",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

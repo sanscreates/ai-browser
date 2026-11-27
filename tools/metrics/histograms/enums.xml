@@ -9777,6 +9777,7 @@ from previous Chrome versions.
   <int value="-1545595496" label="RendererSideResourceScheduler:enabled"/>
   <int value="-1545384766" label="SignInProfileCreation:disabled"/>
   <int value="-1544980496" label="UseClientConfigIPH:enabled"/>
+  <int value="-1544374667" label="AibRemoveClientHints:disabled"/>
   <int value="-1544248549" label="ArcUseAuthEndpoint:enabled"/>
   <int value="-1543316040"
       label="DisplayPersistenceToggleInPermissionPrompts:disabled"/>
@@ -15298,6 +15299,7 @@ from previous Chrome versions.
   <int value="75747474" label="disable-webview-signin-flow"/>
   <int value="77946316" label="PrefixWebAppWindowsWithAppName:disabled"/>
   <int value="78296348" label="TaskManagerClank:enabled"/>
+  <int value="78697179" label="AibRemoveClientHints:enabled"/>
   <int value="78781399" label="AppDeduplicationServiceFondue:disabled"/>
   <int value="78900745"
       label="SharedHighlightingRefinedMaxContextWords:disabled"/>

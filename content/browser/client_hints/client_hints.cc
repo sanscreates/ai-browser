@@ -54,6 +54,7 @@
 #include "third_party/blink/public/common/client_hints/client_hints.h"
 #include "third_party/blink/public/common/client_hints/enabled_client_hints.h"
 #include "third_party/blink/public/common/device_memory/approximated_device_memory.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/page/page_zoom.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
@@ -706,6 +707,12 @@ void UpdateNavigationRequestClientUaHeadersImpl(
     // Likewise, if devtools says to override client hints but provides no
     // value, disable them. This overwrites previous decision from UI.
     disable_due_to_custom_ua = !ua_metadata.has_value();
+  }
+
+  // AI Browser: kAibRemoveClientHints never sends user-agent client hints and
+  // strips any that were already attached, exactly like a blank UA override.
+  if (base::FeatureList::IsEnabled(blink::features::kAibRemoveClientHints)) {
+    disable_due_to_custom_ua = true;
   }
 
   if (!disable_due_to_custom_ua) {

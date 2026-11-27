@@ -8651,6 +8651,13 @@ inline constexpr char kAibReducedSystemInfoDescription[] =
     "Reports 2 CPU cores and only low-entropy user-agent information (no full "
     "version, architecture, model or OS version) to websites.";
 
+// AI Browser.
+inline constexpr char kAibRemoveClientHintsName[] =
+    "Remove user-agent client hints";
+inline constexpr char kAibRemoveClientHintsDescription[] =
+    "Stops sending Sec-CH-UA request headers to websites and leaves "
+    "navigator.userAgentData empty.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

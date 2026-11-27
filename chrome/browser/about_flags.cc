@@ -14161,6 +14161,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsAll,
      FEATURE_VALUE_TYPE(blink::features::kAibReducedSystemInfo)},
 
+    {"aib-remove-client-hints",
+     flag_descriptions::kAibRemoveClientHintsName,
+     flag_descriptions::kAibRemoveClientHintsDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(blink::features::kAibRemoveClientHints)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

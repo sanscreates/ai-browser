@@ -54,6 +54,7 @@ BASE_FEATURE(kFastMemoryCacheWithDevTools, base::FEATURE_ENABLED_BY_DEFAULT);
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom-blink.h"
 #include "services/network/public/mojom/web_client_hints_types.mojom-blink.h"
 #include "services/network/public/mojom/web_client_hints_types.mojom-shared.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/common/client_hints/client_hints.h"
 #include "third_party/blink/public/common/device_memory/approximated_device_memory.h"
@@ -656,7 +657,11 @@ void FrameFetchContext::AddClientHintsIfNecessary(
       SecurityOrigin::Create(request.Url());
   const url::Origin resource_origin = security_origin->ToUrlOrigin();
 
-  std::optional<UserAgentMetadata> ua = GetUserAgentMetadata();
+  // AI Browser: kAibRemoveClientHints drops every user-agent client hint.
+  std::optional<UserAgentMetadata> ua =
+      base::FeatureList::IsEnabled(features::kAibRemoveClientHints)
+          ? std::nullopt
+          : GetUserAgentMetadata();
 
   const ClientHintsPreferences& hints_preferences = GetClientHintsPreferences();
 
