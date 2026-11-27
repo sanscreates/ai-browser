@@ -60,6 +60,7 @@
 #include "chrome/common/buildflags.h"
 #include "chrome/grit/generated_resources.h"
 #include "chrome/grit/theme_resources.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/contextual_tasks/public/features.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_alert.h"
@@ -993,6 +994,23 @@ void TabView::UpdateLayerRoundedCorners() {
 void TabView::OnThemeChanged() {
   views::View::OnThemeChanged();
   UpdateColors();
+}
+
+std::u16string TabView::GetRenderedTooltipText(const gfx::Point& p) const {
+  // AI Browser: kAibTabHoverCards can show the title (and any alert) as a
+  // plain tooltip instead of a hover card.
+  if (!aib::features::ShouldShowTabTooltips()) {
+    return views::View::GetRenderedTooltipText(p);
+  }
+  std::u16string tooltip = data().title;
+  if (data().alert_state.has_value()) {
+    if (!tooltip.empty()) {
+      tooltip.push_back(u'\n');
+    }
+    tooltip.append(tabs::TabAlertController::GetTabAlertStateText(
+        data().alert_state.value()));
+  }
+  return tooltip;
 }
 
 bool TabView::GetHitTestMask(SkPath* mask) const {

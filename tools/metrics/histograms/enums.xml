@@ -11024,6 +11024,7 @@ from previous Chrome versions.
   <int value="-1190174011" label="enable-hdr"/>
   <int value="-1190171773" label="NtpHistoryClustersModuleTextOnly:enabled"/>
   <int value="-1189429241" label="AndroidBottomBar:disabled"/>
+  <int value="-1188969964" label="AibTabHoverCards:disabled"/>
   <int value="-1188631364" label="AndroidNewTabButtonTabstripWebUI:disabled"/>
   <int value="-1188087884" label="OpenDownloadInPreferredApp:enabled"/>
   <int value="-1188066168" label="Mahi:disabled"/>
@@ -11729,6 +11730,7 @@ from previous Chrome versions.
   <int value="-986812517" label="android-device-signals-disclaimer:disabled"/>
   <int value="-986406754"
       label="UnifiedPasswordManagerLocalPasswordsAndroidWithMigration:enabled"/>
+  <int value="-986433297" label="AibTabHoverCards:enabled"/>
   <int value="-985964106" label="PriceTrackingIconColors:disabled"/>
   <int value="-985845117" label="Cardboard:enabled"/>
   <int value="-985445963" label="TabSearchFuzzySearch:disabled"/>
@@ -17135,6 +17137,7 @@ from previous Chrome versions.
   <int value="620989380" label="ImeInputLogicFst:enabled"/>
   <int value="621308804" label="LensSearchReinvocationAffordance:disabled"/>
   <int value="621484660" label="ReorderBookmarks:disabled"/>
+  <int value="621654650" label="AibHideTabCloseButtons:disabled"/>
   <int value="621827872" label="GlicPanelResetOnSessionTimeout:disabled"/>
   <int value="622027416" label="HoldingSpaceSuggestions:disabled"/>
   <int value="622252986" label="ShimlessRMAFlexibleSerialNumberName:disabled"/>
@@ -18004,6 +18007,7 @@ from previous Chrome versions.
   <int value="859031214"
       label="ExperimentalAccessibilityGoogleTtsLanguagePacks:enabled"/>
   <int value="859449217" label="MagnifierPanningImprovements:enabled"/>
+  <int value="859607958" label="AibHideTabCloseButtons:enabled"/>
   <int value="859869507" label="DesktopCaptureLacrosV2:disabled"/>
   <int value="859872800" label="FullscreenAlwaysShowTrafficLights:enabled"/>
   <int value="859913799" label="EnableDesksTrackpadSwipeImprovements:disabled"/>

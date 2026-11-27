@@ -155,6 +155,7 @@ class TabView : public views::View,
   void OnBlur() override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void OnThemeChanged() override;
+  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
   void UpdateParentLayer() override;
 
   // views::ViewObserver:

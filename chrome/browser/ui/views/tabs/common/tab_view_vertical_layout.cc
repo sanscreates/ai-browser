@@ -4,6 +4,7 @@
 
 #include "chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.h"
 
+#include "base/feature_list.h"
 #include "chrome/browser/glic/browser_ui/tab_underline_view.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state.h"
@@ -14,6 +15,7 @@
 #include "chrome/browser/ui/views/tabs/tab/tab_icon.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_title.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "components/aib/aib_ui_features.h"
 #include "ui/views/view_utils.h"
 
 namespace {
@@ -181,7 +183,9 @@ bool TabViewVerticalLayout::IsChildVisible(const views::View* child_view,
   }
 
   if (child_view == TabView().close_button_) {
-    if (TabView().pinned_) {
+    // AI Browser: kAibHideTabCloseButtons removes close buttons from tabs.
+    if (TabView().pinned_ ||
+        base::FeatureList::IsEnabled(aib::features::kAibHideTabCloseButtons)) {
       return false;
     }
 

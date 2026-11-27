@@ -30,6 +30,7 @@
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_thumbnail_observer.h"
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/common/pref_names.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/prefs/pref_service.h"
 #include "ui/events/event.h"
 #include "ui/events/event_observer.h"
@@ -299,7 +300,10 @@ bool TabHoverCardController::IsHoverCardShowingForTab(
 void TabHoverCardController::UpdateHoverCard(
     HoverCardAnchorTarget* anchor_target,
     HoverCardUpdateType update_type) {
-  if (hide_hover_card_lock_count_ > 0) {
+  // AI Browser: kAibTabHoverCards can turn hover cards off; treat that like a
+  // permanent hide lock so no card is ever created.
+  if (hide_hover_card_lock_count_ > 0 ||
+      !aib::features::AreTabHoverCardsEnabled()) {
     anchor_target = nullptr;
     update_type = HoverCardUpdateType::kAnimating;
   }

@@ -118,6 +118,7 @@ class Tab : public gfx::AnimationDelegate,
   void OnFocus() override;
   void OnBlur() override;
   void OnThemeChanged() override;
+  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
   TabSlotView::ViewType GetTabSlotViewType() const override;
   TabSizeInfo GetTabSizeInfo() const override;
   void SetGroup(std::optional<tab_groups::TabGroupId> group) override;

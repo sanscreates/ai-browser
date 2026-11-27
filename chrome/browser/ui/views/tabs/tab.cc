@@ -12,6 +12,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/user_metrics.h"
@@ -58,6 +59,7 @@
 #include "chrome/browser/ui/window_metadata/window_metadata_controller.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/contextual_tasks/public/features.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_alert.h"
@@ -981,6 +983,15 @@ void Tab::OnThemeChanged() {
   UpdateForegroundColors();
 }
 
+std::u16string Tab::GetRenderedTooltipText(const gfx::Point& p) const {
+  // AI Browser: kAibTabHoverCards can show a plain tooltip instead of hover
+  // cards. Otherwise hover cards replace tooltips for tabs.
+  if (aib::features::ShouldShowTabTooltips()) {
+    return GetTooltipText(data_.title, data_.alert_state);
+  }
+  return TabSlotView::GetRenderedTooltipText(p);
+}
+
 TabSlotView::ViewType Tab::GetTabSlotViewType() const {
   return TabSlotView::ViewType::kTab;
 }
@@ -1364,13 +1375,17 @@ void Tab::UpdateIconVisibility() {
       !(IsHovering() || HasFocus() ||
         (close_button_ && close_button_->HasFocus()));
 
+  // AI Browser: kAibHideTabCloseButtons removes close buttons from tabs.
+  const bool hide_close_buttons =
+      base::FeatureList::IsEnabled(aib::features::kAibHideTabCloseButtons);
 #if BUILDFLAG(IS_CHROMEOS)
   // Hide tab close button for OnTask if locked. Only applicable for non-web
   // browser scenarios.
   const bool should_show_close_button =
+      !hide_close_buttons &&
       !IsLockedForOnTask(controller_->GetBrowserWindowInterface());
 #else
-  const bool should_show_close_button = true;
+  const bool should_show_close_button = !hide_close_buttons;
 #endif  // BUILDFLAG(IS_CHROMEOS)
 
   if (IsActive()) {

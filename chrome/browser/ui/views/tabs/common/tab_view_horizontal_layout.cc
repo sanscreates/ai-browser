@@ -4,6 +4,7 @@
 
 #include "chrome/browser/ui/views/tabs/common/tab_view_horizontal_layout.h"
 
+#include "base/feature_list.h"
 #include "chrome/browser/glic/browser_ui/tab_underline_view.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -16,6 +17,7 @@
 #include "chrome/browser/ui/views/tabs/tab/tab_icon.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_title.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "components/aib/aib_ui_features.h"
 #include "content/public/browser/navigation_controller.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/favicon_size.h"
@@ -306,13 +308,16 @@ TabViewHorizontalLayout::CalculateChildVisibilities(int width,
       !(TabView().IsHovering() || TabView().HasFocus() ||
         (TabView().close_button_ && TabView().close_button_->HasFocus()));
 
-  bool should_show_close_button = true;
+  // AI Browser: kAibHideTabCloseButtons removes close buttons from tabs.
+  bool should_show_close_button =
+      !base::FeatureList::IsEnabled(aib::features::kAibHideTabCloseButtons);
 #if BUILDFLAG(IS_CHROMEOS)
   // Hide tab close button for OnTask if locked. Only applicable for non-web
   // browser scenarios.
   const TabCollectionNode* collection_node = TabView().collection_node();
   if (collection_node && collection_node->GetController()) {
     should_show_close_button =
+        should_show_close_button &&
         !collection_node->GetController()->IsLockedForOnTask();
   }
 #endif  // BUILDFLAG(IS_CHROMEOS)

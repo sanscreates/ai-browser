@@ -8799,6 +8799,16 @@ inline constexpr char kAibIncognitoThemesName[] = "Themes in Incognito";
 inline constexpr char kAibIncognitoThemesDescription[] =
     "Apply your browser theme to Incognito windows too.";
 
+// AI Browser.
+inline constexpr char kAibTabHoverCardsName[] = "Tab hover cards";
+inline constexpr char kAibTabHoverCardsDescription[] =
+    "Remove tab hover cards or show a plain tooltip instead.";
+
+// AI Browser.
+inline constexpr char kAibHideTabCloseButtonsName[] = "Hide tab close buttons";
+inline constexpr char kAibHideTabCloseButtonsDescription[] =
+    "Remove the close (X) button from tabs.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

@@ -5246,6 +5246,14 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibTabHoverCardsParams0[] = {
+    {"mode", "none"}};
+const FeatureEntry::FeatureParam kAibTabHoverCardsParams1[] = {
+    {"mode", "tooltip"}};
+const FeatureEntry::FeatureVariation kAibTabHoverCardsVariations[] = {
+    {" - None", kAibTabHoverCardsParams0, nullptr},
+    {" - Tooltip", kAibTabHoverCardsParams1, nullptr},
+};
 const FeatureEntry::FeatureParam kAibCloseConfirmationParams0[] = {
     {"mode", "last-window"}};
 const FeatureEntry::FeatureParam kAibCloseConfirmationParams1[] = {
@@ -14395,6 +14403,20 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibIncognitoThemesDescription,
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibIncognitoThemes)},
+
+    {"aib-tab-hover-cards",
+     flag_descriptions::kAibTabHoverCardsName,
+     flag_descriptions::kAibTabHoverCardsDescription,
+     kOsDesktop,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibTabHoverCards,
+                                    kAibTabHoverCardsVariations,
+                                    "AibTabHoverCards")},
+
+    {"aib-hide-tab-close-buttons",
+     flag_descriptions::kAibHideTabCloseButtonsName,
+     flag_descriptions::kAibHideTabCloseButtonsDescription,
+     kOsDesktop,
+     FEATURE_VALUE_TYPE(aib::features::kAibHideTabCloseButtons)},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
