@@ -8694,6 +8694,12 @@ inline constexpr char kAibReferrerPolicyName[] = "Referrer trimming";
 inline constexpr char kAibReferrerPolicyDescription[] =
     "Send less referrer information than the page's referrer policy allows.";
 
+// AI Browser.
+inline constexpr char kAibMaxConnectionsPerHostName[] =
+    "Maximum connections per host";
+inline constexpr char kAibMaxConnectionsPerHostDescription[] =
+    "Raise the per-host HTTP connection limit.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

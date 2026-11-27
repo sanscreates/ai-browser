@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/debug/alias.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/field_trial_params.h"
@@ -39,6 +40,7 @@
 #include "net/http/http_stream_request.h"
 #include "net/log/net_log_with_source.h"
 #include "net/quic/quic_session_pool.h"
+#include "net/socket/client_socket_pool_manager.h"
 #include "net/socket/next_proto.h"
 #include "net/socket/ssl_client_socket.h"
 #include "net/socket/stream_socket_close_reason.h"
@@ -181,9 +183,13 @@ HttpStreamPool::HttpStreamPool(HttpNetworkSession* http_network_session,
       max_stream_sockets_per_pool_(kHttpStreamPoolMaxStreamPerPool.Get()),
       // Ensure that the per-group limit is less than or equals to the per-pool
       // limit.
-      max_stream_sockets_per_group_(
-          std::min(kHttpStreamPoolMaxStreamPerPool.Get(),
-                   kHttpStreamPoolMaxStreamPerGroup.Get())),
+      // AI Browser: kAibMaxConnectionsPerHost applies to this pool as well.
+      max_stream_sockets_per_group_(std::min(
+          kHttpStreamPoolMaxStreamPerPool.Get(),
+          base::FeatureList::IsEnabled(features::kAibMaxConnectionsPerHost)
+              ? ClientSocketPoolManager::max_sockets_per_group(
+                    HttpNetworkSession::SocketPoolType::kNormal)
+              : kHttpStreamPoolMaxStreamPerGroup.Get())),
       additional_capacity_(
           SocketPoolAdditionalCapacity::Create(max_stream_sockets_per_pool_)) {
   CHECK(http_network_session_);

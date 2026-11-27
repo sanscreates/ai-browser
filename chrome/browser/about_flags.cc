@@ -5245,6 +5245,11 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibMaxConnectionsPerHostParams0[] = {
+    {"connections", "15"}};
+const FeatureEntry::FeatureVariation kAibMaxConnectionsPerHostVariations[] = {
+    {" - 15", kAibMaxConnectionsPerHostParams0, nullptr},
+};
 const FeatureEntry::FeatureParam kAibReferrerPolicyParams0[] = {
     {"mode", "no-cross-origin"}};
 const FeatureEntry::FeatureParam kAibReferrerPolicyParams1[] = {
@@ -14223,6 +14228,14 @@ const FeatureEntry kFeatureEntries[] = {
      FEATURE_WITH_PARAMS_VALUE_TYPE(net::features::kAibReferrerPolicy,
                                     kAibReferrerPolicyVariations,
                                     "AibReferrerPolicy")},
+
+    {"aib-max-connections-per-host",
+     flag_descriptions::kAibMaxConnectionsPerHostName,
+     flag_descriptions::kAibMaxConnectionsPerHostDescription,
+     kOsAll,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(net::features::kAibMaxConnectionsPerHost,
+                                    kAibMaxConnectionsPerHostVariations,
+                                    "AibMaxConnectionsPerHost")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

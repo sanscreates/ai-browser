@@ -4,15 +4,18 @@
 
 #include "net/socket/client_socket_pool_manager.h"
 
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <optional>
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/numerics/safe_conversions.h"
 #include "build/build_config.h"
+#include "net/base/features.h"
 #include "net/base/load_flags.h"
 #include "net/base/proxy_chain.h"
 #include "net/base/proxy_server.h"
@@ -157,6 +160,13 @@ void ClientSocketPoolManager::set_socket_soft_cap_per_pool_for_test(
 // static
 size_t ClientSocketPoolManager::max_sockets_per_group(
     HttpNetworkSession::SocketPoolType pool_type) {
+  // AI Browser: kAibMaxConnectionsPerHost overrides the per-host limit of the
+  // normal pool. Clamped to stay well below the per-pool and per-proxy caps.
+  if (pool_type == HttpNetworkSession::SocketPoolType::kNormal &&
+      base::FeatureList::IsEnabled(features::kAibMaxConnectionsPerHost)) {
+    return static_cast<size_t>(
+        std::clamp(features::kAibMaxConnectionsPerHostCount.Get(), 1, 99));
+  }
   return g_max_sockets_per_group[std::to_underlying(pool_type)];
 }
 
