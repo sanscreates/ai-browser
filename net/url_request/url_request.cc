@@ -31,6 +31,7 @@
 #include "net/base/network_handle.h"
 #include "net/base/network_isolation_partition.h"
 #include "net/base/upload_data_stream.h"
+#include "net/base/url_util.h"
 #include "net/cert/x509_certificate.h"
 #include "net/cookies/cookie_setting_override.h"
 #include "net/cookies/cookie_store.h"
@@ -641,6 +642,15 @@ void URLRequest::Start() {
   load_timing_info_ = LoadTimingInfo();
   load_timing_info_.request_start_time = response_info_.request_time;
   load_timing_info_.request_start = base::TimeTicks::Now();
+
+  // AI Browser: requests to hosts rewritten by our domain scrubber are
+  // blocked before any delegate, proxy or socket sees them.
+  if (IsAibScrubbedHost(url().host())) {
+    net_log_.AddEventWithStringParams(NetLogEventType::CANCELLED, "source",
+                                      "aib_scrubbed_host");
+    StartJob(std::make_unique<URLRequestErrorJob>(this, ERR_BLOCKED_BY_CLIENT));
+    return;
+  }
 
   if (network_delegate()) {
     OnCallToDelegate(NetLogEventType::NETWORK_DELEGATE_BEFORE_URL_REQUEST);

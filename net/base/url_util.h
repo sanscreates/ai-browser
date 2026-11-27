@@ -213,6 +213,13 @@ NET_EXPORT bool IsHostnameNonUnique(std::string_view hostname);
 // HostStringIsLocalhost.
 NET_EXPORT bool IsLocalhost(const GURL& url);
 
+// AI Browser: returns true if |host| is "aib-invalid" or ends in
+// ".aib-invalid" (an optional trailing dot and ASCII case are ignored). Our
+// build-time domain scrubber (aib/scripts/scrub_domains.py) rewrites Google
+// endpoints to such hosts; the network stack refuses to resolve or fetch
+// them so they never reach DNS or a server.
+NET_EXPORT bool IsAibScrubbedHost(std::string_view host);
+
 // Returns true if |host| is one of the local hostnames
 // (e.g. "localhost") or IP addresses (IPv4 127.0.0.0/8 or IPv6 ::1).
 // "[::1]" is not detected as a local hostname. Do not use this method to check

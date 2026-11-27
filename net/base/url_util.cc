@@ -465,6 +465,18 @@ bool IsHostnameNonUnique(std::string_view hostname) {
              registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
 }
 
+bool IsAibScrubbedHost(std::string_view host) {
+  constexpr std::string_view kScrubbedTld = "aib-invalid";
+  if (!host.empty() && host.back() == '.') {
+    host.remove_suffix(1);
+  }
+  if (!base::EndsWith(host, kScrubbedTld, base::CompareCase::INSENSITIVE_ASCII)) {
+    return false;
+  }
+  return host.size() == kScrubbedTld.size() ||
+         host[host.size() - kScrubbedTld.size() - 1] == '.';
+}
+
 bool IsLocalhost(const GURL& url) {
   return HostStringIsLocalhost(url.HostNoBracketsPiece());
 }

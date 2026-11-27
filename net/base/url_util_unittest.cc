@@ -20,6 +20,17 @@ using base::WideToUTF16;
 namespace net {
 namespace {
 
+TEST(UrlUtilTest, IsAibScrubbedHost) {
+  EXPECT_TRUE(IsAibScrubbedHost("aib-invalid"));
+  EXPECT_TRUE(IsAibScrubbedHost("clients2.google.com.aib-invalid"));
+  EXPECT_TRUE(IsAibScrubbedHost("www.google.com.AIB-INVALID"));
+  EXPECT_TRUE(IsAibScrubbedHost("www.google.com.aib-invalid."));
+  EXPECT_FALSE(IsAibScrubbedHost(""));
+  EXPECT_FALSE(IsAibScrubbedHost("www.google.com"));
+  EXPECT_FALSE(IsAibScrubbedHost("notaib-invalid"));
+  EXPECT_FALSE(IsAibScrubbedHost("aib-invalid.example.com"));
+}
+
 TEST(UrlUtilTest, AppendQueryParameter) {
   // Appending a name-value pair to a URL without a query component.
   EXPECT_EQ("http://example.com/path?name=value",

@@ -959,6 +959,12 @@ HostCache::Entry HostResolverManager::ResolveLocally(
                             HostCache::Entry::SOURCE_UNKNOWN);
   }
 
+  // AI Browser: hosts rewritten by our domain scrubber never reach DNS.
+  if (IsAibScrubbedHost(job_key.host.GetHostname())) {
+    return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
+                            HostCache::Entry::SOURCE_UNKNOWN);
+  }
+
   if (ip_address.IsValid()) {
     // Use NAT64Task for IPv4 literal when the network is IPv6 only.
     if (HostResolver::MayUseNAT64ForIPv4Literal(job_key.flags, source,
