@@ -85,6 +85,10 @@ EXCLUDE_PREFIXES = (
     # Validated against an origin allowlist by bake_in_configs.py at build
     # time; dead data anyway, since Domain Reliability is never enabled.
     'components/domain_reliability/baked_in_configs/',
+    # The built-in content blocker: its filter lists name Google trackers
+    # (e.g. ||google-analytics.com^), and scrubbing them would stop it
+    # blocking those.
+    'third_party/aib_ublock/',
 )
 # Exact files we deliberately keep: security data, not network endpoints.
 EXCLUDE_FILES = {
