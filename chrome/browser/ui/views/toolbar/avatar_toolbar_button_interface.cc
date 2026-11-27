@@ -4,6 +4,7 @@
 
 #include "chrome/browser/ui/views/toolbar/avatar_toolbar_button_interface.h"
 
+#include "base/feature_list.h"
 #include "base/time/time.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
@@ -12,9 +13,24 @@
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "components/aib/aib_ui_features.h"
 
 // static
 bool AvatarToolbarButtonInterface::CanShowForProfile(Profile* profile) {
+  // AI Browser: kAibShowAvatarButton overrides when the button is shown.
+  if (base::FeatureList::IsEnabled(aib::features::kAibShowAvatarButton)) {
+    switch (aib::features::kAibShowAvatarButtonMode.Get()) {
+      case aib::features::AvatarButtonMode::kAlways:
+        return profile->IsIncognitoProfile() || profile->IsGuestSession() ||
+               profile->IsEnterpriseIsolatedModeProfile() ||
+               profile->IsRegularProfile();
+      case aib::features::AvatarButtonMode::kIncognitoAndGuest:
+        return profile->IsIncognitoProfile() || profile->IsGuestSession();
+      case aib::features::AvatarButtonMode::kNever:
+        return false;
+    }
+  }
+
 #if BUILDFLAG(IS_CHROMEOS)
   // ChromeOS only badges Incognito, Guest, Enterprise Isolated and captive
   // portal signin icons in the browser window.

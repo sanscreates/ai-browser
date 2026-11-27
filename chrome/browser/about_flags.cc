@@ -5246,6 +5246,17 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibShowAvatarButtonParams0[] = {
+    {"mode", "always"}};
+const FeatureEntry::FeatureParam kAibShowAvatarButtonParams1[] = {
+    {"mode", "incognito-and-guest"}};
+const FeatureEntry::FeatureParam kAibShowAvatarButtonParams2[] = {
+    {"mode", "never"}};
+const FeatureEntry::FeatureVariation kAibShowAvatarButtonVariations[] = {
+    {" - Always", kAibShowAvatarButtonParams0, nullptr},
+    {" - Incognito and Guest", kAibShowAvatarButtonParams1, nullptr},
+    {" - Never", kAibShowAvatarButtonParams2, nullptr},
+};
 const FeatureEntry::FeatureParam kAibScrollTabsParams0[] = {
     {"mode", "always"}};
 const FeatureEntry::FeatureParam kAibScrollTabsParams1[] = {
@@ -14330,6 +14341,14 @@ const FeatureEntry kFeatureEntries[] = {
      FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibScrollTabs,
                                     kAibScrollTabsVariations,
                                     "AibScrollTabs")},
+
+    {"aib-show-avatar-button",
+     flag_descriptions::kAibShowAvatarButtonName,
+     flag_descriptions::kAibShowAvatarButtonDescription,
+     kOsDesktop,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibShowAvatarButton,
+                                    kAibShowAvatarButtonVariations,
+                                    "AibShowAvatarButton")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

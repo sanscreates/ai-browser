@@ -8759,6 +8759,11 @@ inline constexpr char kAibScrollTabsName[] = "Scroll wheel switches tabs";
 inline constexpr char kAibScrollTabsDescription[] =
     "Override whether scrolling over the tab strip switches tabs.";
 
+// AI Browser.
+inline constexpr char kAibShowAvatarButtonName[] = "Show profile button";
+inline constexpr char kAibShowAvatarButtonDescription[] =
+    "Choose when the profile (avatar) toolbar button is shown.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

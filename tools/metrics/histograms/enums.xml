@@ -8158,6 +8158,7 @@ from previous Chrome versions.
   <int value="-2026156288"
       label="LookalikeUrlNavigationSuggestionsUI:disabled"/>
   <int value="-2025971178" label="QsRevamp:disabled"/>
+  <int value="-2025734402" label="AibShowAvatarButton:disabled"/>
   <int value="-2025367104" label="enable-material-design-ntp"/>
   <int value="-2025360412" label="SyncAndroidPromosWithSingleButton:disabled"/>
   <int value="-2025330968" label="Journeys:disabled"/>
@@ -9828,6 +9829,7 @@ from previous Chrome versions.
   <int value="-1532501905"
       label="MediaPlaybackWhileNotVisiblePermissionPolicy:disabled"/>
   <int value="-1532484557" label="ContextManagementInOmnibox:disabled"/>
+  <int value="-1532467569" label="AibShowAvatarButton:enabled"/>
   <int value="-1532138473" label="AvatarButtonSyncPromo:enabled"/>
   <int value="-1532100164" label="WebViewMeasureScreenCoverage:enabled"/>
   <int value="-1532035450" label="DragTabsInTabletMode:disabled"/>
