@@ -30,7 +30,9 @@
 #include "third_party/blink/renderer/core/editing/selection_controller.h"
 
 #include "base/auto_reset.h"
+#include "base/feature_list.h"
 #include "base/trace_event/trace_event.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/platform/web_input_event_result.h"
 #include "third_party/blink/renderer/core/annotation/annotation_agent_impl.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -1630,6 +1632,11 @@ FrameSelection& SelectionController::Selection() const {
 }
 
 bool IsSelectionOverLink(const MouseEventWithHitTestResults& event) {
+  // AI Browser: with kAibDisableLinkDrag, pressing on a link starts a text
+  // selection (as Alt+press normally does) instead of a link drag.
+  if (base::FeatureList::IsEnabled(features::kAibDisableLinkDrag)) {
+    return event.IsOverLink();
+  }
   return (event.Event().GetModifiers() & WebInputEvent::Modifiers::kAltKey) !=
              0 &&
          event.IsOverLink();

@@ -6,8 +6,10 @@
 
 #include <cmath>
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_functions.h"
 #include "build/build_config.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/platform/web_input_event_result.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_drag_event_init.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_pointer_event_init.h"
@@ -953,6 +955,13 @@ DragHandlingResult MouseEventManager::HandleDrag(
           frame_->GetPage()->GetDragController().DraggableNode(
               frame_, node, mouse_down_pos_, selection_drag_policy,
               GetDragState().drag_type_);
+      // AI Browser: kAibDisableLinkDrag never lets links or selected text
+      // become a drag source (also covers touch and stylus drags).
+      if (base::FeatureList::IsEnabled(features::kAibDisableLinkDrag) &&
+          (GetDragState().drag_type_ == kDragSourceActionLink ||
+           GetDragState().drag_type_ == kDragSourceActionSelection)) {
+        GetDragState().drag_src_ = nullptr;
+      }
     } else {
       ResetDragSource();
     }

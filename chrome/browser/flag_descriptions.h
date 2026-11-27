@@ -8658,6 +8658,13 @@ inline constexpr char kAibRemoveClientHintsDescription[] =
     "Stops sending Sec-CH-UA request headers to websites and leaves "
     "navigator.userAgentData empty.";
 
+// AI Browser.
+inline constexpr char kAibDisableLinkDragName[] =
+    "Disable link and text dragging";
+inline constexpr char kAibDisableLinkDragDescription[] =
+    "Links and selected text can't be dragged; pressing on a link selects its "
+    "text instead.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

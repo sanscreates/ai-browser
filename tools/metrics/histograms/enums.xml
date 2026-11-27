@@ -11102,6 +11102,7 @@ from previous Chrome versions.
       label="OmniboxSearchPrefetchOnEnterKeyDown:disabled"/>
   <int value="-1166745977"
       label="BluetoothAggressiveAppearanceFilter:disabled"/>
+  <int value="-1167805884" label="AibDisableLinkDrag:enabled"/>
   <int value="-1166715563" label="ChromeOSAssistant:disabled"/>
   <int value="-1166067121" label="PermissionsAIv4:enabled"/>
   <int value="-1165895058" label="AccessibilityHoverText:enabled"/>
@@ -21264,6 +21265,7 @@ from previous Chrome versions.
   <int value="1827369558" label="AndroidPayIntegrationV1:disabled"/>
   <int value="1828502021" label="EnableStaticQrCodeForPix:enabled"/>
   <int value="1828660283" label="enable-webfonts-intervention-trigger"/>
+  <int value="1828714961" label="AibDisableLinkDrag:disabled"/>
   <int value="1829231569" label="ShelfLauncherNudge:enabled"/>
   <int value="1829252358"
       label="PrivateNetworkAccessPreflightShortTimeout:enabled"/>
