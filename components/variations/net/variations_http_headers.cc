@@ -11,7 +11,6 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
 #include "build/build_config.h"
-#include "components/google/core/common/google_util.h"
 #include "components/variations/variations_features.h"
 #include "components/variations/variations_ids_provider.h"
 #include "net/base/isolation_info.h"
@@ -103,18 +102,8 @@ URLValidationResult GetUrlValidationResult(const GURL& url) {
   }
 #endif  // BUILDFLAG(IS_IOS)
 
-  if (!google_util::IsGoogleAssociatedDomainUrl(url)) {
-    return URLValidationResult::kNotValidNotGoogleDomain;
-  }
-
-  // HTTPS is checked here, rather than before the IsGoogleAssociatedDomainUrl()
-  // check, to know how many Google domains are rejected by the change to append
-  // headers to only HTTPS requests.
-  if (!url.SchemeIs(url::kHttpsScheme)) {
-    return URLValidationResult::kNotValidIsGoogleNotHttps;
-  }
-
-  return URLValidationResult::kShouldAppend;
+  // AI Browser: the X-Client-Data header is never sent, to any host.
+  return URLValidationResult::kNotValidNotGoogleDomain;
 }
 
 // Returns true if the request to `url` on the given `incognito` mode should
