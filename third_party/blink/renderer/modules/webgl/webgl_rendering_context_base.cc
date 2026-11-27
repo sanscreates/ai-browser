@@ -28,6 +28,7 @@
 #include <inttypes.h>
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/bit_cast.h"
@@ -64,6 +65,7 @@
 #include "media/base/video_frame.h"
 #include "media/gfx/paint_canvas_video_renderer.h"
 #include "media/gfx/video_frame_shared_image_cache.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/thread_safe_browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/gpu/gpu.mojom-blink.h"
@@ -4344,6 +4346,15 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
       return ScriptValue::CreateNull(script_state->GetIsolate());
     case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
       if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
+        // AI Browser: optionally hide the real GPU behind a configured or
+        // generic string.
+        if (base::FeatureList::IsEnabled(features::kAibSpoofWebGLInfo)) {
+          const std::string renderer =
+              features::kAibSpoofWebGLInfoRenderer.Get();
+          return WebGLAny(script_state, renderer.empty()
+                                            ? String("WebKit WebGL")
+                                            : String::FromUtf8(renderer));
+        }
         return WebGLAny(script_state,
                         String(ContextGL()->GetString(GL_RENDERER)));
       }
@@ -4353,6 +4364,13 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
       return ScriptValue::CreateNull(script_state->GetIsolate());
     case WebGLDebugRendererInfo::kUnmaskedVendorWebgl:
       if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
+        // AI Browser: optionally hide the real GPU vendor, as above.
+        if (base::FeatureList::IsEnabled(features::kAibSpoofWebGLInfo)) {
+          const std::string vendor = features::kAibSpoofWebGLInfoVendor.Get();
+          return WebGLAny(script_state, vendor.empty()
+                                            ? String("WebKit")
+                                            : String::FromUtf8(vendor));
+        }
         return WebGLAny(script_state,
                         String(ContextGL()->GetString(GL_VENDOR)));
       }

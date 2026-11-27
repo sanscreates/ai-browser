@@ -213,6 +213,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-spoof-webgl-info",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aim-3p-entrypoint",
     "owners": [ "manukh@chromium.org", "chrome-desktop-search@google.com" ],
     "expiry_milestone": 160

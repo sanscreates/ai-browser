@@ -5243,6 +5243,16 @@ const FeatureEntry::FeatureVariation kTtcLiveRecipeVariations[] = {
 constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
+// AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibSpoofWebGLInfoParams0[] = {
+    {"vendor", ""}, {"renderer", ""}};
+const FeatureEntry::FeatureParam kAibSpoofWebGLInfoParams1[] = {
+    {"vendor", "Google Inc. (Apple)"}, {"renderer", "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)"}};
+const FeatureEntry::FeatureVariation kAibSpoofWebGLInfoVariations[] = {
+    {" - Generic", kAibSpoofWebGLInfoParams0, nullptr},
+    {" - Apple M1", kAibSpoofWebGLInfoParams1, nullptr},
+};
+
 // When adding a new choice, add it to the end of the list.
 const FeatureEntry kFeatureEntries[] = {
 // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
@@ -14136,6 +14146,14 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibClientRectsNoiseDescription,
      kOsAll,
      FEATURE_VALUE_TYPE(blink::features::kAibClientRectsNoise)},
+
+    {"aib-spoof-webgl-info",
+     flag_descriptions::kAibSpoofWebGLInfoName,
+     flag_descriptions::kAibSpoofWebGLInfoDescription,
+     kOsAll,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(blink::features::kAibSpoofWebGLInfo,
+                                    kAibSpoofWebGLInfoVariations,
+                                    "AibSpoofWebGLInfo")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

@@ -8639,6 +8639,12 @@ inline constexpr char kAibClientRectsNoiseDescription[] =
     "getBoundingClientRect() by a tiny per-document factor, so they can't be "
     "used as a fingerprint.";
 
+// AI Browser.
+inline constexpr char kAibSpoofWebGLInfoName[] = "Hide WebGL GPU info";
+inline constexpr char kAibSpoofWebGLInfoDescription[] =
+    "Makes WEBGL_debug_renderer_info report a generic or chosen GPU vendor and "
+    "renderer instead of the real ones.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
