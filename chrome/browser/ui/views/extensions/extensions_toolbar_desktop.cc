@@ -50,6 +50,7 @@
 #include "chrome/browser/user_education/user_education_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/feature_engagement/public/feature_constants.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
@@ -612,9 +613,22 @@ void ExtensionsToolbarDesktop::AnchorAndShowWidgetImmediately(
   // Revisit how to handle that, likely the Widget should Close on removal which
   // would remove the AnchoredWidget entry.
   views::View* const anchor_view = GetViewForId(iter->extension_id);
-  widget->widget_delegate()->AsBubbleDialogDelegate()->SetAnchorView(
-      anchor_view && anchor_view->GetVisible() ? anchor_view
-                                               : GetExtensionsButton());
+  // AI Browser: while kAibHideExtensionsMenu keeps this container hidden,
+  // anchor to the toolbar's default extension dialog anchor (the app menu)
+  // instead of an invisible button.
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser_);
+  ToolbarButtonProvider* const button_provider =
+      browser_view ? browser_view->toolbar_button_provider() : nullptr;
+  if (!GetVisible() && button_provider &&
+      base::FeatureList::IsEnabled(aib::features::kAibHideExtensionsMenu)) {
+    widget->widget_delegate()->AsBubbleDialogDelegate()->SetAnchor(
+        button_provider->GetDefaultExtensionDialogAnchor());
+  } else {
+    widget->widget_delegate()->AsBubbleDialogDelegate()->SetAnchorView(
+        anchor_view && anchor_view->GetVisible() ? anchor_view
+                                                 : GetExtensionsButton());
+  }
   widget->Show();
 }
 
@@ -1180,6 +1194,14 @@ bool ExtensionsToolbarDesktop::ShouldContainerBeVisible() const {
   // no extensions.
   if (!toolbar_view_model_->HasAnyExtensions()) {
     return false;
+  }
+
+  // AI Browser: kAibHideExtensionsMenu hides the container (puzzle piece and
+  // pinned actions) except while it is needed as an anchor: the extensions
+  // menu is open, or an action is popped out or showing its popup.
+  if (base::FeatureList::IsEnabled(aib::features::kAibHideExtensionsMenu)) {
+    return GetExtensionsButton()->GetExtensionsMenuShowing() ||
+           popped_out_action_.has_value() || popup_owner_;
   }
 
   // All other display modes are constantly visible.

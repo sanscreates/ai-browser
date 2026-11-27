@@ -253,6 +253,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-hide-extensions-menu",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-http-accept-header",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

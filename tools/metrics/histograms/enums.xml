@@ -18221,6 +18221,7 @@ from previous Chrome versions.
   <int value="935415458" label="EducationalTipDefaultBrowserPromoCard:enabled"/>
   <int value="935653796" label="CrOSLateBootMediaDynamicCgroup:enabled"/>
   <int value="935655516" label="password-import-export:disabled"/>
+  <int value="935765796" label="AibHideExtensionsMenu:disabled"/>
   <int value="936341613" label="OfflinePagesCT:disabled"/>
   <int value="937234193" label="KeyboardLockApiOnAndroid:disabled"/>
   <int value="937305086" label="EnableBoundSessionCredentials:enabled"/>
@@ -21549,6 +21550,7 @@ from previous Chrome versions.
       label="AccessibilityManifestV3EnhancedNetworkTts:enabled"/>
   <int value="1900508100" label="PasswordViewPageInSettings:enabled"/>
   <int value="1900529524" label="disable-touch-drag-drop"/>
+  <int value="1900898280" label="AibHideExtensionsMenu:enabled"/>
   <int value="1901640438" label="EnableLauncherSearchNormalization:disabled"/>
   <int value="1901716499" label="AutofillAiWalletVehicleRegistration:disabled"/>
   <int value="1901740085" label="OriginKeyedProcessesByDefault:disabled"/>

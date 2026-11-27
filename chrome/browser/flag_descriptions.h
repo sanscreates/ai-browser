@@ -8778,6 +8778,11 @@ inline constexpr char kAibHideBookmarkBarOnNtpDescription[] =
     "The bookmark bar no longer appears on its own on the New Tab page; "
     "'Always show bookmarks bar' still works.";
 
+// AI Browser.
+inline constexpr char kAibHideExtensionsMenuName[] = "Hide extensions menu";
+inline constexpr char kAibHideExtensionsMenuDescription[] =
+    "Hide the extensions (puzzle piece) button and pinned extensions.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
