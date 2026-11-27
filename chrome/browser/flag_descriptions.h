@@ -8754,6 +8754,11 @@ inline constexpr char kAibKeepWindowWithLastTabName[] =
 inline constexpr char kAibKeepWindowWithLastTabDescription[] =
     "Closing the last tab opens a New Tab page instead of closing the window.";
 
+// AI Browser.
+inline constexpr char kAibScrollTabsName[] = "Scroll wheel switches tabs";
+inline constexpr char kAibScrollTabsDescription[] =
+    "Override whether scrolling over the tab strip switches tabs.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

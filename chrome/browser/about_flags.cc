@@ -5246,6 +5246,14 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibScrollTabsParams0[] = {
+    {"mode", "always"}};
+const FeatureEntry::FeatureParam kAibScrollTabsParams1[] = {
+    {"mode", "never"}};
+const FeatureEntry::FeatureVariation kAibScrollTabsVariations[] = {
+    {" - Always", kAibScrollTabsParams0, nullptr},
+    {" - Never", kAibScrollTabsParams1, nullptr},
+};
 const FeatureEntry::FeatureParam kAibOmniboxAutocompleteFilteringParams0[] = {
     {"sources", "search"}};
 const FeatureEntry::FeatureParam kAibOmniboxAutocompleteFilteringParams1[] = {
@@ -14314,6 +14322,14 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibKeepWindowWithLastTabDescription,
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibKeepWindowWithLastTab)},
+
+    {"aib-scroll-tabs",
+     flag_descriptions::kAibScrollTabsName,
+     flag_descriptions::kAibScrollTabsDescription,
+     kOsDesktop,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibScrollTabs,
+                                    kAibScrollTabsVariations,
+                                    "AibScrollTabs")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

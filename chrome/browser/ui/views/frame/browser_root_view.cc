@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/tabs/public/tab_interface.h"
@@ -325,7 +326,9 @@ bool BrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
 
   // Scroll-event-changes-tab is incompatible with vertical tabstrip, so
   // disable it if the latter feature is enabled.
-  if (browser_defaults::kScrollEventChangesTab &&
+  // AI Browser: the platform default can be overridden by kAibScrollTabs.
+  if (aib::features::ScrollEventChangesTab(
+          browser_defaults::kScrollEventChangesTab) &&
       !browser_view_->ShouldDrawVerticalTabStrip()) {
     // Switch to the left/right tab if the wheel-scroll happens over the
     // tabstrip, or the empty space beside the tabstrip.

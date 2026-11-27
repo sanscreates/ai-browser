@@ -8,6 +8,7 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "chrome/browser/defaults.h"
+#include "components/aib/aib_ui_features.h"
 #include "ui/events/event.h"
 #include "ui/views/controls/scroll_view.h"
 
@@ -50,7 +51,9 @@ UnpinnedTabScrollTypeRecorder::~UnpinnedTabScrollTypeRecorder() {
 void UnpinnedTabScrollTypeRecorder::OnMouseEvent(ui::MouseEvent* event) {
   // Do not record scroll metrics when scroll events switch tabs instead of
   // scrolling the tab strip.
-  if (browser_defaults::kScrollEventChangesTab) {
+  // AI Browser: honor the kAibScrollTabs override.
+  if (aib::features::ScrollEventChangesTab(
+          browser_defaults::kScrollEventChangesTab)) {
     return;
   }
   if (event->type() == ui::EventType::kMousewheel) {
@@ -64,7 +67,9 @@ void UnpinnedTabScrollTypeRecorder::OnMouseEvent(ui::MouseEvent* event) {
 void UnpinnedTabScrollTypeRecorder::OnScrollEvent(ui::ScrollEvent* event) {
   // Do not record scroll metrics when scroll events switch tabs instead of
   // scrolling the tab strip.
-  if (browser_defaults::kScrollEventChangesTab) {
+  // AI Browser: honor the kAibScrollTabs override.
+  if (aib::features::ScrollEventChangesTab(
+          browser_defaults::kScrollEventChangesTab)) {
     return;
   }
   if (event->x_offset() != 0.0f || event->y_offset() != 0.0f) {
