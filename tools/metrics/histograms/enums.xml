@@ -10072,6 +10072,7 @@ from previous Chrome versions.
   <int value="-1467027479" label="GlobalMediaControlsCrOSUpdatedUI:enabled"/>
   <int value="-1466990325" label="CrosCompUpdates:enabled"/>
   <int value="-1466862366" label="TouchToFillAndroid:enabled"/>
+  <int value="-1466849546" label="AibOmniboxAutocompleteFiltering:enabled"/>
   <int value="-1466759286" label="TabModalJsDialog:disabled"/>
   <int value="-1466600231" label="WakeOnWifiAllowed:enabled"/>
   <int value="-1466206556" label="ArcDocumentsProviderUnknownSize:enabled"/>
@@ -19937,6 +19938,7 @@ from previous Chrome versions.
   <int value="1438624853"
       label="EnableExtensionsExplicitBrowserSignin:enabled"/>
   <int value="1438814782" label="AutofillPaymentsFieldSwapping:enabled"/>
+  <int value="1440532823" label="AibOmniboxAutocompleteFiltering:disabled"/>
   <int value="1440618113" label="EnableNetworkingInDiagnosticsApp:disabled"/>
   <int value="1440881073" label="DesktopPWAsAppIconShortcutsMenuUI:enabled"/>
   <int value="1441764258" label="RelatedSearchesAllLanguage:disabled"/>

@@ -22,6 +22,7 @@
 #include "base/time/time.h"
 #include "base/trace_event/memory_usage_estimator.h"
 #include "base/trace_event/trace_event.h"
+#include "components/aib/aib_net_features.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/history/core/browser/history_backend.h"
 #include "components/history/core/browser/history_database.h"
@@ -486,6 +487,13 @@ void HistoryURLProvider::Start(const AutocompleteInput& input,
   // them, it's not what the user wants, and just adds noise.
   if (fixed_up_input.type() != metrics::OmniboxInputType::QUERY)
     matches_.push_back(what_you_typed_match);
+
+  // AI Browser: with kAibOmniboxAutocompleteFiltering this provider only
+  // supplies the what-you-typed match, never history.
+  if (base::FeatureList::IsEnabled(
+          aib::features::kAibOmniboxAutocompleteFiltering)) {
+    return;
+  }
 
   // We'll need the history service to run both passes, so try to obtain it.
   history::HistoryService* const history_service =

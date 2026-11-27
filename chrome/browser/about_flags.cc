@@ -5245,6 +5245,20 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibOmniboxAutocompleteFilteringParams0[] = {
+    {"sources", "search"}};
+const FeatureEntry::FeatureParam kAibOmniboxAutocompleteFilteringParams1[] = {
+    {"sources", "search-bookmarks"}};
+const FeatureEntry::FeatureParam kAibOmniboxAutocompleteFilteringParams2[] = {
+    {"sources", "search-chrome"}};
+const FeatureEntry::FeatureParam kAibOmniboxAutocompleteFilteringParams3[] = {
+    {"sources", "search-bookmarks-chrome"}};
+const FeatureEntry::FeatureVariation kAibOmniboxAutocompleteFilteringVariations[] = {
+    {" - Search only", kAibOmniboxAutocompleteFilteringParams0, nullptr},
+    {" - Search and bookmarks", kAibOmniboxAutocompleteFilteringParams1, nullptr},
+    {" - Search and chrome:// pages", kAibOmniboxAutocompleteFilteringParams2, nullptr},
+    {" - Search, bookmarks and chrome:// pages", kAibOmniboxAutocompleteFilteringParams3, nullptr},
+};
 const FeatureEntry::FeatureParam kAibHttpAcceptHeaderParams0[] = {
     {"value", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"}};
 const FeatureEntry::FeatureVariation kAibHttpAcceptHeaderVariations[] = {
@@ -14273,6 +14287,14 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibIncreaseIncognitoStorageQuotaDescription,
      kOsAll,
      FEATURE_VALUE_TYPE(storage::features::kAibIncreaseIncognitoStorageQuota)},
+
+    {"aib-omnibox-autocomplete-filtering",
+     flag_descriptions::kAibOmniboxAutocompleteFilteringName,
+     flag_descriptions::kAibOmniboxAutocompleteFilteringDescription,
+     kOsAll,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibOmniboxAutocompleteFiltering,
+                                    kAibOmniboxAutocompleteFilteringVariations,
+                                    "AibOmniboxAutocompleteFiltering")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

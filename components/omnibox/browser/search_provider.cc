@@ -31,6 +31,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/trace_event/trace_event.h"
+#include "components/aib/aib_net_features.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/in_memory_database.h"
 #include "components/history/core/browser/keyword_search_term.h"
@@ -684,6 +685,13 @@ void SearchProvider::Run(bool query_is_private) {
 }
 
 void SearchProvider::DoHistoryQuery(bool minimal_changes) {
+  // AI Browser: kAibOmniboxAutocompleteFiltering leaves out past searches
+  // from local history; only live search suggestions are shown.
+  if (base::FeatureList::IsEnabled(
+          aib::features::kAibOmniboxAutocompleteFiltering)) {
+    return;
+  }
+
   // The history query results are synchronous, so if minimal_changes is true,
   // we still have the last results and don't need to do anything.
   if (minimal_changes)

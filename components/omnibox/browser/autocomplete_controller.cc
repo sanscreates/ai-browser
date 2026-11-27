@@ -42,6 +42,7 @@
 #include "base/trace_event/memory_dump_manager.h"
 #include "build/android_buildflags.h"
 #include "build/build_config.h"
+#include "components/aib/aib_net_features.h"
 #include "components/lens/lens_features.h"
 #include "components/omnibox/browser/actions/contextual_search_action.h"
 #include "components/omnibox/browser/actions/omnibox_action_in_suggest.h"
@@ -553,6 +554,24 @@ AutocompleteController::AutocompleteController(
       steady_state_omnibox_position_(OEP::UNKNOWN_POSITION),
       config_(config) {
   config_.provider_types &= ~OmniboxFieldTrial::GetDisabledProviderTypes();
+
+  // AI Browser: kAibOmniboxAutocompleteFiltering keeps only search
+  // suggestions, keywords and the typed URL, plus bookmarks and built-in pages
+  // if the chosen mode allows them.
+  if (base::FeatureList::IsEnabled(
+          aib::features::kAibOmniboxAutocompleteFiltering)) {
+    int allowed_types =
+        static_cast<int>(AutocompleteProvider::Type::kKeyword) |
+        static_cast<int>(AutocompleteProvider::Type::kSearch) |
+        static_cast<int>(AutocompleteProvider::Type::kHistoryUrl);
+    if (aib::features::AibOmniboxFilteringAllowsBookmarks()) {
+      allowed_types |= static_cast<int>(AutocompleteProvider::Type::kBookmark);
+    }
+    if (aib::features::AibOmniboxFilteringAllowsBuiltinPages()) {
+      allowed_types |= static_cast<int>(AutocompleteProvider::Type::kBuiltin);
+    }
+    config_.provider_types &= allowed_types;
+  }
 
   // Providers run in the order they're added. Async providers should run first
   // so their async requests can be kicked off before waiting a few milliseconds

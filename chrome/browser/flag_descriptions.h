@@ -8730,6 +8730,13 @@ inline constexpr char kAibIncreaseIncognitoStorageQuotaDescription[] =
     "Size incognito storage quota like a regular profile so sites can't spot "
     "incognito by its limit.";
 
+// AI Browser.
+inline constexpr char kAibOmniboxAutocompleteFilteringName[] =
+    "Omnibox suggestion sources";
+inline constexpr char kAibOmniboxAutocompleteFilteringDescription[] =
+    "Limit address bar suggestions to search suggestions plus the chosen "
+    "sources.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
