@@ -6,8 +6,11 @@
 
 #include <algorithm>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "chrome/browser/actor/actor_tab_close_skip_beforeunload_user_data.h"
 #include "chrome/browser/browser_process.h"
@@ -29,6 +32,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/browser_window/public/desktop_browser_window_capabilities.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/simple_message_box.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -39,6 +43,7 @@
 #include "chrome/browser/web_applications/web_app_provider.h"
 #include "chrome/browser/web_applications/web_app_tab_helper.h"
 #include "chrome/common/chrome_features.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/keep_alive_registry/keep_alive_registry.h"
 #include "components/performance_manager/public/priority/priority.h"
 #include "components/sessions/core/session_id.h"
@@ -614,6 +619,8 @@ void UnloadController::CancelWindowClose() {
   // different ways, so is_attempting_to_close_browser() may be false. In that
   // case some of this code might not have an effect, but it's still useful to,
   // for example, call the notification(s).
+  // AI Browser: ask the kAibCloseConfirmation question again next time.
+  close_confirmation_state_ = CancelDownloadConfirmationState::kNotPrompted;
   tabs_needing_before_unload_fired_.clear();
   for (const auto& it : tabs_needing_unload_fired_) {
     DevToolsWindow::OnPageCloseCanceled(it);
@@ -1057,8 +1064,8 @@ UnloadController::MaybeWarnBeforeClosing(
   }
 
   // `CanCloseWithInProgressDownloads()` may trigger a modal dialog.
-  bool can_close_with_downloads = CanCloseWithInProgressDownloads();
-  if (can_close_with_downloads) {
+  // AI Browser: so may `CanCloseWithMultipleTabs()`, which is asked first.
+  if (CanCloseWithMultipleTabs() && CanCloseWithInProgressDownloads()) {
     return WarnBeforeClosingResult::kOkToClose;
   }
 
@@ -1155,6 +1162,73 @@ bool UnloadController::CanCloseWithInProgressDownloads() {
   // Return false so the browser does not close.  We'll close if the user
   // confirms in the dialog.
   return false;
+}
+
+bool UnloadController::CanCloseWithMultipleTabs() {
+  const int tab_count = browser_->tab_strip_model()->count();
+  if (!base::FeatureList::IsEnabled(aib::features::kAibCloseConfirmation) ||
+      browser_->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
+      tab_count < 2 || browser_shutdown::IsTryingToQuit()) {
+    return true;
+  }
+
+  // If we've asked, we need to hear from the user before we can close.
+  if (close_confirmation_state_ !=
+      CancelDownloadConfirmationState::kNotPrompted) {
+    return close_confirmation_state_ !=
+           CancelDownloadConfirmationState::kWaitingForResponse;
+  }
+
+  if (aib::features::kAibCloseConfirmationMode.Get() ==
+          aib::features::CloseConfirmationMode::kLastWindow &&
+      !IsLastWindow(browser_).first) {
+    return true;
+  }
+
+  close_confirmation_state_ =
+      CancelDownloadConfirmationState::kWaitingForResponse;
+  // TODO(AI Browser): move these strings into a .grd so they get translated.
+  chrome::ShowQuestionMessageBoxAsync(
+      BrowserWindow::FromBrowser(browser_)->GetNativeWindow(),
+      u"Close this window?",
+      base::StrCat({u"This window has ", base::NumberToString16(tab_count),
+                    u" tabs open. Closing it closes all of them."}),
+      base::BindOnce(
+          [](base::WeakPtr<UnloadController> controller,
+             chrome::MessageBoxResult result) {
+            if (controller) {
+              controller->MultipleTabsCloseResponse(
+                  result == chrome::MESSAGE_BOX_RESULT_YES);
+            }
+          },
+          weak_factory_.GetWeakPtr()));
+
+  // The answer arrives synchronously only when no dialog could be shown (or
+  // in tests). Don't block the close in that case.
+  if (close_confirmation_state_ !=
+      CancelDownloadConfirmationState::kWaitingForResponse) {
+    close_confirmation_state_ =
+        CancelDownloadConfirmationState::kResponseReceived;
+    return true;
+  }
+
+  // Return false so the browser does not close. We'll close if the user
+  // confirms in the dialog.
+  return false;
+}
+
+void UnloadController::MultipleTabsCloseResponse(bool close_window) {
+  // Ask again next time unless the window is now closing.
+  close_confirmation_state_ =
+      close_window ? CancelDownloadConfirmationState::kResponseReceived
+                   : CancelDownloadConfirmationState::kNotPrompted;
+  // A synchronous answer is handled by CanCloseWithMultipleTabs() itself.
+  if (!warn_before_closing_callback_) {
+    return;
+  }
+  std::move(warn_before_closing_callback_)
+      .Run(close_window ? WarnBeforeClosingResult::kOkToClose
+                        : WarnBeforeClosingResult::kDoNotClose);
 }
 
 base::WeakPtr<UnloadController> UnloadController::GetWeakPtr() {

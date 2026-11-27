@@ -293,6 +293,14 @@ class UnloadController : public WebContentsCollection::Observer,
   // downloads running.
   void InProgressDownloadResponse(bool cancel_downloads);
 
+  // AI Browser: with kAibCloseConfirmation, asks the user before a normal
+  // window with several tabs closes. Returns true if the window may close now;
+  // false while the question is showing.
+  bool CanCloseWithMultipleTabs();
+
+  // AI Browser: called with the user's answer to CanCloseWithMultipleTabs().
+  void MultipleTabsCloseResponse(bool close_window);
+
  private:
   void RenderProcessGone(content::WebContents* web_contents,
                          base::TerminationStatus status) override;
@@ -445,6 +453,10 @@ class UnloadController : public WebContentsCollection::Observer,
   // State used to figure-out whether we should prompt the user for confirmation
   // when the browser is closed with in-progress downloads.
   CancelDownloadConfirmationState cancel_download_confirmation_state_ =
+      CancelDownloadConfirmationState::kNotPrompted;
+
+  // AI Browser: same, for the kAibCloseConfirmation question.
+  CancelDownloadConfirmationState close_confirmation_state_ =
       CancelDownloadConfirmationState::kNotPrompted;
 
   WarnBeforeClosingCallback warn_before_closing_callback_;

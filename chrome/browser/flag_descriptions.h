@@ -8789,6 +8789,11 @@ inline constexpr char kAibHideFullscreenExitUiName[] =
 inline constexpr char kAibHideFullscreenExitUiDescription[] =
     "Hide the 'Press Esc to exit full screen' bubble and the exit button.";
 
+// AI Browser.
+inline constexpr char kAibCloseConfirmationName[] = "Confirm closing windows";
+inline constexpr char kAibCloseConfirmationDescription[] =
+    "Ask before closing a window that has several tabs open.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

@@ -8978,6 +8978,7 @@ from previous Chrome versions.
   <int value="-1784452112" label="ReplaceSyncPromosWithSignInPromos:enabled"/>
   <int value="-1783790234"
       label="AutofillEnableOfferNotificationCrossTabTracking:enabled"/>
+  <int value="-1783574689" label="AibCloseConfirmation:disabled"/>
   <int value="-1783216033" label="OmniboxDisableTabsForCanvas:disabled"/>
   <int value="-1782989640"
       label="AnnotatedPageContentsVirtualStructure:disabled"/>
@@ -9193,6 +9194,7 @@ from previous Chrome versions.
   <int value="-1719833926" label="disable-answers-in-suggest"/>
   <int value="-1719699712" label="AudioPlayerJsModules:enabled"/>
   <int value="-1719629293" label="ReadAnything:disabled"/>
+  <int value="-1718979261" label="AibCloseConfirmation:enabled"/>
   <int value="-1718808435" label="WebAssemblyGarbageCollection:disabled"/>
   <int value="-1718644168" label="SharingHubLinkToggle:disabled"/>
   <int value="-1718414372" label="ComposeTextSelection:enabled"/>

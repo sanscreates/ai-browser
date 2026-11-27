@@ -213,6 +213,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-close-confirmation",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-disable-beforeunload",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

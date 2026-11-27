@@ -5246,6 +5246,14 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibCloseConfirmationParams0[] = {
+    {"mode", "last-window"}};
+const FeatureEntry::FeatureParam kAibCloseConfirmationParams1[] = {
+    {"mode", "multiple-windows"}};
+const FeatureEntry::FeatureVariation kAibCloseConfirmationVariations[] = {
+    {" - Last window only", kAibCloseConfirmationParams0, nullptr},
+    {" - Every window", kAibCloseConfirmationParams1, nullptr},
+};
 const FeatureEntry::FeatureParam kAibShowAvatarButtonParams0[] = {
     {"mode", "always"}};
 const FeatureEntry::FeatureParam kAibShowAvatarButtonParams1[] = {
@@ -14373,6 +14381,14 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibHideFullscreenExitUiDescription,
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibHideFullscreenExitUi)},
+
+    {"aib-close-confirmation",
+     flag_descriptions::kAibCloseConfirmationName,
+     flag_descriptions::kAibCloseConfirmationDescription,
+     kOsDesktop,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibCloseConfirmation,
+                                    kAibCloseConfirmationVariations,
+                                    "AibCloseConfirmation")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
