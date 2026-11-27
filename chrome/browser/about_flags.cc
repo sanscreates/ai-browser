@@ -14472,6 +14472,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsDesktop,
      SINGLE_VALUE_TYPE(switches::kEnableLowEndDeviceMode)},
 
+    {"aib-content-blocker",
+     flag_descriptions::kAibContentBlockerName,
+     flag_descriptions::kAibContentBlockerDescription,
+     kOsMac,
+     FEATURE_VALUE_TYPE(aib::features::kAibContentBlocker)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

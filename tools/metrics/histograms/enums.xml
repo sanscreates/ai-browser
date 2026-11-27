@@ -9756,6 +9756,7 @@ from previous Chrome versions.
   <int value="-1556805396" label="ScreenshotsForAndroidV2:enabled"/>
   <int value="-1556705995" label="ContextualTasksSidePanel:enabled"/>
   <int value="-1556654570" label="tab-groups-save-v2:enabled"/>
+  <int value="-1556314197" label="AibContentBlocker:disabled"/>
   <int value="-1555616901" label="ShoppingListTrackByDefault:disabled"/>
   <int value="-1555375841" label="FedCmRpContext:enabled"/>
   <int value="-1554921134"
@@ -19207,6 +19208,7 @@ from previous Chrome versions.
   <int value="1220464509" label="enable-first-run-ui-transitions"/>
   <int value="1220546128" label="WindowOpenAlwaysOnTop:disabled"/>
   <int value="1220655015" label="kScrollableTabStripOverflow:enabled"/>
+  <int value="1220876280" label="AibContentBlocker:enabled"/>
   <int value="1220920757" label="FilesTrashAutoCleanup:enabled"/>
   <int value="1221075979" label="NewTabPageCustomizationToolbarButton:enabled"/>
   <int value="1221104166" label="ThumbnailCacheRefactor:enabled"/>

@@ -8861,6 +8861,14 @@ inline constexpr char kAibLowEndDeviceModeDescription[] =
     "Trade speed for lower memory use, as on low-memory devices (same as "
     "--enable-low-end-device-mode).";
 
+// AI Browser.
+inline constexpr char kAibContentBlockerName[] =
+    "Built-in ad and tracker blocker";
+inline constexpr char kAibContentBlockerDescription[] =
+    "uBlock Origin, built into the browser. Disable to turn off ad and tracker "
+    "blocking everywhere after a restart. To turn it off for one site, use its "
+    "toolbar button.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
