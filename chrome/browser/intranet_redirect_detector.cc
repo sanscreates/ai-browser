@@ -263,24 +263,7 @@ void IntranetRedirectDetector::OnDnsConfigClientConnectionError() {
 }
 
 bool IntranetRedirectDetector::IsEnabledByPolicy() {
-  // The InterceptionChecksBehavior pref and the older
-  // DNSInterceptionChecksEnabled policy should each be able to disable
-  // interception checks. Therefore, we enable the redirect detector iff allowed
-  // by both policies.
-
-  // Check IntranetRedirectorBehavior pref.
-  auto behavior =
-      omnibox::GetInterceptionChecksBehavior(g_browser_process->local_state());
-  if (behavior == omnibox::IntranetRedirectorBehavior::DISABLE_FEATURE ||
-      behavior == omnibox::IntranetRedirectorBehavior::
-                      DISABLE_INTERCEPTION_CHECKS_ENABLE_INFOBARS) {
-    return false;
-  }
-
-  // Consult previous DNSInterceptionChecksEnabled policy.
-  if (!g_browser_process->local_state()->GetBoolean(
-          prefs::kDNSInterceptionChecksEnabled))
-    return false;
-
-  return true;
+  // AI Browser: never probe random hostnames to detect DNS interception;
+  // it's background traffic the user didn't ask for.
+  return false;
 }
