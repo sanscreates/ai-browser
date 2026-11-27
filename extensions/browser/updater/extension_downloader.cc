@@ -169,8 +169,9 @@ bool IncrementAuthUserIndex(GURL* url) {
 std::optional<GURL> SanitizeUpdateURL(const ExtensionId& extension_id,
                                       const GURL& update_url) {
   if (update_url.is_empty()) {
-    // Fill in default update URL.
-    return extension_urls::GetWebstoreUpdateUrl();
+    // AI Browser: an extension without an update URL is never checked
+    // against the Chrome Web Store, which would reveal its ID to Google.
+    return std::nullopt;
   }
 
   // Skip extensions with non-empty invalid update URLs.
