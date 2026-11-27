@@ -18,7 +18,8 @@
 
 namespace chrome_browser_net {
 
-const char DnsProbeRunner::kKnownGoodHostname[] = "google.com";
+// AI Browser: probe a neutral IANA-reserved name instead of google.com.
+const char DnsProbeRunner::kKnownGoodHostname[] = "example.com";
 
 namespace {
 
