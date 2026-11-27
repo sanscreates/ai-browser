@@ -1700,7 +1700,9 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
 // Safe Browsing Reporting to perform a k-anonymous query to see if Google knows
 // about an SCT seen in the wild. If it hasn't been seen, then it is considered
 // a security incident and uploaded to Google.
-BASE_FEATURE(kSCTAuditingHashdance, base::FEATURE_ENABLED_BY_DEFAULT);
+// AI Browser: off. CT is enforced locally, but SCTs are never looked up
+// with (or reported to) Google.
+BASE_FEATURE(kSCTAuditingHashdance, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // An estimated high bound for the time it takes Google to ingest updates to an
 // SCT log. Chrome will wait for at least this time plus the Log's Maximum Merge

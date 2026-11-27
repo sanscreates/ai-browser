@@ -41,12 +41,12 @@ BASE_FEATURE(kBookmarkTriggerForPrefetch, base::FEATURE_DISABLED_BY_DEFAULT);
 // should first reach out to chrome-certificate-transparency@google.com.
 // On builds where CT is enabled, this flag is also used as an emergency kill
 // switch.
+// AI Browser: CT is enforced in our builds too. The built-in log list is only
+// trusted for 70 days after its timestamp; after that, compliance comes back
+// as CT_POLICY_BUILD_NOT_TIMELY, which counts as meeting the requirement, so
+// a stale list stops enforcing instead of breaking sites.
 BASE_FEATURE(kCertificateTransparencyAskBeforeEnabling,
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
              base::FEATURE_ENABLED_BY_DEFAULT);
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
 // Enables using network time for certificate verification. If enabled, network
 // time will be used to verify certificate validity, however certificates that
