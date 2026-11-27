@@ -14262,6 +14262,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibClearDataOnExit)},
 
+    {"aib-disable-beforeunload",
+     flag_descriptions::kAibDisableBeforeUnloadName,
+     flag_descriptions::kAibDisableBeforeUnloadDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(aib::features::kAibDisableBeforeUnload)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

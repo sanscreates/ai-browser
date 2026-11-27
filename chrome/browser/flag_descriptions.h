@@ -8717,6 +8717,12 @@ inline constexpr char kAibClearDataOnExitDescription[] =
     "Clear history, cookies and site data, cache, download history and form "
     "data when the browser closes.";
 
+// AI Browser.
+inline constexpr char kAibDisableBeforeUnloadName[] =
+    "Disable beforeunload dialogs";
+inline constexpr char kAibDisableBeforeUnloadDescription[] =
+    "Never let pages ask before you leave them.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

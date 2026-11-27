@@ -23,6 +23,7 @@ static_library("javascript_dialogs") {
 
   deps = [
     "//base",
+    "//components/aib:aib_features",
     "//components/javascript_dialogs/core:util",
     "//components/navigation_metrics/",
     "//components/strings",

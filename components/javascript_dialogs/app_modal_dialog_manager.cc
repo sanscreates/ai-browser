@@ -9,11 +9,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "build/build_config.h"
+#include "components/aib/aib_net_features.h"
 #include "components/javascript_dialogs/app_modal_dialog_manager_delegate.h"
 #include "components/javascript_dialogs/app_modal_dialog_queue.h"
 #include "components/javascript_dialogs/app_modal_dialog_view.h"
@@ -158,6 +160,13 @@ void AppModalDialogManager::RunBeforeUnloadDialogWithOptions(
   if (extra_data->suppress_javascript_messages_) {
     // If a site harassed the user enough for them to put it on mute, then it
     // lost its privilege to deny unloading.
+    std::move(callback).Run(true, std::u16string());
+    return;
+  }
+
+  // AI Browser: with kAibDisableBeforeUnload, pages never get to ask the user
+  // to stay; leaving always proceeds.
+  if (base::FeatureList::IsEnabled(aib::features::kAibDisableBeforeUnload)) {
     std::move(callback).Run(true, std::u16string());
     return;
   }

@@ -11845,6 +11845,7 @@ from previous Chrome versions.
   <int value="-951891352" label="HistoryEmbeddings:enabled"/>
   <int value="-951394314" label="top-chrome-md"/>
   <int value="-950793721" label="TranslateUI2016Q2:disabled"/>
+  <int value="-950700442" label="AibDisableBeforeUnload:disabled"/>
   <int value="-950544843" label="OidcAuthProfileManagement:disabled"/>
   <int value="-950411190"
       label="WebViewCpuAffinityRestrictToLittleCores:enabled"/>
@@ -21453,6 +21454,7 @@ from previous Chrome versions.
   <int value="1874203133" label="SystemSounds:enabled"/>
   <int value="1874604540" label="UseSuggestionsEvenIfFew:disabled"/>
   <int value="1874910934" label="(Obsolete) CrOSSuspendToDiskAllowS4:disabled"/>
+  <int value="1875103671" label="AibDisableBeforeUnload:enabled"/>
   <int value="1875156497" label="CaptureMode:enabled"/>
   <int value="1877401707" label="SwitchToIncognitoInSettings:disabled"/>
   <int value="1877769074" label="PhoneHubFeatureSetupErrorHandling:enabled"/>
