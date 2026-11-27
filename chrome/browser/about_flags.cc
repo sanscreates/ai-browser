@@ -14268,6 +14268,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsAll,
      FEATURE_VALUE_TYPE(aib::features::kAibDisableBeforeUnload)},
 
+    {"aib-increase-incognito-storage-quota",
+     flag_descriptions::kAibIncreaseIncognitoStorageQuotaName,
+     flag_descriptions::kAibIncreaseIncognitoStorageQuotaDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(storage::features::kAibIncreaseIncognitoStorageQuota)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

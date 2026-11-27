@@ -8723,6 +8723,13 @@ inline constexpr char kAibDisableBeforeUnloadName[] =
 inline constexpr char kAibDisableBeforeUnloadDescription[] =
     "Never let pages ask before you leave them.";
 
+// AI Browser.
+inline constexpr char kAibIncreaseIncognitoStorageQuotaName[] =
+    "Larger incognito storage quota";
+inline constexpr char kAibIncreaseIncognitoStorageQuotaDescription[] =
+    "Size incognito storage quota like a regular profile so sites can't spot "
+    "incognito by its limit.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

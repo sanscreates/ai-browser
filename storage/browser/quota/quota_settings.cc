@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -56,7 +57,10 @@ std::optional<QuotaSettings> CalculateNominalDynamicSettings(
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::MAY_BLOCK);
 
-  if (is_incognito) {
+  // AI Browser: kAibIncreaseIncognitoStorageQuota skips the reduced incognito
+  // formula and falls through to the regular one below.
+  if (is_incognito && !base::FeatureList::IsEnabled(
+                          features::kAibIncreaseIncognitoStorageQuota)) {
     return CalculateIncognitoDynamicSettings(
         device_info_helper->AmountOfPhysicalMemory());
   }
@@ -117,7 +121,12 @@ std::optional<QuotaSettings> CalculateNominalDynamicSettings(
 
   QuotaSettings settings;
 
-  int64_t total = device_info_helper->AmountOfTotalDiskSpace(partition_path);
+  // AI Browser: incognito storage is in memory, so size it from system memory.
+  int64_t total =
+      is_incognito
+          ? base::saturated_cast<int64_t>(
+                device_info_helper->AmountOfPhysicalMemory())
+          : device_info_helper->AmountOfTotalDiskSpace(partition_path);
   if (total == -1) {
     LOG(ERROR) << "Unable to compute QuotaSettings.";
     return std::nullopt;
