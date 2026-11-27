@@ -1823,6 +1823,12 @@
     "includes": [12000],
   },
 
+  # AI Browser's own .grd files come after every upstream entry, so adding
+  # them doesn't renumber upstream resources.
+  "third_party/aib_ublock/aib_ublock_resources.grd": {
+    "includes": [12020],
+  },
+
   # END "everything else" section.
   # Everything but chrome/, components/, content/, and ios/
 

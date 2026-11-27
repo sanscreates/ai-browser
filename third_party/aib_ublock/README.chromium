@@ -1,0 +1,36 @@
+Name: uBlock Origin
+Short Name: uBlock0
+URL: https://github.com/gorhill/uBlock
+Version: 1.77.4
+Update Mechanism: Manual
+License: GPL-3.0
+License File: LICENSE
+Security Critical: yes
+Shipped: yes
+
+Description:
+uBlock Origin is AI Browser's built-in ad and tracker blocker. It ships as
+a Manifest V2 component extension that users can't remove; its toolbar
+button is always pinned.
+
+src/ (not checked in) is the unmodified uBlock0_1.77.4.chromium.zip release,
+fetched and checksum-verified by //aib/scripts/fetch_ublock.py, which is
+where the version and SHA-256 are pinned. The release's own LICENSE.txt is
+copied here as LICENSE. The corresponding source is the 1.77.4 tag of
+https://github.com/gorhill/uBlock.
+
+Local Modifications:
+- None to uBlock Origin's code. Packaging only:
+  - _locales/ is trimmed to the UI locales AI Browser ships.
+  - Peter Lowe's packaged list (assets/thirdparties/pgl.yoyo.org) isn't
+    redistributed; uBlock Origin downloads it at its first list update.
+  - The packaged filter lists and the manifest are served from a .pak
+    (aib_ublock_resources.grd) instead of from the extension directory.
+  - ComponentLoader adds AI Browser's public "key" (fixing the extension ID
+    to mfhbhkgdijnaendiokmdbdedghofepdf) and a description to the manifest
+    at load time.
+
+Bundled filter lists keep their own licenses: uBlock Origin filters and
+EasyList/EasyPrivacy (GPL-3.0, uAssets), the Public Suffix List (MPL-2.0) and
+the Online Malicious URL Blocklist (CC0-1.0/MIT). The extension's lib/
+directory carries its third-party libraries' own notices.

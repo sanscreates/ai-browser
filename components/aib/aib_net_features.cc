@@ -92,4 +92,6 @@ bool AibOmniboxFilteringAllowsBuiltinPages() {
          sources == OmniboxSources::kSearchBookmarksChrome;
 }
 
+BASE_FEATURE(kAibContentBlocker, base::FEATURE_ENABLED_BY_DEFAULT);
+
 }  // namespace aib::features

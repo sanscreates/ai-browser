@@ -7,6 +7,7 @@ import("//build/config/features.gni")
 import("//build/config/ozone.gni")
 import("//build/config/ui.gni")
 import("//chrome/common/features.gni")
+import("//components/aib/buildflags.gni")
 import("//components/enterprise/buildflags/buildflags.gni")
 import("//components/guest_view/buildflags/buildflags.gni")
 import("//components/safe_browsing/buildflags.gni")
@@ -582,6 +583,7 @@ source_set("extensions") {
     "//chrome/common",
     "//chrome/common/extensions/api:extensions_features",
     "//components/aib:aib_features",
+    "//components/aib:buildflags",
     "//components/bookmarks/browser",
     "//components/bookmarks/managed",
     "//components/content_settings/core/browser",
@@ -672,6 +674,10 @@ source_set("extensions") {
     "//mojo/public/cpp/bindings",
   ]
   defines = []
+
+  if (enable_aib_content_blocker) {
+    deps += [ "//third_party/aib_ublock:resources" ]
+  }
 
   if (is_mac || is_win || is_linux || is_chromeos) {
     deps += [ "//components/webapps/isolated_web_apps:scheme" ]

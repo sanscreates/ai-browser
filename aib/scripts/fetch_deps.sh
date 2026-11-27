@@ -80,4 +80,6 @@ fi
 if [[ "${1:-}" != "--nohooks" ]]; then
   gclient runhooks
 fi
+# Not in DEPS: the built-in content blocker's pinned uBlock Origin release.
+python3 "$REPO/aib/scripts/fetch_ublock.py"
 echo "done; free disk: $(free_gb) GB"

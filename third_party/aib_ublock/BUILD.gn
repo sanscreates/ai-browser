@@ -1,0 +1,34 @@
+# Copyright 2026 The AI Browser Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//components/aib/buildflags.gni")
+import("//tools/grit/grit_rule.gni")
+
+# uBlock Origin, AI Browser's built-in ad and tracker blocker. src/ is
+# fetched by //aib/scripts/fetch_ublock.py (a pinned release, checksum
+# verified) and isn't checked in. ComponentLoader loads the extension from
+# <framework>/Resources/aib_ublock.
+
+assert(enable_aib_content_blocker)
+
+# The manifest and the packaged filter lists, served from
+# aib_ublock_resources.pak (see the .grd for why).
+grit("resources") {
+  source = "aib_ublock_resources.grd"
+  use_brotli = true
+  outputs = [
+    "grit/aib_ublock_resources.h",
+    "grit/aib_ublock_resources_map.cc",
+    "grit/aib_ublock_resources_map.h",
+    "aib_ublock_resources.pak",
+  ]
+  output_dir = "$root_gen_dir/chrome"
+}
+
+# Everything else, as plain files: Chromium reads an extension's _locales,
+# managed-storage schema and content scripts from disk.
+bundle_data("extension_bundle_data") {
+  sources = [ "src/extension" ]
+  outputs = [ "{{bundle_resources_dir}}/aib_ublock" ]
+}

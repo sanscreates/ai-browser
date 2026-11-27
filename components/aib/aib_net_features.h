@@ -9,8 +9,9 @@
 #include "base/metrics/field_trial_params.h"
 #include "components/aib/aib_features_export.h"
 
-// AI Browser network, privacy and history switches. All are off by default so
-// that the default behavior matches upstream. Options that net/ or the network
+// AI Browser network, privacy and history switches. All but
+// kAibContentBlocker are off by default so that the default behavior matches
+// upstream. Options that net/ or the network
 // service read live in net/base/features.h instead, because those layers must
 // not depend on this component.
 namespace aib::features {
@@ -51,6 +52,11 @@ AIB_FEATURES_EXPORT BASE_DECLARE_FEATURE(kAibOmniboxAutocompleteFiltering);
 // Only meaningful while kAibOmniboxAutocompleteFiltering is enabled.
 AIB_FEATURES_EXPORT bool AibOmniboxFilteringAllowsBookmarks();
 AIB_FEATURES_EXPORT bool AibOmniboxFilteringAllowsBuiltinPages();
+
+// The built-in ad and tracker blocker (uBlock Origin) is loaded. On by
+// default; turning it off unloads it everywhere after a restart. Sites are
+// turned on or off one at a time from its toolbar button.
+AIB_FEATURES_EXPORT BASE_DECLARE_FEATURE(kAibContentBlocker);
 
 }  // namespace aib::features
 

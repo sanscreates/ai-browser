@@ -1,7 +1,8 @@
 #!/bin/bash
 # Build AI Browser end to end:
-#   fetch deps -> apply dep patches -> prune -> scrub -> rebrand strings
-#   -> gn gen -> autoninja -> unrebrand + unscrub (always) -> package
+#   fetch deps -> fetch the built-in content blocker -> apply dep patches
+#   -> prune -> scrub -> rebrand strings -> gn gen -> autoninja
+#   -> unrebrand + unscrub (always) -> package
 #
 # Usage: aib/scripts/build.sh [--skip-fetch] [--out out/aib] [--keep-scrubbed]
 #                             [--no-package]
@@ -59,6 +60,10 @@ fi
 if [[ $FETCH == 1 ]]; then
   aib/scripts/fetch_deps.sh
 fi
+
+# The built-in content blocker (a pinned uBlock Origin release); a no-op when
+# it's already unpacked, so it also runs with --skip-fetch.
+python3 aib/scripts/fetch_ublock.py
 
 # --- 2. patches for DEPS-managed repos (aib/patches/deps/<repo path>/*.patch)
 if [[ -d aib/patches/deps ]]; then

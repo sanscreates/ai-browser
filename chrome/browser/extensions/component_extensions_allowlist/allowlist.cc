@@ -19,6 +19,7 @@
 #include "chrome/grit/component_extension_resources.h"
 #include "chrome/grit/contextual_tasks_extension_resources.h"
 #include "extensions/buildflags/buildflags.h"
+#include "extensions/common/aib_content_blocker.h"
 #include "extensions/common/constants.h"
 #include "printing/buildflags/buildflags.h"
 #include "ui/webui/buildflags.h"
@@ -40,6 +41,7 @@ namespace extensions {
 
 bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
   constexpr auto kAllowed = base::MakeFixedFlatSet<std::string_view>({
+      kAibContentBlockerExtensionId,
       extension_misc::kAimEligibilityExtensionId,
       extension_misc::kContextualTasksExtensionId,
       extension_misc::kGlicExtensionId,

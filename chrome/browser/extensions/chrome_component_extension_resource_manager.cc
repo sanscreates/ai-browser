@@ -22,6 +22,7 @@
 #include "chrome/grit/component_extension_resources_map.h"
 #include "chrome/grit/contextual_tasks_extension_resources_map.h"
 #include "chrome/grit/theme_resources.h"
+#include "components/aib/buildflags.h"
 #include "components/contextual_tasks/public/features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "content/public/browser/browser_thread.h"
@@ -33,6 +34,10 @@
 #include "pdf/buildflags.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/webui/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AIB_CONTENT_BLOCKER)
+#include "chrome/grit/aib_ublock_resources_map.h"
+#endif
 
 #if BUILDFLAG(ENABLE_WEBUI_NTP)
 #include "chrome/grit/new_tab_page_extension_resources_map.h"
@@ -125,6 +130,10 @@ ChromeComponentExtensionResourceManager::Data::Data() {
 
   AddComponentResourceEntries(kComponentExtensionResources);
   AddComponentResourceEntries(kExtraComponentExtensionResources);
+#if BUILDFLAG(ENABLE_AIB_CONTENT_BLOCKER)
+  // The built-in content blocker's manifest and packaged filter lists.
+  AddComponentResourceEntries(kAibUblockResources);
+#endif
   if (base::FeatureList::IsEnabled(
           omnibox::kAimEligibilityComponentExtension)) {
     AddComponentResourceEntries(kAimEligibilityExtensionResources);

@@ -7,6 +7,7 @@ import("//build/config/chrome_build.gni")
 import("//build/config/locales.gni")
 import("//chrome/browser/buildflags.gni")
 import("//chrome/common/features.gni")
+import("//components/aib/buildflags.gni")
 import("//components/compose/features.gni")
 import("//components/enterprise/buildflags/buildflags.gni")
 import("//components/safe_browsing/buildflags.gni")
@@ -561,6 +562,10 @@ template("chrome_extra_paks") {
         "//chrome/browser/resources/omnibox_internals/aim_eligibility_extension:resources",
         "//extensions:extensions_resources",
       ]
+      if (enable_aib_content_blocker) {
+        sources += [ "$root_gen_dir/chrome/aib_ublock_resources.pak" ]
+        deps += [ "//third_party/aib_ublock:resources" ]
+      }
       if (enable_webui_ntp) {
         sources +=
             [ "$root_gen_dir/chrome/new_tab_page_extension_resources.pak" ]

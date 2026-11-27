@@ -1,0 +1,13 @@
+# Copyright 2026 The AI Browser Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//extensions/buildflags/buildflags.gni")
+
+declare_args() {
+  # Ships uBlock Origin as the built-in ad and tracker blocker: a component
+  # extension that can't be removed, with an always-pinned toolbar icon.
+  # Needs //aib/scripts/fetch_ublock.py to have run. Only the macOS app
+  # bundle packages it.
+  enable_aib_content_blocker = is_mac && enable_extensions_core
+}

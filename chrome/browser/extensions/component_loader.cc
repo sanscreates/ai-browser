@@ -44,6 +44,8 @@
 #include "chrome/grit/component_extension_resources.h"
 #include "chrome/grit/contextual_tasks_extension_resources.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/aib/aib_net_features.h"
+#include "components/aib/buildflags.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/crx_file/id_util.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -92,6 +94,10 @@
 #include "chrome/browser/pdf/pdf_extension_util.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AIB_CONTENT_BLOCKER)
+#include "chrome/grit/aib_ublock_resources.h"
+#endif
+
 #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 #include "chrome/browser/defaults.h"
 #endif
@@ -115,6 +121,19 @@ BASE_FEATURE(kRemoveHangoutsExtension, base::FEATURE_ENABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 
 bool g_enable_background_extensions_during_testing = false;
+
+#if BUILDFLAG(ENABLE_AIB_CONTENT_BLOCKER)
+// AI Browser's public key for the built-in content blocker. It fixes the
+// extension id to extensions::kAibContentBlockerExtensionId. Component
+// extensions aren't signed, so the private half was never kept.
+constexpr char kAibContentBlockerPublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAso+iWI4KBnySgWkvEyKK22XikXbd"
+    "bLjQXBBr4n6+qobcqBm34GS2MmqN6yOyZG0JO9Ygz1hULhQJMMjGzdYqZIk3LACxJ5yEz9t9"
+    "r0MIhOgL2kwzBdFVfK4QfVMdYIQkgFXLaRgO6HYhEEeZVP87Kc4wzXSHq1Nehl2pHZUhdG2+"
+    "aVRZbHe89NWFCr5+uKlAMBE1252O+D2UWxwYYY48Vk5nsaYdwoziR1NOHkJOQ4ug6f658vaM"
+    "9NOlotBwqkul/eEfTQJ+n9d9TA3ci5Eta7TnSbU/GZlz1jt7l0fHSRJiNd6rAIsEOxJzegdk"
+    "EmixErRCOLlPWUNbbfQxM5EhEQIDAQAB";
+#endif  // BUILDFLAG(ENABLE_AIB_CONTENT_BLOCKER)
 
 #if BUILDFLAG(IS_CHROMEOS) && BUILDFLAG(GOOGLE_CHROME_BRANDING)
 // Whether HelpApp is enabled.
@@ -549,6 +568,27 @@ void ComponentLoader::AddNetworkSpeechSynthesisExtension() {
   }
 }
 
+void ComponentLoader::AddAibContentBlockerExtension() {
+#if BUILDFLAG(ENABLE_AIB_CONTENT_BLOCKER)
+  if (!base::FeatureList::IsEnabled(aib::features::kAibContentBlocker)) {
+    return;
+  }
+  // uBlock Origin's release manifest, served from the .pak so that startup
+  // doesn't read it from disk. The rest of the extension is in
+  // <framework>/Resources/aib_ublock.
+  std::optional<base::DictValue> manifest = ParseManifest(
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_AIB_UBLOCK_MANIFEST_JSON));
+  if (!manifest) {
+    return;
+  }
+  manifest->Set(manifest_keys::kPublicKey, kAibContentBlockerPublicKey);
+  // Component manifests aren't localized, so replace the __MSG_ placeholder.
+  manifest->Set(manifest_keys::kDescription, "Built-in ad and tracker blocker");
+  Add(std::move(*manifest), base::FilePath(FILE_PATH_LITERAL("aib_ublock")));
+#endif  // BUILDFLAG(ENABLE_AIB_CONTENT_BLOCKER)
+}
+
 void ComponentLoader::AddAimEligibilityExtension() {
   if (!base::FeatureList::IsEnabled(
           omnibox::kAimEligibilityComponentExtension)) {
@@ -820,6 +860,7 @@ void ComponentLoader::AddDefaultComponentExtensionsWithBackgroundPages(
   AddNewTabPageExtension();
   AddGlicExtension();
   AddContextualTasksExtension();
+  AddAibContentBlockerExtension();
 
 // http://crbug.com/41070702
 #if BUILDFLAG(GOOGLE_CHROME_BRANDING) && !BUILDFLAG(IS_CHROMEOS)

@@ -235,6 +235,9 @@ class ComponentLoader : public KeyedService {
 
   void AddNetworkSpeechSynthesisExtension();
 
+  // AI Browser's built-in ad and tracker blocker (uBlock Origin).
+  void AddAibContentBlockerExtension();
+
   void AddAimEligibilityExtension();
 
   void AddNewTabPageExtension();

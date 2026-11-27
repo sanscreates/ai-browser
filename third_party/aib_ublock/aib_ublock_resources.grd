@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The parts of uBlock Origin that AI Browser serves from a .pak instead of
+     from the extension directory: the manifest, read at startup, and the
+     packaged filter lists, brotli-compressed (about 20 MB of text). The
+     files come from //aib/scripts/fetch_ublock.py, which checks that this
+     list matches the release's assets/ exactly. resource_path is relative to
+     the framework's Resources directory, where the extension lives. -->
+<grit latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="grit/aib_ublock_resources.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="grit/aib_ublock_resources_map.cc" type="resource_file_map_source" />
+    <output filename="grit/aib_ublock_resources_map.h" type="resource_map_header" />
+    <output filename="aib_ublock_resources.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <include name="IDR_AIB_UBLOCK_MANIFEST_JSON" file="src/extension/manifest.json" resource_path="aib_ublock/manifest.json" type="BINDATA" compress="false" />
+
+      <include name="IDR_AIB_UBLOCK_ASSETS_JSON" file="src/assets/assets.json" resource_path="aib_ublock/assets/assets.json" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_BADLISTS_TXT" file="src/assets/ublock/badlists.txt" resource_path="aib_ublock/assets/ublock/badlists.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_BADWARE_MIN_TXT" file="src/assets/ublock/badware.min.txt" resource_path="aib_ublock/assets/ublock/badware.min.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_FILTERS_MIN_TXT" file="src/assets/ublock/filters.min.txt" resource_path="aib_ublock/assets/ublock/filters.min.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_PRIVACY_MIN_TXT" file="src/assets/ublock/privacy.min.txt" resource_path="aib_ublock/assets/ublock/privacy.min.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_QUICK_FIXES_MIN_TXT" file="src/assets/ublock/quick-fixes.min.txt" resource_path="aib_ublock/assets/ublock/quick-fixes.min.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_UNBREAK_MIN_TXT" file="src/assets/ublock/unbreak.min.txt" resource_path="aib_ublock/assets/ublock/unbreak.min.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_EASYLIST_TXT" file="src/assets/thirdparties/easylist/easylist.txt" resource_path="aib_ublock/assets/thirdparties/easylist/easylist.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_EASYPRIVACY_TXT" file="src/assets/thirdparties/easylist/easyprivacy.txt" resource_path="aib_ublock/assets/thirdparties/easylist/easyprivacy.txt" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_PSL_DAT" file="src/assets/thirdparties/publicsuffix.org/list/effective_tld_names.dat" resource_path="aib_ublock/assets/thirdparties/publicsuffix.org/list/effective_tld_names.dat" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_URLHAUS_LICENSE_MD" file="src/assets/thirdparties/urlhaus-filter/LICENSE.md" resource_path="aib_ublock/assets/thirdparties/urlhaus-filter/LICENSE.md" type="BINDATA" compress="brotli" />
+      <include name="IDR_AIB_UBLOCK_URLHAUS_ONLINE_TXT" file="src/assets/thirdparties/urlhaus-filter/urlhaus-filter-online.txt" resource_path="aib_ublock/assets/thirdparties/urlhaus-filter/urlhaus-filter-online.txt" type="BINDATA" compress="brotli" />
+    </includes>
+  </release>
+</grit>
