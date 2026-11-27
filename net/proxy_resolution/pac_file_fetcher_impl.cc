@@ -5,6 +5,7 @@
 #include "net/proxy_resolution/pac_file_fetcher_impl.h"
 
 #include <algorithm>
+#include <limits>
 #include <string_view>
 
 #include "base/compiler_specific.h"
@@ -39,7 +40,9 @@ namespace {
 
 // The maximum size (in bytes) allowed for a PAC script. Responses exceeding
 // this will fail with ERR_FILE_TOO_BIG.
-const int kDefaultMaxResponseBytes = 1048576;  // 1 megabyte
+// AI Browser: no default limit (upstream uses 1 MB), so large corporate PAC
+// files keep working. SetSizeConstraint() can still set one.
+constexpr size_t kDefaultMaxResponseBytes = std::numeric_limits<size_t>::max();
 
 // The maximum duration (in milliseconds) allowed for fetching the PAC script.
 // Responses exceeding this will fail with ERR_TIMED_OUT.
