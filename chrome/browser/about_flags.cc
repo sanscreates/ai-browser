@@ -14467,7 +14467,9 @@ class FlagsStateSingleton : public flags_ui::FlagsState::Delegate {
   // flags_ui::FlagsState::Delegate:
   bool ShouldExcludeFlag(const flags_ui::FlagsStorage* storage,
                          const FeatureEntry& entry) override {
-    return flags::IsFlagExpired(storage, entry.internal_name);
+    // AI Browser: expired flags keep working; they are not dropped when the
+    // stored flags are turned into switches and features.
+    return false;
   }
 
   std::unique_ptr<flags_ui::FlagsState> flags_state_;
@@ -14667,9 +14669,8 @@ bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
            channel != version_info::Channel::UNKNOWN;
   }
 
-  if (flags::IsFlagExpired(storage, entry.internal_name)) {
-    return true;
-  }
+  // AI Browser: expired flags stay listed in chrome://flags (upstream hides
+  // them via flags::IsFlagExpired() here).
 
   return false;
 }
