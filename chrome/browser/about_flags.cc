@@ -14256,6 +14256,12 @@ const FeatureEntry kFeatureEntries[] = {
                                     kAibHttpAcceptHeaderVariations,
                                     "AibHttpAcceptHeader")},
 
+    {"aib-clear-data-on-exit",
+     flag_descriptions::kAibClearDataOnExitName,
+     flag_descriptions::kAibClearDataOnExitDescription,
+     kOsDesktop,
+     FEATURE_VALUE_TYPE(aib::features::kAibClearDataOnExit)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

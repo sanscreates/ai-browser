@@ -8711,6 +8711,12 @@ inline constexpr char kAibHttpAcceptHeaderName[] =
 inline constexpr char kAibHttpAcceptHeaderDescription[] =
     "Replace the Accept header sent for page navigations.";
 
+// AI Browser.
+inline constexpr char kAibClearDataOnExitName[] = "Clear data on exit";
+inline constexpr char kAibClearDataOnExitDescription[] =
+    "Clear history, cookies and site data, cache, download history and form "
+    "data when the browser closes.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

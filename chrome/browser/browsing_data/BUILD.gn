@@ -148,6 +148,7 @@ source_set("impl") {
     "//chrome/browser/ui/find_bar",
     "//chrome/browser/webdata_services",
     "//chrome/browser/webid",
+    "//components/aib:aib_features",
     "//components/browsing_data/content",
     "//components/browsing_data/core",
     "//components/commerce/core:feature_utils",

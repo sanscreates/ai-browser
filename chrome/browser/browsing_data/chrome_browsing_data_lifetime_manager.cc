@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_functions.h"
@@ -26,6 +27,7 @@
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
+#include "components/aib/aib_net_features.h"
 #include "components/browsing_data/core/browsing_data_policies_utils.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -61,6 +63,18 @@ namespace {
 constexpr int kInitialCleanupDelayInSeconds = 15;
 constexpr int kTestCleanupPeriodInMinutes = 5;
 constexpr int kDefaultCleanupPeriodInMinutes = 30;
+
+// AI Browser: what kAibClearDataOnExit removes when the profile closes.
+// Passwords and site settings are kept on purpose.
+constexpr uint64_t kAibClearOnExitRemoveMask =
+    chrome_browsing_data_remover::DATA_TYPE_HISTORY |
+    chrome_browsing_data_remover::DATA_TYPE_SITE_DATA |
+    chrome_browsing_data_remover::DATA_TYPE_FORM_DATA |
+    content::BrowsingDataRemover::DATA_TYPE_CACHE |
+    content::BrowsingDataRemover::DATA_TYPE_DOWNLOADS;
+constexpr uint64_t kAibClearOnExitOriginTypeMask =
+    content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
+    content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
 
 using ScheduledRemovalSettings =
     ChromeBrowsingDataLifetimeManager::ScheduledRemovalSettings;
@@ -334,9 +348,27 @@ void ChromeBrowsingDataLifetimeManager::ClearBrowsingDataForOnExitPolicy(
   const base::ListValue& data_types = profile_->GetPrefs()->GetList(
       browsing_data::prefs::kClearBrowsingDataOnExitList);
 
-  if (!data_types.empty() &&
+  const bool policy_clear_on_exit =
+      !data_types.empty() &&
       IsConditionSatisfiedForBrowsingDataRemoval(GetSyncTypesForPolicyPref(
-          profile_, browsing_data::prefs::kClearBrowsingDataOnExitList))) {
+          profile_, browsing_data::prefs::kClearBrowsingDataOnExitList));
+  // AI Browser: kAibClearDataOnExit adds a fixed set of data types to clear on
+  // exit, on top of anything the policy asks for. The user opted in through a
+  // flag, so the policy's sync safeguards don't apply to this part.
+  const bool aib_clear_on_exit =
+      base::FeatureList::IsEnabled(aib::features::kAibClearDataOnExit);
+
+  if (policy_clear_on_exit || aib_clear_on_exit) {
+    uint64_t remove_mask = 0;
+    uint64_t origin_type_mask = 0;
+    if (policy_clear_on_exit) {
+      remove_mask |= GetRemoveMask(data_types);
+      origin_type_mask |= GetOriginTypeMask(data_types);
+    }
+    if (aib_clear_on_exit) {
+      remove_mask |= kAibClearOnExitRemoveMask;
+      origin_type_mask |= kAibClearOnExitOriginTypeMask;
+    }
     profile_->GetPrefs()->SetBoolean(
         browsing_data::prefs::kClearBrowsingDataOnExitDeletionPending, true);
     auto* remover = profile_->GetBrowsingDataRemover();
@@ -346,9 +378,8 @@ void ChromeBrowsingDataLifetimeManager::ClearBrowsingDataForOnExitPolicy(
     if (browser_shutdown::HasShutdownStarted())
       CHECK(keep_browser_alive, base::NotFatalUntil::M161);
 #endif
-    remover->RemoveAndReply(base::Time(), base::Time::Max(),
-                            GetRemoveMask(data_types),
-                            GetOriginTypeMask(data_types),
+    remover->RemoveAndReply(base::Time(), base::Time::Max(), remove_mask,
+                            origin_type_mask,
                             BrowsingDataRemoverObserver::Create(
                                 remover, /*filterable_deletion=*/true, profile_,
                                 keep_browser_alive));
