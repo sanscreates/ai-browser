@@ -282,6 +282,11 @@ void TranslateLanguageList::RequestLanguageList() {
 
   request_pending_ = false;
 
+  // AI Browser: no language-list fetch unless a translate server is set.
+  if (!IsTranslateServiceAllowed()) {
+    return;
+  }
+
   if (language_list_fetcher_.get() &&
       (language_list_fetcher_->state() == TranslateUrlFetcher::IDLE ||
        language_list_fetcher_->state() == TranslateUrlFetcher::FAILED)) {

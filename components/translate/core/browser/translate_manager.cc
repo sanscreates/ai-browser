@@ -212,8 +212,9 @@ bool TranslateManager::CanManuallyTranslateInternal(bool menu_logging,
     can_translate = false;
   }
 
+  // AI Browser: also require a user-chosen translate server.
   if (!ignore_missing_key_for_testing_ &&
-      !::google_apis::HasAPIKeyConfigured()) {
+      (!::google_apis::HasAPIKeyConfigured() || !IsTranslateServiceAllowed())) {
     if (!menu_logging) {
       return false;
     }
@@ -829,7 +830,8 @@ void TranslateManager::SetIgnoreMissingKeyForTesting(bool ignore) {
 bool TranslateManager::IsAvailable(const TranslatePrefs* prefs) {
   // These conditions mirror the conditions in InitiateTranslation.
   return (ignore_missing_key_for_testing_ ||
-          ::google_apis::HasAPIKeyConfigured()) &&
+          (::google_apis::HasAPIKeyConfigured() &&
+           IsTranslateServiceAllowed())) &&
          prefs->IsOfferTranslateEnabled();
 }
 
@@ -1009,8 +1011,9 @@ void TranslateManager::FilterIsTranslatePossible(
         TriggerDecision::kDisabledOffline);
   }
 
+  // AI Browser: also require a user-chosen translate server.
   if (!ignore_missing_key_for_testing_ &&
-      !::google_apis::HasAPIKeyConfigured()) {
+      (!::google_apis::HasAPIKeyConfigured() || !IsTranslateServiceAllowed())) {
     // Without an API key, translate won't work, so don't offer to translate in
     // the first place. Leave kOfferTranslateEnabled on, though, because that
     // settings syncs and we don't want to turn off translate everywhere else.

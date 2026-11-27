@@ -40,6 +40,11 @@ GURL GetTranslateSecurityOrigin() {
   return GURL(security_origin);
 }
 
+bool IsTranslateServiceAllowed() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kTranslateScriptURL);
+}
+
 bool IsTFLiteLanguageDetectionEnabled() {
 // The feature is explicitly disabled on WebView.
 // TODO(crbug.com/40819484): Enable the feature on WebView.

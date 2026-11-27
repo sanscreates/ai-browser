@@ -20,6 +20,12 @@ extern const char kSecurityOrigin[];
 // language checks and to obtain the list of available languages.
 GURL GetTranslateSecurityOrigin();
 
+// AI Browser: Translate talks to the network only if the user points it at a
+// translation server of their choice with --translate-script-url. Without
+// it, translation isn't offered and no language list or ranker model is
+// fetched.
+bool IsTranslateServiceAllowed();
+
 // Return whether TFLite-based language detection is enabled.
 bool IsTFLiteLanguageDetectionEnabled();
 

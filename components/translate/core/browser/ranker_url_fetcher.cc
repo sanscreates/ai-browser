@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "components/translate/core/common/translate_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -35,6 +36,11 @@ bool RankerURLFetcher::Request(
   // finished.
   if (state_ == REQUESTING) {
     NOTREACHED();
+  }
+
+  // AI Browser: never download the translate ranker model.
+  if (!translate::IsTranslateServiceAllowed()) {
+    return false;
   }
 
   if (retry_count_ >= kMaxRetry) {
