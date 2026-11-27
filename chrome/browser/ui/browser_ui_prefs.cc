@@ -155,8 +155,11 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kPrintPreviewUseSystemDefaultPrinter,
                                 false);
 #endif
+  // AI Browser: WebRTC only uses the default route's public address, so
+  // local/private IPs never leak (mDNS candidate hiding is compiled out
+  // with enable_mdns=false). UDP stays available for calls.
   registry->RegisterStringPref(prefs::kWebRTCIPHandlingPolicy,
-                               blink::kWebRTCIPHandlingDefault);
+                               blink::kWebRTCIPHandlingDefaultPublicInterfaceOnly);
   registry->RegisterListPref(prefs::kWebRTCIPHandlingUrl, base::ListValue());
   registry->RegisterBooleanPref(prefs::kWebRTCPostQuantumKeyAgreement, false);
   registry->RegisterStringPref(prefs::kWebRTCUDPPortRange, std::string());

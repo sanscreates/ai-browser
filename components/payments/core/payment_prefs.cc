@@ -11,7 +11,8 @@ namespace payments {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kPaymentsFirstTransactionCompleted, false);
   registry->RegisterBooleanPref(
-      kCanMakePaymentEnabled, true,
+      // AI Browser: sites can't probe for saved payment methods.
+      kCanMakePaymentEnabled, false,
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 }
 

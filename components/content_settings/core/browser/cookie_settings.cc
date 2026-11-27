@@ -78,7 +78,8 @@ void CookieSettings::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       prefs::kCookieControlsMode,
-      static_cast<int>(CookieControlsMode::kIncognitoOnly),
+      // AI Browser: block third-party cookies everywhere by default.
+      static_cast<int>(CookieControlsMode::kBlockThirdParty),
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 }
 

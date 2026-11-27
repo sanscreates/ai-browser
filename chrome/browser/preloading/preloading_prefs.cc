@@ -16,7 +16,9 @@ void RegisterPredictionOptionsProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       prefs::kNetworkPredictionOptions,
-      static_cast<int>(NetworkPredictionOptions::kDefault),
+      // AI Browser: no preloading/preconnecting to pages the user hasn't
+      // asked for, by default.
+      static_cast<int>(NetworkPredictionOptions::kDisabled),
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 }
 

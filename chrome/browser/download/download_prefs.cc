@@ -376,7 +376,8 @@ void DownloadPrefs::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(
       prefs::kPromptForDownload,
-      false,
+      // AI Browser: always ask where to save, so nothing downloads silently.
+      true,
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
   registry->RegisterStringPref(prefs::kDownloadExtensionsToOpen, std::string());
   registry->RegisterListPref(prefs::kDownloadExtensionsToOpenByPolicy, {});

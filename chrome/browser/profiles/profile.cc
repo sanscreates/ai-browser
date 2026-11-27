@@ -358,7 +358,8 @@ const char Profile::kProfileKey[] = "__PROFILE__";
 void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(
       prefs::kSearchSuggestEnabled,
-      true,
+      // AI Browser: don't send omnibox keystrokes to the search engine.
+      false,
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterStringPref(

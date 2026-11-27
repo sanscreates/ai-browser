@@ -646,8 +646,10 @@ void ProfileNetworkContextService::ConfigureNetworkContextParams(
 // static
 void ProfileNetworkContextService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
+  // AI Browser: no Google-backed error-page suggestions and no captive
+  // portal probes (both gated on this pref) by default.
   registry->RegisterBooleanPref(embedder_support::kAlternateErrorPagesEnabled,
-                                true);
+                                false);
   registry->RegisterBooleanPref(prefs::kQuicAllowed, true);
   registry->RegisterBooleanPref(prefs::kGloballyScopeHTTPAuthCacheEnabled,
                                 false);

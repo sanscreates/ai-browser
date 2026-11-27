@@ -358,7 +358,9 @@ BackgroundModeManager::~BackgroundModeManager() {
 
 // static
 void BackgroundModeManager::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(prefs::kBackgroundModeEnabled, true);
+  // AI Browser: don't keep running in the background after the last
+  // window closes.
+  registry->RegisterBooleanPref(prefs::kBackgroundModeEnabled, false);
 #if BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_DBUS)
   registry->RegisterBooleanPref(prefs::kBackgroundModePortalAutostartGranted,
                                 false);
