@@ -15,8 +15,8 @@ bool IsMetricsRecordingOnlyEnabled() {
 }
 
 bool IsMetricsReportingForceEnabled() {
-  return base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kForceEnableMetricsReporting);
+  // AI Browser: metrics reporting can't be forced on from the command line.
+  return false;
 }
 
 bool IsMsbbSettingForcedOnForUkm() {
