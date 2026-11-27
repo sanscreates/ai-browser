@@ -165,7 +165,9 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(prefs::kWebRTCUDPPortRange, std::string());
   registry->RegisterBooleanPref(prefs::kWebRtcEventLogCollectionAllowed, false);
   registry->RegisterListPref(prefs::kWebRtcLocalIpsAllowedUrls);
-  registry->RegisterBooleanPref(prefs::kWebRtcTextLogCollectionAllowed, true);
+  // AI Browser: no WebRTC text log collection (logs were uploadable to
+  // Google).
+  registry->RegisterBooleanPref(prefs::kWebRtcTextLogCollectionAllowed, false);
   registry->RegisterListPref(
       prefs::kWebRTCDiagnosticLogCollectionAllowedForOrigins,
       base::ListValue());
