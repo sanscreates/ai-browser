@@ -6,7 +6,9 @@ Usage: netlog_hosts.py NETLOG.json --phase-start UNIX_MS [--sites a.com,b.org]
 
 Every host contacted before --phase-start (the idle phase) is unsolicited,
 except the user's own DNS resolver reached over DoH (from the NetLog's DNS
-config), which is listed separately.
+config) and the built-in content blocker's filter-list updates, which are
+listed separately. A list update is a request made by the blocker extension
+to a host its assets.json lists; anything else it requests is unsolicited.
 After it, a host counts as unsolicited when its request has no top-frame
 site (i.e. the browser made it, not a page) and it isn't one of --sites,
 or when it is a Google-family host (aib/domains/domains.txt) that isn't
@@ -34,6 +36,31 @@ def google_matcher():
     alts.append(re.escape(d[:-2]) + r'\.' + scrub_domains.WILDCARD_TLD
                 if d.endswith('.*') else re.escape(d))
   return re.compile(r'(?:^|\.)(?:' + '|'.join(alts) + r')$', re.I)
+
+
+# The built-in content blocker (extensions::kAibContentBlockerExtensionId).
+BLOCKER_ORIGIN = 'chrome-extension://mfhbhkgdijnaendiokmdbdedghofepdf'
+BLOCKER_ASSETS = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), '..', '..', 'third_party',
+    'aib_ublock', 'src', 'assets', 'assets.json')
+
+
+def blocker_list_hosts():
+  """Hosts the content blocker downloads filter lists from (its assets.json)."""
+  try:
+    with open(BLOCKER_ASSETS, encoding='utf-8') as f:
+      assets = json.load(f)
+  except FileNotFoundError:
+    return set()
+  hosts = set()
+  for entry in assets.values():
+    for field in ('contentURL', 'cdnURLs', 'patchURLs'):
+      urls = entry.get(field) or []
+      for url in [urls] if isinstance(urls, str) else urls:
+        h = host_of(url)
+        if h:
+          hosts.add(h.lower())
+  return hosts
 
 
 def load(path):
@@ -84,7 +111,9 @@ def main():
   offset = float(consts.get('timeTickOffset', 0))
   sites = {s.strip().lower() for s in args.sites.split(',') if s.strip()}
 
-  hosts = {}  # host -> {'idle': n, 'browse': n, 'tops': set(), 'kinds': set()}
+  # host -> {'idle': n, 'browse': n, 'blocker': n, 'tops': set(),
+  #          'kinds': set()}
+  hosts = {}
   # DoH servers from the browser's DNS config: these are the user's own DNS
   # resolver (Chromium upgrades the system resolver to its DoH endpoint), so
   # traffic to them is DNS, not something sent to a service.
@@ -118,15 +147,19 @@ def main():
     if host in ('localhost', '127.0.0.1', '::1', '[::1]'):
       continue
     t = float(ev.get('time', 0)) + offset
-    rec = hosts.setdefault(host, {'idle': 0, 'browse': 0, 'tops': set(),
-                                  'kinds': set()})
+    rec = hosts.setdefault(host, {'idle': 0, 'browse': 0, 'blocker': 0,
+                                  'tops': set(), 'kinds': set()})
     rec['idle' if t < args.phase_start else 'browse'] += 1
     rec['kinds'].add(name)
     tf = top_frame_site(params)
     if tf:
       rec['tops'].add(tf)
+    if any(BLOCKER_ORIGIN in str(params.get(k, ''))
+           for k in ('network_anonymization_key', 'network_isolation_key')):
+      rec['blocker'] += 1
 
   is_google = google_matcher().search
+  list_hosts = blocker_list_hosts()
 
   def is_site(h):
     return any(h == s or h.endswith('.' + s) for s in sites)
@@ -138,6 +171,9 @@ def main():
     r = hosts[h]
     if h in doh_hosts:
       verdict = 'system DNS resolver (DoH)'
+    elif r['blocker'] and not r['tops']:
+      verdict = ('content blocker filter lists' if h in list_hosts else
+                 'UNSOLICITED (content blocker, not a list host)')
     elif r['idle']:
       verdict = 'UNSOLICITED (idle)'
     elif is_site(h):
