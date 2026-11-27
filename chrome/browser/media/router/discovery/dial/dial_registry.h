@@ -177,7 +177,8 @@ class DialRegistry
   int label_count_;
 
   // Registry parameters
-  const base::TimeDelta refresh_interval_delta_;
+  // AI Browser: unused since periodic discovery is off.
+  [[maybe_unused]] const base::TimeDelta refresh_interval_delta_;
   const base::TimeDelta expiration_delta_;
   const size_t max_devices_;
 

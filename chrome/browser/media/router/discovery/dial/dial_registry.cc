@@ -160,10 +160,9 @@ void DialRegistry::StartPeriodicDiscovery() {
   }
 
   dial_ = CreateDialService();
+  // AI Browser: discover once when asked (e.g. the Cast dialog opens) rather
+  // than multicasting SSDP on the local network every few minutes.
   DoDiscovery();
-  repeating_timer_ = std::make_unique<base::RepeatingTimer>();
-  repeating_timer_->Start(FROM_HERE, refresh_interval_delta_, this,
-                          &DialRegistry::DoDiscovery);
   // Always send the current device list with the next discovery request.  This
   // may not be necessary, but is done to match previous behavior.
   ++registry_generation_;
@@ -181,8 +180,10 @@ void DialRegistry::StopPeriodicDiscovery() {
     return;
   }
 
-  repeating_timer_->Stop();
-  repeating_timer_.reset();
+  if (repeating_timer_) {
+    repeating_timer_->Stop();
+    repeating_timer_.reset();
+  }
   ClearDialService();
 }
 
