@@ -10,7 +10,7 @@ the suffix `.aib-invalid` appended, e.g.
 
 An ASCII TLD containing a hyphen can never be delegated, so the result
 can't resolve anywhere. The browser also refuses to resolve or fetch
-`*.aib-invalid` hosts (see net/base/aib_scrubbed_host.h), so nothing
+`*.aib-invalid` hosts (net::IsAibScrubbedHost() in net/base/url_util.h), so nothing
 reaches DNS either. Appending, rather than replacing, keeps every
 literal consistent: URL constants, host-equality checks and suffix
 matches like ".google.com" are all rewritten the same way.

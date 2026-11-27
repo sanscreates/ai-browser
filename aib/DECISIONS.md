@@ -40,3 +40,13 @@ Each candidate was tried with `gn gen`:
 - **Not available:** `enable_nacl` (NaCl is gone from our tree) and any `enable_glic` arg (Glic is runtime-gated only, so it's disabled through features in code).
 - **Kept:** `safe_browsing_mode=1` (local protection lists remain available but default off; reporting/pings are disabled in code). `safe_browsing_mode=0` would need a ~4k-line guard patch across ~100 files. ungoogled does that, but it touches large parts of the browser and makes rebasing hard.
 - **Kept:** `exclude_unwind_tables=false`. On mac, unwind tables are used by C++ and Objective-C exception propagation and by crash stack walks. The size win isn't worth a correctness risk we can't test yet.
+- Follow-up: the first sync left `third_party/litert/src` fetched but unchecked-out. We checked out the DEPS-pinned commit by hand with `GIT_LFS_SKIP_SMUDGE=1`; its LFS objects are models and test data the build doesn't use.
+
+## D8. Private default preferences, and the ones we left alone
+- **Changed:** network prediction (preload/preconnect) off, background mode off, `<a ping>` auditing off, alternate error pages off (this also turns off captive-portal probes), search suggestions off, third-party cookies blocked, `canMakePayment` off, ask where to save downloads, WebRTC IP policy `default_public_interface_only`, autofill addresses/cards off.
+- **WebRTC:** ungoogled uses `disable_non_proxied_udp`, which forces calls over TCP/TURN and degrades many web video-call apps. We pick `default_public_interface_only`: no private or local IPs leak (important because `enable_mdns=false` also removes mDNS candidate obfuscation), and UDP still works.
+- **Kept on:** the password manager's offer to save, and auto sign-in. Both are local only (no sync without sign-in), and the brief says the password manager stays. Unique saved passwords are a security plus.
+- **Kept:** the show-bookmark-bar default (cosmetic, no privacy value).
+- **Kept:** DoH automatic mode, including the Google provider entry. Automatic mode only upgrades the resolver the user already has (e.g. system 8.8.8.8 → dns.google DoH), so it adds no new destination.
+- **Not changed:** the IPv6 reachability probe "to 2001:4860:4860::8888". It's a UDP `connect()` that only selects a route; no packet is sent.
+- **Not taken:** ungoogled's disable-download-quarantine. On macOS that removes Gatekeeper's quarantine attribute from downloads, a real security regression.
