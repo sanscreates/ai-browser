@@ -14356,6 +14356,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibHideCrashedBubble)},
 
+    {"aib-hide-bookmark-bar-on-ntp",
+     flag_descriptions::kAibHideBookmarkBarOnNtpName,
+     flag_descriptions::kAibHideBookmarkBarOnNtpDescription,
+     kOsDesktop,
+     FEATURE_VALUE_TYPE(aib::features::kAibHideBookmarkBarOnNtp)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

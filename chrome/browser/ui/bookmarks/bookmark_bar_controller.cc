@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/user_education/browser_user_education_interface.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/common/bookmark_bar_visibility_state.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
@@ -287,6 +288,12 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
         !prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar)) {
       return false;
     }
+  }
+
+  // AI Browser: kAibHideBookmarkBarOnNtp stops the bar from appearing on its
+  // own on the New Tab page. "Always show" and forced shows are handled above.
+  if (base::FeatureList::IsEnabled(aib::features::kAibHideBookmarkBarOnNtp)) {
+    return false;
   }
 
   std::vector<tabs::TabInterface*> tabs = tab_strip_model_->GetForegroundTabs();

@@ -8771,6 +8771,13 @@ inline constexpr char kAibHideCrashedBubbleDescription[] =
     "Don't offer to restore pages after the browser didn't shut down "
     "correctly.";
 
+// AI Browser.
+inline constexpr char kAibHideBookmarkBarOnNtpName[] =
+    "Never show bookmark bar on New Tab page";
+inline constexpr char kAibHideBookmarkBarOnNtpDescription[] =
+    "The bookmark bar no longer appears on its own on the New Tab page; "
+    "'Always show bookmarks bar' still works.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
