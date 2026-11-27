@@ -50,3 +50,11 @@ Each candidate was tried with `gn gen`:
 - **Kept:** DoH automatic mode, including the Google provider entry. Automatic mode only upgrades the resolver the user already has (e.g. system 8.8.8.8 → dns.google DoH), so it adds no new destination.
 - **Not changed:** the IPv6 reachability probe "to 2001:4860:4860::8888". It's a UDP `connect()` that only selects a route; no packet is sent.
 - **Not taken:** ungoogled's disable-download-quarantine. On macOS that removes Gatekeeper's quarantine attribute from downloads, a real security regression.
+
+## D9. Phase 2 defaults
+- **Fingerprinting noise (canvas readback, measureText, client rects): ON by default.** The brief says to ship the private choice. The perturbations are tiny (±1 on ~1/128 pixels; geometry scaled by 1±1e-6) and stable within a session. Each can be turned off in chrome://flags.
+- **Battery Status API:** a fixed "charging, 100%" status, always (no flag).
+- **Off by default, as opt-in flags:** everything that changes how pages work or look (WebGL info spoofing, reduced system info, no UA client hints, referrer trimming, popups-to-tabs, etc.). Chromium's default referrer policy (`strict-origin-when-cross-origin`) already trims cross-origin referrers to the origin. Stricter modes break some sites' CSRF and analytics checks, so they're opt-in.
+- **CT enforcement on, SCT auditing off:** certificates must be CT-logged as in Chrome. The k-anonymous "hashdance" lookups to Google are disabled.
+- **Expired flags stay usable**, so our long-lived `aib-*` options and upstream flags don't silently stop working.
+- **Flag plumbing:** our features live in `components/aib` (browser and components), `third_party/blink/public/common/aib_features.h` (Blink) and the net/content/storage feature files (layers that can't depend on components). `aib/scripts/register_flag.py` writes the about_flags.cc entry, flag_descriptions.h, flag-metadata.json (owner `//components/aib/OWNERS`, expiry milestone 200) and enums.xml hashes.

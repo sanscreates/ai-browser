@@ -29,14 +29,14 @@ Status: **done** (implemented; the commit is named), **partial**, **skipped** (w
 
 | Their change | What it does | Our status | Commit |
 |---|---|---|---|
-| pruning.list (~11.8k prebuilt/binary files) and contingent paths (prebuilt toolchains) | Forces build-from-source and drops test data | todo: our own `aib/scripts/prune_binaries.py` with a list generated from our tree. We keep the stock toolchain (clang/rust/node/esbuild prebuilts from DEPS), since we build with gclient rather than a system toolchain | |
+| pruning.list (~11.8k prebuilt/binary files) and contingent paths (prebuilt toolchains) | Forces build-from-source and drops test data | done, our own: `aib/scripts/prune_binaries.py` with a list generated from our tree (691 files, ~1.4 GB) that skips the stock toolchain and anything the generated ninja files reference | b743aea2e3 |
 
 ## 3. Domain substitution (`domain_regex.list`, `domain_substitution.list`)
 
 | Their change | What it does | Our status | Commit |
 |---|---|---|---|
 | Regex rewrite of Google/YouTube/etc. hosts to leetspeak `*.qjz9zk` in ~17k files | Any leftover endpoint can't resolve | done, our own design: `aib/scripts/scrub_domains.py` appends `.aib-invalid`, curated `aib/domains/domains.txt`, file list generated from our tree, reversible with a sha256 manifest (D6) | scrubber commit |
-| `block-trk-and-subdomains` (`trk:` scheme; blocks `*.qjz9zk`) | Blocks and logs requests to scrubbed hosts | todo: our version refuses to resolve or fetch `*.aib-invalid` in net | |
+| `block-trk-and-subdomains` (`trk:` scheme; blocks `*.qjz9zk`) | Blocks and logs requests to scrubbed hosts | done, our own: net refuses to resolve or fetch `*.aib-invalid` (logged as `aib_scrubbed_host` in NetLog) | 131773ec24 |
 | `fix-learn-doubleclick-hsts` | Keeps the HSTS generator happy after substitution | not needed: we never scrub the HSTS preload JSON | — |
 
 ## 4. Core de-Googling patches
@@ -79,76 +79,76 @@ Status: **done** (implemented; the commit is named), **partial**, **skipped** (w
 
 | Their change | What it does | Our status | Commit |
 |---|---|---|---|
-| add-ungoogled-flag-headers, add-components-ungoogled | Flag plumbing | todo: our own `components/aib` switches component; flags are registered in `about_flags.cc` | |
+| add-ungoogled-flag-headers, add-components-ungoogled | Flag plumbing | done, our own: features in components/aib and blink aib_features.h, registered in about_flags.cc with metadata and enums by aib/scripts/register_flag.py | 978fdb26fe, ad236769c0, 97d4cd20c4 |
 | inox 0006 modify-default-prefs | Private defaults (no search suggest, no hyperlink auditing, 3P cookies blocked, …) | partial: private defaults done; password-manager defaults kept (D8) | 1fba7e9b26 |
 | inox 0008 restore-classic-ntp | Local NTP, not the search engine's | done (always the local NTP) | f3bd1af77f |
 | inox 0013 + debian google-api-warning | No missing-API-key infobar | done | 8375ea5967 |
 | inox 0016 chromium-sandbox-pie | Linux SUID sandbox PIE | skipped: Linux only | — |
-| inox 0019 disable-battery-status-service | Battery API returns defaults (fingerprinting) | todo | |
+| inox 0019 disable-battery-status-service | Battery API returns defaults (fingerprinting) | done (fixed status, no platform monitor) | 0918a5c363 |
 | iridium mime_util text/x-suse-ymp | Download YaST files | skipped: openSUSE-specific, no value on mac | — |
 | iridium prompt-for-download-directory | Ask where to save | done | 1fba7e9b26 |
 | iridium updater-disable-auto-update | Mac Keystone interval 0 | not applicable: the Keystone interval code is branded-only | — |
-| iridium Remove-EV-certificates | No EV UI treatment | todo | |
+| iridium Remove-EV-certificates | No EV UI treatment | skipped: Chrome no longer shows any EV treatment in the address bar; the EV metadata only feeds the certificate viewer | — |
 | iridium disable-profile-auto-import-on-first-run | No silent import from other browsers | done | ec8a00a167 |
-| bromite fingerprinting client-rects / measureText noise | Flags for fingerprint noise | todo | |
-| bromite flag-max-connections-per-host | Flag | todo | |
-| bromite canvas image-data noise | Flag | todo | |
-| disable-formatting-in-omnibox | Show full URLs | todo | |
+| bromite fingerprinting client-rects / measureText noise | Flags for fingerprint noise | done, ON by default (private default) | 8b14f547d3, 97d4cd20c4 |
+| bromite flag-max-connections-per-host | Flag | done (feature with param, applied inside the network service) | 4a346a04b1 |
+| bromite canvas image-data noise | Flag | done, ON by default | 97d4cd20c4 |
+| disable-formatting-in-omnibox | Show full URLs | done (full URLs by default; status-bubble delay unchanged) | df3349d796 |
 | add-ipv6-probing-option | No IPv6 probe to Google DNS | skipped: the probe is a UDP connect(), so no packet is sent (D8) | — |
 | remove-disable-setuid-sandbox-as-bad-flag | Linux | skipped: Linux only | — |
 | disable-intranet-redirect-detector | No random-host DNS probes | done | 6ad2cae1b1 |
 | disable-download-quarantine | No quarantine xattr | **skipped**: on macOS this disables Gatekeeper checks on downloads, a security regression (D8) | — |
 | fix-building-without-mdns-and-service-discovery | Build fix | todo if the compile needs it | |
-| add-flag-to-configure-extension-downloading | CRX download handling | todo | |
-| add-flag-for-search-engine-collection | Stop auto-adding search engines | todo | |
-| add-flag-to-disable-beforeunload | Flag | todo | |
-| add-flag-to-force-punycode-hostnames | Flag | todo | |
-| add-flag-to-show-avatar-button | Flag | todo | |
-| add-suggestions-url-field | Settings UI field | todo | |
-| add-flag-to-hide-crashed-bubble | Flag | todo | |
-| add-flag-to-scroll-tabs | Flag | todo | |
-| enable-paste-and-go-new-tab-button | Middle-click new-tab button pastes and goes | todo | |
-| add-flag-for-bookmark-bar-ntp | Flag | todo | |
-| enable-menu-on-reload-button | Reload menu always | todo | |
-| add-flag-for-omnibox-autocomplete-filtering | Flag | todo | |
+| add-flag-to-configure-extension-downloading | CRX download handling | done | afb42cd2d9 |
+| add-flag-for-search-engine-collection | Stop auto-adding search engines | done | a920569756 |
+| add-flag-to-disable-beforeunload | Flag | done | 3f305e6ba3 |
+| add-flag-to-force-punycode-hostnames | Flag | done | eea3336a63 |
+| add-flag-to-show-avatar-button | Flag | done | 84f732a172 |
+| add-suggestions-url-field | Settings UI field | skipped for now: settings UI work across 4 layers; suggestions are off by default, so low value | — |
+| add-flag-to-hide-crashed-bubble | Flag | done | 34ce479fc9 |
+| add-flag-to-scroll-tabs | Flag | done | 1773223fb2 |
+| enable-paste-and-go-new-tab-button | Middle-click new-tab button pastes and goes | done (also on macOS, using the regular clipboard) | 30723142a1 |
+| add-flag-for-bookmark-bar-ntp | Flag | done | f34ec2d82a |
+| enable-menu-on-reload-button | Reload menu always | done | 0bd3736ce1 |
+| add-flag-for-omnibox-autocomplete-filtering | Flag | done | 492da57825 |
 | disable-dial-repeating-discovery | No periodic SSDP | done | 1c6c77761e |
-| remove-uneeded-ui | Hide Google-pointing UI | todo | |
-| add-flag-to-close-window-with-last-tab | Flag | todo | |
-| add-flag-to-convert-popups-to-tabs | Flag | todo | |
-| add-flag-to-disable-local-history-expiration | `--keep-old-history` | todo | |
+| remove-uneeded-ui | Hide Google-pointing UI | partial: AI settings and shortcuts gone via features; Google help links point at scrubbed hosts. Per-page Lit settings edits deferred | 6ba07f19f2 |
+| add-flag-to-close-window-with-last-tab | Flag | done | 596b79b1bc |
+| add-flag-to-convert-popups-to-tabs | Flag | done | ad236769c0 |
+| add-flag-to-disable-local-history-expiration | `--keep-old-history` | done | 978fdb26fe |
 | add-extra-channel-info | about:version branding | todo (branding phase) | |
-| prepopulated-search-engines | No starter-pack expansion | todo | |
-| add-flag-to-clear-data-on-exit | Flag | todo | |
-| add-flag-for-qr-generator | Flag | todo | |
-| add-flag-for-grab-handle | Flag | todo | |
-| add-flag-for-close-confirmation | Flag | todo | |
-| keep-expired-flags | Expired flags stay usable | todo | |
-| add-flag-for-custom-ntp | Flag | todo | |
-| add-flag-for-tab-hover-cards | Flag | todo | |
-| add-flag-to-hide-tab-close-buttons | Flag | todo | |
-| add-flag-to-disable-tls-grease | Flag | todo | |
-| add-flag-to-change-http-accept-header | Flag | todo | |
-| add-flag-for-disabling-link-drag | Flag | todo | |
-| add-flag-to-hide-extensions-menu | Flag | todo | |
-| add-flag-to-hide-fullscreen-exit-ui | Flag | todo | |
-| add-flag-for-incognito-themes | Flag | todo | |
-| add-flags-for-referrer-customization | Referrer trimming flags | todo | |
+| prepopulated-search-engines | No starter-pack expansion | partial: AI starter packs (@gemini/@aimode/@page) removed; the history/tabs/bookmarks starter packs are kept because they are local | 6ba07f19f2 |
+| add-flag-to-clear-data-on-exit | Flag | done | 2074864fd1 |
+| add-flag-for-qr-generator | Flag | skipped: QR generation is local and has no privacy impact | — |
+| add-flag-for-grab-handle | Flag | done | 1da6fc5605 |
+| add-flag-for-close-confirmation | Flag | done | 8d999be321 |
+| keep-expired-flags | Expired flags stay usable | done | a1c8558a3e |
+| add-flag-for-custom-ntp | Flag | done (text box) | 9655c0dd17 |
+| add-flag-for-tab-hover-cards | Flag | done | 1a9ccc1c5e |
+| add-flag-to-hide-tab-close-buttons | Flag | done | 1a9ccc1c5e |
+| add-flag-to-disable-tls-grease | Flag | done | c0d3a8608b |
+| add-flag-to-change-http-accept-header | Flag | done | a1d181f926 |
+| add-flag-for-disabling-link-drag | Flag | done | daa05da0df |
+| add-flag-to-hide-extensions-menu | Flag | done | c814b31e3e |
+| add-flag-to-hide-fullscreen-exit-ui | Flag | done | f254055275 |
+| add-flag-for-incognito-themes | Flag | done | de1104c3d4 |
+| add-flags-for-referrer-customization | Referrer trimming flags | done (no-cross-origin / minimal), applied in net for every request | f713756a31 |
 | default-webrtc-ip-handling-policy | `disable_non_proxied_udp` default | done, differently: default_public_interface_only (D8) | 1fba7e9b26 |
-| add-flags-for-existing-switches | Expose existing switches in chrome://flags | todo | |
-| first-run-page | Help page on first run | todo | |
-| add-flag-to-reduce-system-info | Flag | todo | |
-| add-flag-to-remove-client-hints | Flag | todo | |
+| add-flags-for-existing-switches | Expose existing switches in chrome://flags | done (proxy server/bypass, no-pings, start maximized, incognito, force dark mode, low-end mode) | 9e0dbc1158 |
+| first-run-page | Help page on first run | skipped: their page explains ungoogled-specific workarounds; we revisit when branding the first run | — |
+| add-flag-to-reduce-system-info | Flag | done | 068ffd5e28 |
+| add-flag-to-remove-client-hints | Flag | done (UA client hints) | a31019c6a7 |
 | enable-extra-locales | More UI locales | skipped: conflicts with our size goal (locale keep-list) | — |
-| remove-pac-size-limit | No PAC size cap | todo | |
-| enable-certificate-transparency-and-add-flag | CT enforcement on | todo | |
-| add-flag-to-spoof-webgl-renderer-info | Flag | todo | |
-| add-flag-to-increase-incognito-storage-quota | Flag | todo | |
-| add-credits | Credit in chrome://credits | todo (only if we reuse any of their code) | |
-| disable-ai-search-shortcuts | No @gemini/@aimode | done: Glic/actor/skills/Lens off, Optimization Guide off, AI and model components unregistered, compose and on-device model off at build level | 739e15d887, 7b9510e042, b253b4e63c, args.gn |
+| remove-pac-size-limit | No PAC size cap | done | dcb12990d3 |
+| enable-certificate-transparency-and-add-flag | CT enforcement on | done (enforced; SCT auditing hashdance off) | 2a326a7e2b |
+| add-flag-to-spoof-webgl-renderer-info | Flag | done | 6346596f42 |
+| add-flag-to-increase-incognito-storage-quota | Flag | done | 67a347fbd2 |
+| add-credits | Credit in chrome://credits | not needed: we reuse none of their code or data (see THIRD_PARTY_NOTICES.md) | — |
+| disable-ai-search-shortcuts | No @gemini/@aimode | done | 6ba07f19f2 |
 | disable-fedcm-by-default | FedCM off | done | cb48251270 |
 | bundle-hyphenation-patterns | Bundle hyphenation data | skipped: macOS uses system hyphenation | — |
-| add-flag-for-disabling-jit | Flag | todo | |
-| add-flag-to-hide-window-buttons | Flag | todo | |
+| add-flag-for-disabling-jit | Flag | done (jitless when the V8 optimizer setting is off) | 6af7074a3a |
+| add-flag-to-hide-window-buttons | Flag | skipped: hiding macOS traffic lights has no privacy value and is fragile across macOS versions | — |
 
 ## 6. Default prefs (`docs/default_settings.md`)
 Covered by inox 0006, iridium download prompt, default-webrtc-ip-handling-policy, disable-fedcm-by-default and doh-changes above.
@@ -158,7 +158,7 @@ Covered by inox 0006, iridium download prompt, default-webrtc-ip-handling-policy
 | Their change | What it does | Our status | Commit |
 |---|---|---|---|
 | Toolchain patches (bindgen, clang version check, rust, esbuild, typescript, python, dsymutil, nasm, crubit, complex builtins, symbol order, …) | Needed for their system/pruned toolchain | not applicable: we use the stock gclient toolchain (verified: `//base` builds with Xcode 27 SDK) | — |
-| disable-crashpad-handler | No crashpad process | todo (see disable-crash-reporter) | |
+| disable-crashpad-handler | No crashpad process | done differently: the handler stays for local crash dumps but never uploads (no URL; --url ignored; consent never given) | 4547a89ccf |
 | set-bundle-identifier | Custom bundle id | done (com.sanscreates.aibrowser) | d4374ba6cb |
 | add-local-network-usage-description | `NSLocalNetworkUsageDescription` | done | d4374ba6cb |
 | sign_and_package_app.sh, entitlements | Signing, notarization, DMG | todo (`aib/scripts/build.sh` package step, BUILDING.md) | |
