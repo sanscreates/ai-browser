@@ -1288,8 +1288,9 @@ void ToolbarView::Update(WebContents* tab) {
   }
 
   if (ReloadControl* reload_control = GetReloadButton(); reload_control) {
-    reload_control->SetDevToolsStatus(
-        chrome::IsDebuggerAttachedToCurrentTab(browser_));
+    // AI Browser: always offer the reload menu (normal reload, hard reload,
+    // empty cache and hard reload), not only while DevTools is attached.
+    reload_control->SetDevToolsStatus(true);
   }
 }
 
