@@ -233,6 +233,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-http-accept-header",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-keep-old-history",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

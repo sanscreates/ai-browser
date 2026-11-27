@@ -5245,6 +5245,11 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibHttpAcceptHeaderParams0[] = {
+    {"value", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"}};
+const FeatureEntry::FeatureVariation kAibHttpAcceptHeaderVariations[] = {
+    {" - Firefox-style", kAibHttpAcceptHeaderParams0, nullptr},
+};
 const FeatureEntry::FeatureParam kAibMaxConnectionsPerHostParams0[] = {
     {"connections", "15"}};
 const FeatureEntry::FeatureVariation kAibMaxConnectionsPerHostVariations[] = {
@@ -14242,6 +14247,14 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibDisableTlsGreaseDescription,
      kOsAll,
      FEATURE_VALUE_TYPE(net::features::kAibDisableTlsGrease)},
+
+    {"aib-http-accept-header",
+     flag_descriptions::kAibHttpAcceptHeaderName,
+     flag_descriptions::kAibHttpAcceptHeaderDescription,
+     kOsAll,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(features::kAibHttpAcceptHeader,
+                                    kAibHttpAcceptHeaderVariations,
+                                    "AibHttpAcceptHeader")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

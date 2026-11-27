@@ -8705,6 +8705,12 @@ inline constexpr char kAibDisableTlsGreaseName[] = "Disable TLS GREASE";
 inline constexpr char kAibDisableTlsGreaseDescription[] =
     "Don't send GREASE values in TLS handshakes.";
 
+// AI Browser.
+inline constexpr char kAibHttpAcceptHeaderName[] =
+    "Custom navigation Accept header";
+inline constexpr char kAibHttpAcceptHeaderDescription[] =
+    "Replace the Accept header sent for page navigations.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

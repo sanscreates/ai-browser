@@ -12327,6 +12327,7 @@ from previous Chrome versions.
   <int value="-800565336" label="ArcInstantResponseWindowOpen:disabled"/>
   <int value="-800464360" label="ContextualPageActions:enabled"/>
   <int value="-800364245" label="DevToolsPwaHandler:enabled"/>
+  <int value="-800358701" label="AibHttpAcceptHeader:enabled"/>
   <int value="-800301139" label="VCLightIntensity:enabled"/>
   <int value="-800127303" label="OmniboxPedalsTranslationConsole:disabled"/>
   <int value="-799956030" label="SubmenusInAppMenuLff:enabled"/>
@@ -18981,6 +18982,7 @@ from previous Chrome versions.
   <int value="1167350114" label="AndroidNightMode:enabled"/>
   <int value="1167613030" label="enable-permission-action-reporting"/>
   <int value="1168226627" label="OmniboxMaxZeroSuggestMatches:enabled"/>
+  <int value="1169333832" label="AibHttpAcceptHeader:disabled"/>
   <int value="1169418814" label="ManualFallbacksFilling:enabled"/>
   <int value="1169602917" label="GlicExperimentalTriggeringScreenshot:enabled"/>
   <int value="1170030686" label="BookmarkBottomSheet:enabled"/>
