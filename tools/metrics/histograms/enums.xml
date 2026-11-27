@@ -10931,6 +10931,7 @@ from previous Chrome versions.
   <int value="-1217025794" label="AibSpoofWebGLInfo:disabled"/>
   <int value="-1216837777" label="clear-data-reduction-proxy-data-savings"/>
   <int value="-1216570731" label="OfflineHome:enabled"/>
+  <int value="-1216102041" label="AibReducedSystemInfo:disabled"/>
   <int value="-1215746151" label="ForestFeature:enabled"/>
   <int value="-1215340781" label="CrOSSystemVoiceIsolationOption:enabled"/>
   <int value="-1215167587" label="EnableAndroidSidePanel:disabled"/>
@@ -17898,6 +17899,7 @@ from previous Chrome versions.
   <int value="841276069" label="ChromeHomeDoodle:disabled"/>
   <int value="841343322" label="disable-new-korean-ime"/>
   <int value="841434560" label="DynamicSearchUpdateAnimation:disabled"/>
+  <int value="841446337" label="AibReducedSystemInfo:enabled"/>
   <int value="841578365" label="SuppressTextMessages:enabled"/>
   <int value="841779535" label="password-export:enabled"/>
   <int value="842158411" label="PdfViewerDocumentProperties:enabled"/>

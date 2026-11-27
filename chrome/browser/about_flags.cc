@@ -14155,6 +14155,12 @@ const FeatureEntry kFeatureEntries[] = {
                                     kAibSpoofWebGLInfoVariations,
                                     "AibSpoofWebGLInfo")},
 
+    {"aib-reduced-system-info",
+     flag_descriptions::kAibReducedSystemInfoName,
+     flag_descriptions::kAibReducedSystemInfoDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(blink::features::kAibReducedSystemInfo)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

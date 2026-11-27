@@ -6,6 +6,7 @@
 
 #include "base/feature_list.h"
 #include "build/build_config.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
@@ -87,6 +88,10 @@ void NavigatorBase::Trace(Visitor* visitor) const {
 unsigned int NavigatorBase::hardwareConcurrency() const {
   unsigned int hardware_concurrency =
       NavigatorConcurrentHardware::hardwareConcurrency();
+  // AI Browser: report a common low core count instead of the real one.
+  if (base::FeatureList::IsEnabled(features::kAibReducedSystemInfo)) {
+    hardware_concurrency = 2;
+  }
 
   probe::ApplyHardwareConcurrencyOverride(
       probe::ToCoreProbeSink(GetExecutionContext()), hardware_concurrency);

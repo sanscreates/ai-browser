@@ -8645,6 +8645,12 @@ inline constexpr char kAibSpoofWebGLInfoDescription[] =
     "Makes WEBGL_debug_renderer_info report a generic or chosen GPU vendor and "
     "renderer instead of the real ones.";
 
+// AI Browser.
+inline constexpr char kAibReducedSystemInfoName[] = "Reduce system info";
+inline constexpr char kAibReducedSystemInfoDescription[] =
+    "Reports 2 CPU cores and only low-entropy user-agent information (no full "
+    "version, architecture, model or OS version) to websites.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

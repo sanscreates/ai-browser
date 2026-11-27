@@ -27,6 +27,7 @@
 #include "components/embedder_support/switches.h"
 #include "components/version_info/version_info.h"
 #include "net/http/http_util.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 
@@ -194,8 +195,10 @@ const blink::UserAgentBrandList GetUserAgentBrandMajorVersionListInternal(
 // It helps us avoid introducing individual enterprise policy controls for
 // sending unified platform for the user agent string.
 bool ShouldSendUserAgentUnifiedPlatform() {
+  // AI Browser: kAibReducedSystemInfo always uses the frozen platform string.
   return base::FeatureList::IsEnabled(
-      blink::features::kReduceUserAgentMinorVersion);
+             blink::features::kReduceUserAgentMinorVersion) ||
+         base::FeatureList::IsEnabled(blink::features::kAibReducedSystemInfo);
 }
 
 // Return UserAgentBrandList with the full version populated in the brand
@@ -467,8 +470,12 @@ std::string GetUserAgentInternal() {
 }  // namespace
 
 std::string GetProductAndVersion() {
-  return base::FeatureList::IsEnabled(
-             blink::features::kReduceUserAgentMinorVersion)
+  // AI Browser: kAibReducedSystemInfo always reports only the major version.
+  const bool reduce_version =
+      base::FeatureList::IsEnabled(
+          blink::features::kReduceUserAgentMinorVersion) ||
+      base::FeatureList::IsEnabled(blink::features::kAibReducedSystemInfo);
+  return reduce_version
              ? version_info::GetProductNameAndVersionForReducedUserAgent()
              : version_info::GetProductNameAndVersionForUserAgent();
 }
@@ -657,7 +664,10 @@ blink::UserAgentMetadata GetUserAgentMetadata(bool only_low_entropy_ch) {
                : metadata;
   }
 
-  if (only_low_entropy_ch) {
+  // AI Browser: kAibReducedSystemInfo never exposes the high-entropy values
+  // (full version, architecture, model, bitness, platform version, ...).
+  if (only_low_entropy_ch ||
+      base::FeatureList::IsEnabled(blink::features::kAibReducedSystemInfo)) {
     return metadata;
   }
 

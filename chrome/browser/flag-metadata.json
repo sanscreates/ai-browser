@@ -213,6 +213,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-reduced-system-info",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-spoof-webgl-info",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200
