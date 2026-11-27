@@ -220,6 +220,9 @@ if (is_chromeos) {
 }
 
 # AI Browser: ship only a keep-list of UI locales on desktop to save space.
+# Every locale is still built (grit's .grd files list all of them as outputs);
+# only `aib_packaged_locales` / `aib_packaged_locales_as_apple_outputs`,
+# defined at the end of this file, are packaged.
 declare_args() {
   # UI locales to package (desktop only). An empty list ships every locale
   # Chromium would. The default is en-US plus the most widely used
@@ -249,12 +252,6 @@ declare_args() {
     "zh-CN",
     "zh-TW",
   ]
-}
-if (!is_android && !is_ios && aib_keep_locales != []) {
-  _aib_kept_locales =
-      filter_include(platform_pak_locales, aib_keep_locales + pseudolocales)
-  platform_pak_locales = []
-  platform_pak_locales = _aib_kept_locales
 }
 
 # List for Android locale names in .xml exports. Note: needs to stay in sync
@@ -331,6 +328,25 @@ if (is_apple) {
       locales_as_apple_outputs += [ "en" ]
     } else {
       locales_as_apple_outputs += [ string_replace(locale, "-", "_") ]
+    }
+  }
+}
+
+# AI Browser: the locales actually packaged (see aib_keep_locales above).
+if (!is_android && !is_ios && aib_keep_locales != []) {
+  aib_packaged_locales =
+      filter_include(platform_pak_locales, aib_keep_locales + pseudolocales)
+} else {
+  aib_packaged_locales = platform_pak_locales
+}
+if (is_apple) {
+  aib_packaged_locales_as_apple_outputs = []
+  foreach(locale, aib_packaged_locales) {
+    if (locale == "en-US") {
+      aib_packaged_locales_as_apple_outputs += [ "en" ]
+    } else {
+      aib_packaged_locales_as_apple_outputs +=
+          [ string_replace(locale, "-", "_") ]
     }
   }
 }

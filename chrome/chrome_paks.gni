@@ -750,13 +750,14 @@ template("chrome_paks") {
       repack_allowlist = invoker.repack_allowlist
     }
 
-    input_locales = platform_pak_locales
+    # AI Browser: only the packaged locales (build/config/locales.gni).
+    input_locales = aib_packaged_locales
     output_dir = "${invoker.output_dir}/locales"
 
     if (is_mac) {
-      output_locales = locales_as_apple_outputs
+      output_locales = aib_packaged_locales_as_apple_outputs
     } else {
-      output_locales = platform_pak_locales
+      output_locales = aib_packaged_locales
     }
   }
 

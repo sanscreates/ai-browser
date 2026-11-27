@@ -61,5 +61,12 @@ ffmpeg_branding = "Chrome"
 enable_widevine = true          # Widevine CDM support (the CDM itself is a
                                 # user-initiated component download).
 
+# ------------------------------------------------------------------- size --
+# UI locales: only build/config/locales.gni's aib_keep_locales (en-US plus 22
+# major languages) are packaged by default. Set `aib_keep_locales = []` to
+# ship every locale.
+translate_genders = false       # One locale.pak per locale instead of four
+                                # gendered variants (DECISIONS D10).
+
 # ------------------------------------------------------------------- misc --
 treat_warnings_as_errors = false  # Don't fail on new upstream warnings.
