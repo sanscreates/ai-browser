@@ -294,9 +294,13 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
     PrefService& prefs,
     const std::vector<raw_ptr<const PrepopulatedEngine>>&
         regional_prepopulated_engines) {
-  return PrepopulatedEngineToTemplateURLData(
-      FindPrepopulatedEngineInternal(regional_prepopulated_engines, google.id,
-                                     /*use_first_as_fallback=*/true));
+  // AI Browser: DuckDuckGo is the default search engine in every region,
+  // using the region's own definition when it has one. Google and the other
+  // regional engines stay available for users who choose them.
+  const PrepopulatedEngine* engine = FindPrepopulatedEngineInternal(
+      regional_prepopulated_engines, duckduckgo.id,
+      /*use_first_as_fallback=*/false);
+  return PrepopulatedEngineToTemplateURLData(engine ? engine : &duckduckgo);
 }
 
 }  // namespace TemplateURLPrepopulateData
