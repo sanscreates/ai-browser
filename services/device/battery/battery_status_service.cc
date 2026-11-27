@@ -40,8 +40,13 @@ base::CallbackListSubscription BatteryStatusService::AddCallback(
   DCHECK(main_thread_task_runner_->BelongsToCurrentThread());
   DCHECK(!is_shutdown_);
 
-  if (!battery_fetcher_)
-    battery_fetcher_ = BatteryStatusManager::Create(update_callback_);
+  // AI Browser: never start the platform battery monitor. Every consumer gets
+  // the fixed default status (charging, level 1.0) so the Battery Status API
+  // can't be used for fingerprinting. A manager injected by tests still works.
+  if (!battery_fetcher_) {
+    callback.Run(mojom::BatteryStatus());
+    return callback_list_.Add(callback);
+  }
 
   if (callback_list_.empty()) {
     bool success = battery_fetcher_->StartListeningBatteryChange();
@@ -62,7 +67,8 @@ void BatteryStatusService::ConsumersChanged() {
   if (is_shutdown_)
     return;
 
-  if (callback_list_.empty()) {
+  // AI Browser: there is no fetcher unless a test injected one.
+  if (callback_list_.empty() && battery_fetcher_) {
     battery_fetcher_->StopListeningBatteryChange();
     status_updated_ = false;
   }
@@ -89,8 +95,10 @@ void BatteryStatusService::NotifyConsumersOnMainThread(
 }
 
 void BatteryStatusService::Shutdown() {
-  if (!callback_list_.empty())
+  // AI Browser: there is no fetcher unless a test injected one.
+  if (!callback_list_.empty() && battery_fetcher_) {
     battery_fetcher_->StopListeningBatteryChange();
+  }
   battery_fetcher_.reset();
   is_shutdown_ = true;
 }
