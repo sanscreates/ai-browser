@@ -50,7 +50,8 @@ NewTabButton::NewTabButton(BrowserWindowInterface* browser,
 
   set_context_menu_controller(this);
 
-#if BUILDFLAG(IS_LINUX)
+  // AI Browser: also on macOS.
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   // On Linux, middle-clicking the New Tab Button triggers
   // paste and navigate, either to URLs or to search queries.
   SetTriggerableEventFlags(GetTriggerableEventFlags() |
@@ -122,7 +123,8 @@ void NewTabButton::SetMiddleClickCallbackForTesting(
 
 void NewTabButton::NotifyClick(const ui::Event& event) {
   base::RecordAction(base::UserMetricsAction("NewTab_Button"));
-#if BUILDFLAG(IS_LINUX)
+  // AI Browser: middle-click paste and go also works on macOS.
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   if (event.IsMouseEvent()) {
     const ui::MouseEvent& mouse = static_cast<const ui::MouseEvent&>(event);
     if (mouse.IsOnlyMiddleMouseButton()) {

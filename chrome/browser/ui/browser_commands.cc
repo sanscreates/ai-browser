@@ -1465,16 +1465,25 @@ void NewTabToRight(BrowserWindowInterface* browser) {
 }
 
 void NewTabFromClipboardURL(BrowserWindowInterface* browser) {
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 #if BUILDFLAG(IS_LINUX)
-  if (ui::Clipboard::IsMiddleClickPasteEnabled() &&
-      ui::Clipboard::IsSupportedClipboardBuffer(
-          ui::ClipboardBuffer::kSelection)) {
+  const bool can_paste = ui::Clipboard::IsMiddleClickPasteEnabled() &&
+                         ui::Clipboard::IsSupportedClipboardBuffer(
+                             ui::ClipboardBuffer::kSelection);
+  const ui::ClipboardBuffer buffer = ui::ClipboardBuffer::kSelection;
+#else
+  // AI Browser: macOS has no selection clipboard, so middle-click paste and
+  // go reads the regular copy/paste buffer.
+  const bool can_paste = true;
+  const ui::ClipboardBuffer buffer = ui::ClipboardBuffer::kCopyPaste;
+#endif
+  if (can_paste) {
     ui::Clipboard* const clipboard = ui::Clipboard::GetForCurrentThread();
     CHECK(clipboard)
         << "Clipboard instance is not available, cannot proceed with "
            "middle mouse button action.";
     clipboard->ReadText(
-        ui::ClipboardBuffer::kSelection, /*data_dst=*/std::nullopt,
+        buffer, /*data_dst=*/std::nullopt,
         base::BindOnce(
             [](base::WeakPtr<BrowserWindowInterface> browser_weak,
                std::u16string text) {

@@ -245,7 +245,8 @@ HorizontalTabStripRegionViewOld::HorizontalTabStripRegionViewOld(
     new_tab_button_->GetViewAccessibility().SetName(
         l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
 
-#if BUILDFLAG(IS_LINUX)
+    // AI Browser: also on macOS.
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
     // On Linux, middle-clicking the New Tab Button triggers
     // paste and navigate, either to URLs or to search queries.
     new_tab_button_->SetTriggerableEventFlags(
