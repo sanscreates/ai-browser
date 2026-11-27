@@ -7,7 +7,10 @@
 #include <memory>
 #include <utility>
 
+#include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "components/affiliations/core/browser/affiliation_api.pb.h"
 #include "components/affiliations/core/browser/affiliation_fetcher_interface.h"
@@ -136,6 +139,16 @@ void HashAffiliationFetcher::StartRequest(
     base::OnceCallback<void(FetchResult)> result_callback) {
   requested_facet_uris_ = facet_uris;
   result_callback_ = std::move(result_callback);
+
+  // AI Browser: never send hashed site/app lookups to Google's affiliation
+  // service. Report a failed fetch asynchronously instead.
+  constexpr bool kAllowAffiliationLookups = false;
+  if (!kAllowAffiliationLookups) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(result_callback_),
+                                  AffiliationFetcherInterface::FetchResult()));
+    return;
+  }
 
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("affiliation_lookup_by_hash", R"(
