@@ -1,4 +1,5 @@
 include_rules = [
+  "+components/aib",
   "+components/country_codes",
   "+components/database_utils",
   "+components/favicon",

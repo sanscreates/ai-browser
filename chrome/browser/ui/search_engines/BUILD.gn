@@ -44,6 +44,7 @@ source_set("search_engines") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
     "//chrome/common",
+    "//components/aib:aib_features",
     "//components/omnibox/browser",
     "//components/omnibox/common",
     "//components/prefs",

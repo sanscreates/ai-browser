@@ -16058,6 +16058,7 @@ from previous Chrome versions.
   <int value="299270348" label="EnablePixPaymentsInLandscapeMode:disabled"/>
   <int value="299466814" label="ChromeWhatsNewUI:enabled"/>
   <int value="299526582" label="VariationsGoogleGroupFiltering:enabled"/>
+  <int value="299596849" label="AibDisableSearchEngineCollection:disabled"/>
   <int value="299792415" label="OmniboxSuggestionTransparencyOptions:enabled"/>
   <int value="300095239" label="FCMInvalidations:enabled"/>
   <int value="300870732" label="ShelfDimming:disabled"/>
@@ -19954,6 +19955,7 @@ from previous Chrome versions.
   <int value="1444634753" label="OsFeedbackJelly:disabled"/>
   <int value="1444719196"
       label="CellularBypassESimInstallationConnectivityCheck:enabled"/>
+  <int value="1445157659" label="AibDisableSearchEngineCollection:enabled"/>
   <int value="1445391138" label="FullscreenVideoPictureInPicture:disabled"/>
   <int value="1445634746"
       label="AutofillThirdPartyModeContentProvider:enabled"/>

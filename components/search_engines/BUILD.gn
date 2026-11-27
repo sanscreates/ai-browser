@@ -91,6 +91,7 @@ static_library("search_engines") {
 
   deps = [
     "//base:i18n",
+    "//components/aib:aib_features",
     "//components/country_codes",
     "//components/crash/core/common:crash_key",
     "//components/database_utils",

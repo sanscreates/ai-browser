@@ -8677,6 +8677,12 @@ inline constexpr char kAibForcePunycodeHostnamesName[] =
 inline constexpr char kAibForcePunycodeHostnamesDescription[] =
     "Display internationalized domain names in punycode (xn--) form.";
 
+// AI Browser.
+inline constexpr char kAibDisableSearchEngineCollectionName[] =
+    "Disable search engine collection";
+inline constexpr char kAibDisableSearchEngineCollectionDescription[] =
+    "Stop websites from adding themselves as search engines.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

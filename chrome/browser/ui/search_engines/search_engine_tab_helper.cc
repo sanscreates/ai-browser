@@ -6,12 +6,14 @@
 
 #include <memory>
 
+#include "base/feature_list.h"
 #include "chrome/browser/favicon/favicon_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_fetcher_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/search_engines/edit_search_engine_controller.h"
 #include "chrome/common/url_constants.h"
+#include "components/aib/aib_net_features.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_fetcher.h"
 #include "components/search_engines/template_url_service.h"
@@ -139,6 +141,12 @@ void SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument(
   // http://b/issue?id=863583. For that reason, this doesn't check and allow
   // urls referring to osdd urls with same schemes.
   if (!osdd_url.is_valid() || !osdd_url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  // AI Browser: don't fetch OSDD files when search engine collection is off.
+  if (base::FeatureList::IsEnabled(
+          aib::features::kAibDisableSearchEngineCollection)) {
     return;
   }
 

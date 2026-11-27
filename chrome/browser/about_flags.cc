@@ -14186,6 +14186,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsAll,
      FEATURE_VALUE_TYPE(aib::features::kAibForcePunycodeHostnames)},
 
+    {"aib-disable-search-engine-collection",
+     flag_descriptions::kAibDisableSearchEngineCollectionName,
+     flag_descriptions::kAibDisableSearchEngineCollectionDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(aib::features::kAibDisableSearchEngineCollection)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
