@@ -194,10 +194,12 @@ struct NewTabURLDetails {
       }
     }
 #else
-    const GURL local_url(default_is_google
-                             ? chrome::ChromeUINewTabPageURLAsGURL()
-                             : GURL(chrome::kChromeUINewTabPageThirdPartyURL));
-    if (default_is_google) {
+    // AI Browser: always open the local new tab page. Never load the search
+    // engine's remote NTP, and never the Google-flavored WebUI NTP (doodles,
+    // One Google bar, modules), whichever engine is the default.
+    const GURL local_url(chrome::kChromeUINewTabPageThirdPartyURL);
+    constexpr bool kUseSearchProviderNewTabPage = false;
+    if (default_is_google || !kUseSearchProviderNewTabPage) {
       return NewTabURLDetails(local_url, NEW_TAB_URL_VALID);
     }
 #endif
