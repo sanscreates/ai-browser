@@ -146,24 +146,19 @@ void DeleteOldComponents(const base::FilePath& user_data_dir) {
 void RegisterComponentsForUpdate() {
   auto* const cus = g_browser_process->component_updater();
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-  RegisterRecoveryImprovedComponent(cus, g_browser_process->local_state());
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+  // AI Browser: components that only serve Google services, AI features or
+  // model downloads are not registered at all: the recovery component,
+  // on-device head suggest, optimization hints, trust tokens, actor safety
+  // lists, Indigo, MEI preload, ScreenAI, commerce heuristics, TranslateKit,
+  // payments amount extraction, WASM TTS, captcha providers, dictation,
+  // IWA key distribution and AI embeddings.
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   RegisterWidevineCdmComponent(cus);
 #endif  // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 
   RegisterSubresourceFilterComponent(cus);
-  RegisterOnDeviceHeadSuggestComponent(
-      cus, g_browser_process->GetApplicationLocale());
-  RegisterOptimizationHintsComponent(cus);
-  RegisterTrustTokenKeyCommitmentsComponentIfTrustTokensEnabled(cus);
-  RegisterPrivateVerificationTokensComponentIfEnabled(cus);
-  RegisterActorSafetyListsComponent(cus, base::OnceClosure());
   RegisterSSLErrorAssistantComponent(cus);
-
-  RegisterIndigoComponent(cus);
 
 #if BUILDFLAG(SAFE_BROWSING_AVAILABLE)
   RegisterFileTypePoliciesComponent(cus);
@@ -172,7 +167,6 @@ void RegisterComponentsForUpdate() {
   RegisterCRLSetComponent(cus);
 
   RegisterOriginTrialsComponent(cus);
-  RegisterMediaEngagementPreloadComponent(cus, base::OnceClosure());
 
   MaybeRegisterPKIMetadataComponent(cus);
 
@@ -190,45 +184,12 @@ void RegisterComponentsForUpdate() {
 
 #if !BUILDFLAG(IS_ANDROID)
   RegisterAutofillCustomFormControlScriptsComponent(cus);
-  RegisterDictationConnectorComponent(cus);
-  RegisterIwaKeyDistributionComponent(cus);
   RegisterZxcvbnDataComponent(cus);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)
   RegisterRealTimeUrlChecksAllowlistComponent(cus);
 #endif  // BUIDLFLAG(IS_ANDROID)
-
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
-  ManageScreenAIComponentRegistration(cus, g_browser_process->local_state());
-#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
-
-  RegisterCommerceHeuristicsComponent(cus);
-
-#if BUILDFLAG(ENABLE_ON_DEVICE_TRANSLATION)
-  // TODO(crbug.com/364795294): Support other platforms.
-  RegisterTranslateKitComponent(cus, g_browser_process->local_state(),
-                                /*force_install=*/false,
-                                /*registered_callback=*/base::OnceClosure(),
-                                /*on_ready_callback=*/base::DoNothing());
-  RegisterTranslateKitLanguagePackComponentsForUpdate(
-      cus, g_browser_process->local_state(),
-      /*resume_unfinished_downloads=*/!BUILDFLAG(IS_ANDROID));
-  RegisterTranslateKitLanguagePackComponentsForAutoDownload(
-      cus, g_browser_process->local_state());
-#endif  // BUILDFLAG(ENABLE_ON_DEVICE_TRANSLATION)
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
-  RegisterAmountExtractionHeuristicRegexesComponent(cus);
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
-        // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-  RegisterWasmTtsEngineComponent(cus, g_browser_process->local_state());
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-
-  RegisterCaptchaProviderComponent(cus);
 
   MaybeRegisterPlatformRuntimeComponent(cus);
 
@@ -238,8 +199,6 @@ void RegisterComponentsForUpdate() {
 
   base::FilePath path;
   if (base::PathService::Get(chrome::DIR_USER_DATA, &path)) {
-    ManageAIEmbeddingsComponentRegistration(cus,
-                                            g_browser_process->local_state());
 #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
     ManageComponentExtensionRegistrations(cus);
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS_CORE)
