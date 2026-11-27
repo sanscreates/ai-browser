@@ -109,12 +109,9 @@ bool ManifestV2HandlerFactory::ServiceIsCreatedWithBrowserContext() const {
 
 // Returns true if legacy extensions should be disabled.
 bool ShouldDisableLegacyExtensions() {
-  if (g_allow_mv2_for_testing) {
-    // We allow legacy MV2 extensions for testing purposes.
-    return false;
-  }
-
-  return true;
+  // AI Browser: Manifest V2 extensions (e.g. full-featured content blockers)
+  // keep working; they are never disabled.
+  return false;
 }
 
 }  // namespace
