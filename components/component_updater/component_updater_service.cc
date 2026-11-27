@@ -146,19 +146,9 @@ base::Version CrxUpdateService::GetMaxPreviousProductVersion(
 
 void CrxUpdateService::Start() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (update_checks_disabled_) {
-    VLOG(1) << "CrxUpdateService update checks are disabled";
-    return;
-  }
-  VLOG(1) << "CrxUpdateService starting up. "
-          << "First update attempt will take place in "
-          << config_->InitialDelay() << " seconds. "
-          << "Next update attempt will take place in "
-          << config_->NextCheckDelay() << " seconds. ";
-
-  scheduler_->Schedule(config_->InitialDelay(), config_->NextCheckDelay(),
-                       base::BindRepeating(&CrxUpdateService::CheckForUpdates,
-                                           weak_ptr_factory_.GetWeakPtr()));
+  // AI Browser: no periodic background update checks. Components only
+  // update on demand (e.g. "Check for update" in chrome://components).
+  VLOG(1) << "CrxUpdateService: background update checks are disabled";
 }
 
 // Stops the update loop. In flight operations will be completed.
