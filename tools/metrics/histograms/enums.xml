@@ -8177,6 +8177,7 @@ from previous Chrome versions.
   <int value="-2021954068" label="TapVisualizerApp:disabled"/>
   <int value="-2020886334"
       label="MediaAppImageMantisExpandBackground:disabled"/>
+  <int value="-2021936222" label="incognito"/>
   <int value="-2020721975" label="smart-virtual-keyboard"/>
   <int value="-2020193528" label="NtpSimplification:enabled"/>
   <int value="-2020024440" label="scroll-end-effect"/>
@@ -9387,6 +9388,7 @@ from previous Chrome versions.
   <int value="-1662556193" label="OmniboxNumSrpZpsRecentSearches:disabled"/>
   <int value="-1662447331" label="wake-on-packets"/>
   <int value="-1661282561" label="SharingHubDesktopOmnibox:enabled"/>
+  <int value="-1661127986" label="enable-low-end-device-mode"/>
   <int value="-1660972490" label="gpu-rasterization-msaa-sample-count"/>
   <int value="-1660884825" label="ReadLaterNewBadgePromo:enabled"/>
   <int value="-1659659261" label="VpnAppsOnFlex:disabled"/>
@@ -10447,6 +10449,7 @@ from previous Chrome versions.
   <int value="-1361870305"
       label="DeviceBoundSessionsFederatedRegistration:disabled"/>
   <int value="-1361493814" label="FCMInvalidations:disabled"/>
+  <int value="-1360129038" label="proxy-server"/>
   <int value="-1359862112" label="AccessibilityCanvas:enabled"/>
   <int value="-1359521947"
       label="ContextualTasksEphemeralButtonContextMenu:enabled"/>
@@ -13002,6 +13005,7 @@ from previous Chrome versions.
   <int value="-613433517" label="OmniboxZpsSuggestionLimit:disabled"/>
   <int value="-613072171" label="ElementCapture:enabled"/>
   <int value="-612860466" label="Projector:disabled"/>
+  <int value="-612681501" label="proxy-bypass-list"/>
   <int value="-612633819" label="NotificationScrollBar:disabled"/>
   <int value="-612512034" label="(Obsolete) frame-throttle-fps"/>
   <int value="-612480090" label="FasterLocationReload:enabled"/>
@@ -17953,6 +17957,7 @@ from previous Chrome versions.
   <int value="844587371"
       label="DesktopPWAsLocalUpdatingThrottlePersistence:disabled"/>
   <int value="844878845" label="mantis-feature-key:enabled"/>
+  <int value="844995920" label="force-dark-mode"/>
   <int value="845659238" label="DevicePosture:enabled"/>
   <int value="845666212" label="AutofillAiWithDataSchema:disabled"/>
   <int value="846452845" label="SplitViewLinkOpen:disabled"/>
@@ -18716,6 +18721,7 @@ from previous Chrome versions.
   <int value="1082054180" label="PersistentWindowBounds:disabled"/>
   <int value="1082064896" label="WebAuthenticationAmbientSignin:enabled"/>
   <int value="1082840061" label="LinkDoctorDeprecationAndroid:disabled"/>
+  <int value="1082971867" label="start-maximized"/>
   <int value="1083020187" label="FractionalScrollOffsets:enabled"/>
   <int value="1083107573" label="OmniboxFuseboxUserEdPlusButtonIph:enabled"/>
   <int value="1083201516" label="PersistentWindowBounds:enabled"/>

@@ -248,6 +248,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-force-dark-mode",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-force-punycode-hostnames",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200
@@ -283,6 +288,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-incognito",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-incognito-themes",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200
@@ -308,6 +318,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-low-end-device-mode",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-max-connections-per-host",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200
@@ -318,12 +333,27 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-no-pings",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-omnibox-autocomplete-filtering",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200
   },
   {
     "name": "aib-popups-to-tabs",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
+    "name": "aib-proxy-bypass-list",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
+    "name": "aib-proxy-server",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200
   },
@@ -359,6 +389,11 @@
   },
   {
     "name": "aib-spoof-webgl-info",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
+    "name": "aib-start-maximized",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200
   },

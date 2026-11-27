@@ -24,6 +24,8 @@ Spec keys:
   variations   optional [{"label": "Always", "params": {"mode": "always"}}]
   string_switch  instead of a feature: C++ switch constant for a text-box
                flag (STRING_VALUE_TYPE); switch_name is its string value.
+  single_switch  instead of a feature: C++ switch constant for an on/off
+               switch flag (SINGLE_VALUE_TYPE); switch_name as above.
 """
 
 import json
@@ -133,6 +135,8 @@ def register(spec):
     value = f'FEATURE_VALUE_TYPE({feature})'
     if spec.get('string_switch'):
       value = f'STRING_VALUE_TYPE({spec["string_switch"]}, "")'
+    elif spec.get('single_switch'):
+      value = f'SINGLE_VALUE_TYPE({spec["single_switch"]})'
     elif spec.get('variations'):
       if VAR_MARK not in a:
         anchor = '// When adding a new choice, add it to the end of the list.\n'
@@ -181,7 +185,8 @@ def register(spec):
   e = read(ENUMS)
   start = e.index('<enum name="LoginCustomFlags">')
   end = e.index('</enum>', start)
-  labels = ([spec['switch_name']] if spec.get('string_switch') else
+  is_switch = spec.get('string_switch') or spec.get('single_switch')
+  labels = ([spec['switch_name']] if is_switch else
             [f'{fname}:{suffix}' for suffix in ('disabled', 'enabled')])
   for label in labels:
     if f'label="{label}"' in e[start:end]:

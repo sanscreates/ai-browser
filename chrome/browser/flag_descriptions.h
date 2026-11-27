@@ -8821,6 +8821,46 @@ inline constexpr char kAibCustomNtpUrlDescription[] =
     "Open this URL as the New Tab page (http, https, file, chrome:// or "
     "about:blank).";
 
+// AI Browser.
+inline constexpr char kAibProxyServerName[] = "Proxy server";
+inline constexpr char kAibProxyServerDescription[] =
+    "Send all traffic through this proxy, e.g. socks5://127.0.0.1:9050 or "
+    "http://proxy:8080 (same as --proxy-server).";
+
+// AI Browser.
+inline constexpr char kAibProxyBypassListName[] = "Proxy bypass list";
+inline constexpr char kAibProxyBypassListDescription[] =
+    "Hosts that skip the proxy, separated by semicolons (same as "
+    "--proxy-bypass-list).";
+
+// AI Browser.
+inline constexpr char kAibNoPingsName[] = "No hyperlink auditing pings";
+inline constexpr char kAibNoPingsDescription[] =
+    "Never send <a ping> hyperlink auditing requests, whatever the setting "
+    "(same as --no-pings).";
+
+// AI Browser.
+inline constexpr char kAibStartMaximizedName[] = "Start maximized";
+inline constexpr char kAibStartMaximizedDescription[] =
+    "Open browser windows maximized (same as --start-maximized).";
+
+// AI Browser.
+inline constexpr char kAibIncognitoName[] = "Always start in Incognito";
+inline constexpr char kAibIncognitoDescription[] =
+    "Start the browser in an Incognito window (same as --incognito).";
+
+// AI Browser.
+inline constexpr char kAibForceDarkModeName[] = "Force dark mode";
+inline constexpr char kAibForceDarkModeDescription[] =
+    "Use the dark browser theme regardless of the system setting (same as "
+    "--force-dark-mode).";
+
+// AI Browser.
+inline constexpr char kAibLowEndDeviceModeName[] = "Low-end device mode";
+inline constexpr char kAibLowEndDeviceModeDescription[] =
+    "Trade speed for lower memory use, as on low-memory devices (same as "
+    "--enable-low-end-device-mode).";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

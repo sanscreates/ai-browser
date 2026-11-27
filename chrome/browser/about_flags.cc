@@ -14430,6 +14430,48 @@ const FeatureEntry kFeatureEntries[] = {
      kOsDesktop,
      STRING_VALUE_TYPE(aib::features::kAibCustomNtpUrlSwitch, "")},
 
+    {"aib-proxy-server",
+     flag_descriptions::kAibProxyServerName,
+     flag_descriptions::kAibProxyServerDescription,
+     kOsDesktop,
+     STRING_VALUE_TYPE(switches::kProxyServer, "")},
+
+    {"aib-proxy-bypass-list",
+     flag_descriptions::kAibProxyBypassListName,
+     flag_descriptions::kAibProxyBypassListDescription,
+     kOsDesktop,
+     STRING_VALUE_TYPE(switches::kProxyBypassList, "")},
+
+    {"aib-no-pings",
+     flag_descriptions::kAibNoPingsName,
+     flag_descriptions::kAibNoPingsDescription,
+     kOsDesktop,
+     SINGLE_VALUE_TYPE(switches::kNoPings)},
+
+    {"aib-start-maximized",
+     flag_descriptions::kAibStartMaximizedName,
+     flag_descriptions::kAibStartMaximizedDescription,
+     kOsDesktop,
+     SINGLE_VALUE_TYPE(switches::kStartMaximized)},
+
+    {"aib-incognito",
+     flag_descriptions::kAibIncognitoName,
+     flag_descriptions::kAibIncognitoDescription,
+     kOsDesktop,
+     SINGLE_VALUE_TYPE(switches::kIncognito)},
+
+    {"aib-force-dark-mode",
+     flag_descriptions::kAibForceDarkModeName,
+     flag_descriptions::kAibForceDarkModeDescription,
+     kOsDesktop,
+     SINGLE_VALUE_TYPE(switches::kForceDarkMode)},
+
+    {"aib-low-end-device-mode",
+     flag_descriptions::kAibLowEndDeviceModeName,
+     flag_descriptions::kAibLowEndDeviceModeDescription,
+     kOsDesktop,
+     SINGLE_VALUE_TYPE(switches::kEnableLowEndDeviceMode)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
