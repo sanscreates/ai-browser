@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/compiler_specific.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -772,6 +773,17 @@ void URLRequest::StartJob(std::unique_ptr<URLRequestJob> job) {
 
   maybe_sent_cookies_.clear();
   maybe_stored_cookies_.clear();
+
+  // AI Browser: apply the optional kAibReferrerPolicy trimming first, so the
+  // policy check below sees the referrer that is actually sent. This runs for
+  // every request and again after each redirect.
+  if (!referrer_.empty() &&
+      base::FeatureList::IsEnabled(features::kAibReferrerPolicy)) {
+    GURL trimmed_referrer =
+        URLRequestJob::ApplyAibReferrerPolicy(GURL(referrer_), url());
+    referrer_ = trimmed_referrer.is_valid() ? trimmed_referrer.spec()
+                                            : std::string();
+  }
 
   GURL referrer_url(referrer_);
   bool same_origin_for_metrics;

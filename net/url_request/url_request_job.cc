@@ -9,6 +9,7 @@
 
 #include "base/byte_size.h"
 #include "base/compiler_specific.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
@@ -392,6 +393,31 @@ GURL URLRequestJob::ComputeReferrerForPolicy(
 
     case ReferrerPolicy::NO_REFERRER:
       return GURL();
+  }
+
+  NOTREACHED();
+}
+
+// static
+GURL URLRequestJob::ApplyAibReferrerPolicy(const GURL& referrer,
+                                           const GURL& destination) {
+  if (!referrer.is_valid() ||
+      !base::FeatureList::IsEnabled(features::kAibReferrerPolicy)) {
+    return referrer;
+  }
+
+  switch (features::kAibReferrerPolicyMode.Get()) {
+    case features::AibReferrerPolicyMode::kNoCrossOrigin:
+      if (!url::IsSameOriginWith(referrer, destination)) {
+        return GURL();
+      }
+      return referrer;
+
+    case features::AibReferrerPolicyMode::kMinimal:
+      if (SchemefulSite(referrer) != SchemefulSite(destination)) {
+        return GURL();
+      }
+      return referrer.DeprecatedGetOriginAsURL();
   }
 
   NOTREACHED();

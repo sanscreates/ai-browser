@@ -5245,6 +5245,14 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
     "force-enterprise-isolated-mode";
 
 // AI Browser flag variations.
+const FeatureEntry::FeatureParam kAibReferrerPolicyParams0[] = {
+    {"mode", "no-cross-origin"}};
+const FeatureEntry::FeatureParam kAibReferrerPolicyParams1[] = {
+    {"mode", "minimal"}};
+const FeatureEntry::FeatureVariation kAibReferrerPolicyVariations[] = {
+    {" - No cross-origin referrers", kAibReferrerPolicyParams0, nullptr},
+    {" - Minimal referrers (origin only, same site only)", kAibReferrerPolicyParams1, nullptr},
+};
 const FeatureEntry::FeatureParam kAibExtensionMimeHandlingParams0[] = {
     {"mode", "download-as-file"}};
 const FeatureEntry::FeatureParam kAibExtensionMimeHandlingParams1[] = {
@@ -14207,6 +14215,14 @@ const FeatureEntry kFeatureEntries[] = {
      FEATURE_WITH_PARAMS_VALUE_TYPE(aib::features::kAibExtensionMimeHandling,
                                     kAibExtensionMimeHandlingVariations,
                                     "AibExtensionMimeHandling")},
+
+    {"aib-referrer-policy",
+     flag_descriptions::kAibReferrerPolicyName,
+     flag_descriptions::kAibReferrerPolicyDescription,
+     kOsAll,
+     FEATURE_WITH_PARAMS_VALUE_TYPE(net::features::kAibReferrerPolicy,
+                                    kAibReferrerPolicyVariations,
+                                    "AibReferrerPolicy")},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

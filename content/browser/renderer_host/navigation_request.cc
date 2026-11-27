@@ -176,6 +176,7 @@
 #include "net/http/http_status_code.h"
 #include "net/storage_access_api/status.h"
 #include "net/url_request/redirect_info.h"
+#include "net/url_request/url_request_job.h"
 #include "services/metrics/public/cpp/metrics_utils.h"
 #include "services/metrics/public/cpp/ukm_builders.h"
 #include "services/metrics/public/cpp/ukm_recorder.h"
@@ -1957,6 +1958,10 @@ NavigationRequest::NavigationRequest(
   // Sanitize the referrer.
   common_params_->referrer = Referrer::SanitizeForRequest(
       common_params_->url, *common_params_->referrer);
+  // AI Browser: apply the optional kAibReferrerPolicy trimming here too, so
+  // document.referrer matches what the network stack sends.
+  common_params_->referrer->url = net::URLRequestJob::ApplyAibReferrerPolicy(
+      common_params_->referrer->url, common_params_->url);
 
   if (IsInPrimaryMainFrame()) {
     loading_mem_tracker_ = PeakGpuMemoryTrackerFactory::Create(
@@ -4155,6 +4160,10 @@ void NavigationRequest::OnRequestRedirected(
   common_params_->referrer->url = GURL(redirect_info.new_referrer);
   common_params_->referrer = Referrer::SanitizeForRequest(
       common_params_->url, *common_params_->referrer);
+  // AI Browser: keep document.referrer in line with kAibReferrerPolicy after
+  // redirects as well.
+  common_params_->referrer->url = net::URLRequestJob::ApplyAibReferrerPolicy(
+      common_params_->referrer->url, common_params_->url);
 
   // On redirects, the initial referrer is no longer correct, so it must
   // be updated.  (A parallel process updates the outgoing referrer in the

@@ -300,6 +300,12 @@ class NET_EXPORT URLRequestJob {
       const GURL& destination,
       bool* same_origin_out_for_metrics = nullptr);
 
+  // AI Browser: returns |referrer| further trimmed for a request to
+  // |destination| according to features::kAibReferrerPolicy. Returns
+  // |referrer| unchanged when that feature is disabled.
+  static GURL ApplyAibReferrerPolicy(const GURL& referrer,
+                                     const GURL& destination);
+
  protected:
   // Notifies the job that we are connected.
   int NotifyConnected(const TransportInfo& info,

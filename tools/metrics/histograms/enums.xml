@@ -15626,6 +15626,7 @@ from previous Chrome versions.
   <int value="173339199" label="SmsReceiverCrossDevice:disabled"/>
   <int value="173563834" label="(Obsolete) AllowDevtoolsInSystemUI:enabled"/>
   <int value="173738967" label="WebRtcStatsReportIdl:enabled"/>
+  <int value="174710883" label="AibReferrerPolicy:enabled"/>
   <int value="174759256" label="LockScreenMediaControls:enabled"/>
   <int value="174917935" label="ReengagementNotification:disabled"/>
   <int value="175254474" label="SpectreVariant2Mitigation:enabled"/>
@@ -17964,6 +17965,7 @@ from previous Chrome versions.
   <int value="855636462" label="DisableBruschettaInstallChecks:disabled"/>
   <int value="855746780" label="disable-physical-keyboard-autocorrect"/>
   <int value="855981832" label="BatchFetchRequests:enabled"/>
+  <int value="856093499" label="AibReferrerPolicy:disabled"/>
   <int value="856250802" label="webtransport-developer-mode"/>
   <int value="856414742" label="ShoppingAlternateServer:disabled"/>
   <int value="856932547" label="PermissionPromiseLifetimeModulation:enabled"/>

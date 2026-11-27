@@ -8689,6 +8689,11 @@ inline constexpr char kAibExtensionMimeHandlingName[] =
 inline constexpr char kAibExtensionMimeHandlingDescription[] =
     "Choose how CRX files downloaded from websites are handled.";
 
+// AI Browser.
+inline constexpr char kAibReferrerPolicyName[] = "Referrer trimming";
+inline constexpr char kAibReferrerPolicyDescription[] =
+    "Send less referrer information than the page's referrer policy allows.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
