@@ -10392,6 +10392,7 @@ from previous Chrome versions.
   <int value="-1377163704"
       label="PermissionPromiseLifetimeModulation:disabled"/>
   <int value="-1376510363" label="ServiceWorkerScriptFullCodeCache:disabled"/>
+  <int value="-1376466309" label="AibJitlessWhenJsOptimizerOff:enabled"/>
   <int value="-1376258171" label="InstanceSwitcher:enabled"/>
   <int value="-1376006534" label="WinUseBrowserSpellChecker:disabled"/>
   <int value="-1375111024" label="enable-fixed-position-compositing"/>
@@ -11631,6 +11632,7 @@ from previous Chrome versions.
       label="AutofillAiBasedAmountExtractionIgnoreSeenTermsForTesting:disabled"/>
   <int value="-1009727449" label="HelpAppWelcomeTips:enabled"/>
   <int value="-1009111883" label="NearbyShareVisibilityReminder:enabled"/>
+  <int value="-1008896162" label="AibJitlessWhenJsOptimizerOff:disabled"/>
   <int value="-1008511612" label="EnableCustomMacPaperSizes:disabled"/>
   <int value="-1008430553"
       label="GlicContextualCueV2ActiveUserBackoff:enabled"/>

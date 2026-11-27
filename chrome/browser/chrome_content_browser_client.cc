@@ -256,6 +256,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/installer/util/google_update_settings.h"
 #include "components/actor/core/actor_features.h"
+#include "components/aib/aib_net_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_switches.h"
 #include "components/blocked_content/popup_blocker.h"
@@ -8626,10 +8627,19 @@ bool ChromeContentBrowserClient::IsJitDisabledForSite(
     const GURL& site_url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  // AI Browser: with kAibJitlessWhenJsOptimizerOff, turning off the V8
+  // optimizer for a site also makes its renderer fully jitless.
+  const bool jitless_when_optimizer_off = base::FeatureList::IsEnabled(
+      aib::features::kAibJitlessWhenJsOptimizerOff);
+
   // Special case to determine if any policy is set.
   if (map && site_url.is_empty()) {
     return map->GetDefaultContentSetting(ContentSettingsType::JAVASCRIPT_JIT,
-                                         nullptr) == CONTENT_SETTING_BLOCK;
+                                         nullptr) == CONTENT_SETTING_BLOCK ||
+           (jitless_when_optimizer_off &&
+            map->GetDefaultContentSetting(
+                ContentSettingsType::JAVASCRIPT_OPTIMIZER, nullptr) ==
+                CONTENT_SETTING_BLOCK);
   }
 
   // Only disable JIT for schemes that might actually load web content. This
@@ -8639,9 +8649,18 @@ bool ChromeContentBrowserClient::IsJitDisabledForSite(
     return false;
   }
 
-  return (map && map->GetContentSetting(site_url, site_url,
-                                        ContentSettingsType::JAVASCRIPT_JIT) ==
-                     CONTENT_SETTING_BLOCK);
+  if (!map) {
+    return false;
+  }
+  if (map->GetContentSetting(site_url, site_url,
+                             ContentSettingsType::JAVASCRIPT_JIT) ==
+      CONTENT_SETTING_BLOCK) {
+    return true;
+  }
+  return jitless_when_optimizer_off &&
+         map->GetContentSetting(site_url, site_url,
+                                ContentSettingsType::JAVASCRIPT_OPTIMIZER) ==
+             CONTENT_SETTING_BLOCK;
 }
 
 bool ChromeContentBrowserClient::AreV8OptimizationsEnabledForSite(

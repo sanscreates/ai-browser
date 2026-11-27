@@ -8737,6 +8737,12 @@ inline constexpr char kAibOmniboxAutocompleteFilteringDescription[] =
     "Limit address bar suggestions to search suggestions plus the chosen "
     "sources.";
 
+// AI Browser.
+inline constexpr char kAibJitlessWhenJsOptimizerOffName[] =
+    "Jitless when JavaScript optimizer is off";
+inline constexpr char kAibJitlessWhenJsOptimizerOffDescription[] =
+    "Sites where the V8 optimizer is turned off also run without JIT.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

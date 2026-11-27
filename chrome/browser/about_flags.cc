@@ -14296,6 +14296,12 @@ const FeatureEntry kFeatureEntries[] = {
                                     kAibOmniboxAutocompleteFilteringVariations,
                                     "AibOmniboxAutocompleteFiltering")},
 
+    {"aib-jitless-when-js-optimizer-off",
+     flag_descriptions::kAibJitlessWhenJsOptimizerOffName,
+     flag_descriptions::kAibJitlessWhenJsOptimizerOffDescription,
+     kOsDesktop,
+     FEATURE_VALUE_TYPE(aib::features::kAibJitlessWhenJsOptimizerOff)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
