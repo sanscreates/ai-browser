@@ -417,7 +417,8 @@ BASE_FEATURE(kEnsureExistingRendererAlive, base::FEATURE_DISABLED_BY_DEFAULT);
 // by the flag in RuntimeEnabledFeatures on the blink side. See also
 // the use of kSetOnlyIfOverridden in content/child/runtime_features.cc.
 // We enable it here by default to support use in origin trials.
-BASE_FEATURE(kFedCm, base::FEATURE_ENABLED_BY_DEFAULT);
+// AI Browser: FedCM (browser-mediated federated sign-in) is off by default.
+BASE_FEATURE(kFedCm, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables RPs to enhance autofill with federated accounts fetched by the FedCM
 // API.
