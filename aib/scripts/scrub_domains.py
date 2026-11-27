@@ -25,6 +25,10 @@ Sub-commands:
             changed since it was scrubbed, unless --force.
   status    Show whether the tree is scrubbed.
 
+`apply --only FILE...` and `revert --only FILE...` act on just those files
+(paths relative to the repo), so one scrubbed file can be edited and
+committed without restoring, and then rebuilding, the whole tree.
+
 Scrubbing happens only at build time. Never commit scrubbed source:
 `revert` before rebasing or committing.
 """
@@ -333,13 +337,16 @@ def save_manifest(cache, manifest):
 def cmd_apply(args):
   scrub = make_sub(load_domains())
   manifest = load_manifest(args.cache)
-  if manifest['files'] and not args.force:
+  only = set(args.only or [])
+  if manifest['files'] and not args.force and not only:
     sys.exit('Tree already scrubbed (manifest has entries). Run revert first, '
              'or --force to scrub on top.')
   manifest['suffix'] = SUFFIX
   changed = missing = 0
   try:
     for rel in load_files_list():
+      if only and (rel not in only or rel in manifest['files']):
+        continue
       path = os.path.join(REPO, rel)
       text = read_text(path)
       if text is None:
@@ -368,8 +375,12 @@ def cmd_apply(args):
 
 def cmd_revert(args):
   manifest = load_manifest(args.cache)
-  restored, conflicts = 0, []
+  only = set(args.only or [])
+  restored, conflicts, kept = 0, [], []
   for rel, info in sorted(manifest['files'].items()):
+    if only and rel not in only:
+      kept.append(rel)
+      continue
     path = os.path.join(REPO, rel)
     backup = os.path.join(args.cache, 'files', rel)
     try:
@@ -388,8 +399,8 @@ def cmd_revert(args):
     restored += 1
   for rel in conflicts:
     print(f'CONFLICT (modified after scrub, left alone): {rel}')
-  manifest['files'] = {k: v for k, v in manifest['files'].items()
-                       if k in conflicts}
+  keep = set(conflicts) | set(kept)
+  manifest['files'] = {k: v for k, v in manifest['files'].items() if k in keep}
   save_manifest(args.cache, manifest)
   print(f'restored {restored} files; {len(conflicts)} conflicts')
   return 1 if conflicts else 0
@@ -412,8 +423,10 @@ def main():
   sub.add_parser('generate')
   a = sub.add_parser('apply')
   a.add_argument('--force', action='store_true')
+  a.add_argument('--only', nargs='+', metavar='FILE')
   r = sub.add_parser('revert')
   r.add_argument('--force', action='store_true')
+  r.add_argument('--only', nargs='+', metavar='FILE')
   sub.add_parser('status')
   args = p.parse_args()
   return {'survey': cmd_survey, 'generate': cmd_generate, 'apply': cmd_apply,
