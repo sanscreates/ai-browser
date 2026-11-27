@@ -12412,6 +12412,7 @@ from previous Chrome versions.
   <int value="-774636084" label="DnsHostMappingExperiment:enabled"/>
   <int value="-774513654" label="ShareSheetCustomActionsPolish:disabled"/>
   <int value="-773238824" label="AutoplayWhitelistSettings:disabled"/>
+  <int value="-772984686" label="AibClientRectsNoise:disabled"/>
   <int value="-772806796" label="AutofillUpstreamUpdatedUi:enabled"/>
   <int value="-772787642" label="MediaAppCustomColors:disabled"/>
   <int value="-772735473" label="CrossDeviceTaskHandoff:enabled"/>
@@ -15872,6 +15873,7 @@ from previous Chrome versions.
   <int value="254486701" label="CCTResetTimeoutAllowed:enabled"/>
   <int value="254497185" label="VideoPlayerJsModules:enabled"/>
   <int value="255027960" label="AdaptiveButtonInTopToolbarTranslate:disabled"/>
+  <int value="255133527" label="AibClientRectsNoise:enabled"/>
   <int value="255274700" label="Canvas2dStaysGPUOnReadback:enabled"/>
   <int value="255285994" label="PrintPreviewSetupAssistance:disabled"/>
   <int value="255375615" label="stop-non-timers-in-background:enabled"/>

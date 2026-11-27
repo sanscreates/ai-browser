@@ -8632,6 +8632,13 @@ inline constexpr char kAibMeasureTextNoiseDescription[] =
     "Scales canvas measureText() results by a tiny per-page factor, so they "
     "can't be used as a fingerprint.";
 
+// AI Browser.
+inline constexpr char kAibClientRectsNoiseName[] = "Client rects noise";
+inline constexpr char kAibClientRectsNoiseDescription[] =
+    "Scales the sizes and positions returned by getClientRects() and "
+    "getBoundingClientRect() by a tiny per-document factor, so they can't be "
+    "used as a fingerprint.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

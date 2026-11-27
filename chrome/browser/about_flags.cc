@@ -14131,6 +14131,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsAll,
      FEATURE_VALUE_TYPE(blink::features::kAibMeasureTextNoise)},
 
+    {"aib-client-rects-noise",
+     flag_descriptions::kAibClientRectsNoiseName,
+     flag_descriptions::kAibClientRectsNoiseDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(blink::features::kAibClientRectsNoise)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

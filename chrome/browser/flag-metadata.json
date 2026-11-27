@@ -203,6 +203,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-client-rects-noise",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-measure-text-noise",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

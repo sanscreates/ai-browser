@@ -29,6 +29,8 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/renderer/core/display_lock/display_lock_document_state.h"
 #include "third_party/blink/renderer/core/display_lock/display_lock_utilities.h"
 #include "third_party/blink/renderer/core/dom/character_data.h"
@@ -1671,6 +1673,14 @@ DOMRectList* Range::getClientRects() const {
   Vector<gfx::QuadF> quads;
   GetBorderAndTextQuads(quads);
 
+  // AI Browser: tiny per-document scaling against fingerprinting.
+  if (base::FeatureList::IsEnabled(features::kAibClientRectsNoise)) {
+    const float factor = static_cast<float>(
+        AibGeometryNoiseFactor(owner_document_->Token().value()));
+    for (gfx::QuadF& quad : quads) {
+      quad.Scale(factor);
+    }
+  }
   return MakeGarbageCollected<DOMRectList>(quads);
 }
 
@@ -1678,7 +1688,13 @@ DOMRect* Range::getBoundingClientRect() const {
   // TODO(crbug.com/1499981): This should be removed once synchronized scrolling
   // impact is understood.
   SyncScrollAttemptHeuristic::DidAccessScrollOffset();
-  return DOMRect::FromRectF(BoundingRect());
+  gfx::RectF rect = BoundingRect();
+  // AI Browser: tiny per-document scaling against fingerprinting.
+  if (base::FeatureList::IsEnabled(features::kAibClientRectsNoise)) {
+    rect.Scale(static_cast<float>(
+        AibGeometryNoiseFactor(owner_document_->Token().value())));
+  }
+  return DOMRect::FromRectF(rect);
 }
 
 // TODO(editing-dev): We should make

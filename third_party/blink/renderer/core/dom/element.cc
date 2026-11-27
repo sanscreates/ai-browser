@@ -38,6 +38,7 @@
 #include "base/no_destructor.h"
 #include "cc/input/snap_selection_strategy.h"
 #include "components/viz/common/surfaces/tracked_element_rects.h"
+#include "third_party/blink/public/common/aib_features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/mojom/scroll/scroll_enums.mojom-blink.h"
 #include "third_party/blink/public/mojom/scroll/scroll_into_view_params.mojom-blink.h"
@@ -3540,6 +3541,14 @@ DOMRectList* Element::getClientRects() {
     GetDocument().AdjustRectForScrollAndAbsoluteZoom(rect,
                                                      *element_layout_object);
   }
+  // AI Browser: tiny per-document scaling against fingerprinting.
+  if (base::FeatureList::IsEnabled(features::kAibClientRectsNoise)) {
+    const float factor = static_cast<float>(
+        AibGeometryNoiseFactor(GetDocument().Token().value()));
+    for (auto& rect : rects) {
+      rect.Scale(factor);
+    }
+  }
   return MakeGarbageCollected<DOMRectList>(rects);
 }
 
@@ -3636,7 +3645,16 @@ DOMRect* Element::GetBoundingClientRectForBinding() {
   // TODO(crbug.com/1499981): This should be removed once synchronized scrolling
   // impact is understood.
   SyncScrollAttemptHeuristic::DidAccessScrollOffset();
-  return GetBoundingClientRect();
+  // AI Browser: tiny per-document scaling against fingerprinting.
+  if (!base::FeatureList::IsEnabled(features::kAibClientRectsNoise)) {
+    return GetBoundingClientRect();
+  }
+  GetDocument().UpdateStyleAndLayoutForNode(this,
+                                            DocumentUpdateReason::kJavaScript);
+  gfx::RectF rect = GetBoundingClientRectNoLifecycleUpdate();
+  rect.Scale(static_cast<float>(
+      AibGeometryNoiseFactor(GetDocument().Token().value())));
+  return DOMRect::FromRectF(rect);
 }
 
 ContainerQueryList* Element::matchContainer(const String& query,
