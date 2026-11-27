@@ -329,7 +329,8 @@ std::string GetDirectLaunchUrlScheme() {
       return "google-chrome";
   }
 #else
-  return "chromium";
+  // AI Browser: our own scheme, matching build/apple/tweak_info_plist.py.
+  return "aibrowser";
 #endif
 }
 

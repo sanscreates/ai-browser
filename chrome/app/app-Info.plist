@@ -217,6 +217,8 @@
 	<true/>
 	<key>NSCameraReactionEffectGesturesEnabledDefault</key>
 	<false/>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Websites you visit can ask to connect to devices on your local network.</string>
 	<key>NSPrincipalClass</key>
 	<string>BrowserCrApplication</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
@@ -234,7 +236,7 @@
 				<string>public.content</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Chromium Extension</string>
+			<string>AI Browser Extension</string>
 			<key>UTTypeIcons</key>
 			<dict>
 				<key>UTTypeIconBadgeName</key>
@@ -262,7 +264,7 @@
 				<string>com.apple.web-internet-location</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Chromium Shortcut</string>
+			<string>AI Browser Shortcut</string>
 			<key>UTTypeIcons</key>
 			<dict>
 				<key>UTTypeIconBadgeName</key>

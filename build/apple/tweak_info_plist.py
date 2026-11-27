@@ -297,6 +297,9 @@ def _SetDirectLaunchUrlScheme(plist, bundle_identifier):
         # this scheme for non-stable channels during signing.
     elif bundle_identifier == 'org.chromium.Chromium':
         scheme = 'chromium'
+    elif bundle_identifier == 'com.sanscreates.aibrowser':
+        # AI Browser. Keep in sync with GetDirectLaunchUrlScheme().
+        scheme = 'aibrowser'
 
     url_types = plist.get('CFBundleURLTypes')
     if not url_types:

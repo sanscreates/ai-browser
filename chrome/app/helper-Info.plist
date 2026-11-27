@@ -31,6 +31,8 @@
 	<string>1</string>
 	<key>NSCameraReactionEffectGesturesEnabledDefault</key>
 	<false/>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Websites you visit can ask to connect to devices on your local network.</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
 	<key>NSCameraUseContinuityCameraDeviceType</key>
