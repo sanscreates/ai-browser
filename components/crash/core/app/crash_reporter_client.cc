@@ -23,10 +23,6 @@ namespace {
 
 CrashReporterClient* g_client = nullptr;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING) && defined(OFFICIAL_BUILD)
-const char kDefaultUploadURL[] = "https://clients2.google.com/cr/report";
-#endif
-
 }  // namespace
 
 void SetCrashReporterClient(CrashReporterClient* client) {
@@ -143,11 +139,8 @@ void CrashReporterClient::GetSanitizationInformation(
 #endif
 
 std::string CrashReporterClient::GetUploadUrl() {
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING) && defined(OFFICIAL_BUILD)
-  return kDefaultUploadURL;
-#else
+  // AI Browser: crash reports are kept locally and never uploaded.
   return std::string();
-#endif
 }
 
 bool CrashReporterClient::ShouldRateLimitUploads() {

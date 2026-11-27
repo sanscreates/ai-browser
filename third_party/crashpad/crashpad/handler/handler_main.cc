@@ -880,7 +880,7 @@ int HandlerMain(int argc,
 #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) ||
         // BUILDFLAG(IS_ANDROID)
       case kOptionURL: {
-        options.url = optarg;
+        // AI Browser: never upload crash reports; ignore any upload URL.
         break;
       }
 #if BUILDFLAG(IS_CHROMEOS)
