@@ -29,6 +29,7 @@ source_set("impl") {
     "//chrome/browser/ui/fullscreen",
     "//chrome/browser/ui/views/exclusive_access",
     "//chrome/browser/ui/views/frame:browser_view_header",
+    "//components/aib:aib_features",
     "//content/public/browser",
     "//ui/events",
     "//ui/views",

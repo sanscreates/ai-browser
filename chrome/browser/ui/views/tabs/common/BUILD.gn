@@ -149,6 +149,7 @@ source_set("impl") {
     "//chrome/browser/ui/views/toolbar",
     "//chrome/browser/ui/web_applications",
     "//chrome/browser/ui/window_metadata",
+    "//components/aib:aib_features",
     "//components/contextual_tasks/public:feature_list",
     "//components/performance_manager",
     "//components/tab_groups",

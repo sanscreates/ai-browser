@@ -279,6 +279,7 @@
 
 // AI Browser feature headers.
 #include "components/aib/aib_net_features.h"
+#include "components/aib/aib_ui_features.h"
 #include "third_party/blink/public/common/aib_features.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -14301,6 +14302,12 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kAibJitlessWhenJsOptimizerOffDescription,
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibJitlessWhenJsOptimizerOff)},
+
+    {"aib-popups-to-tabs",
+     flag_descriptions::kAibPopupsToTabsName,
+     flag_descriptions::kAibPopupsToTabsDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(aib::features::kAibPopupsToTabs)},
 
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum

@@ -57,6 +57,7 @@
 #include "base/values.h"
 #include "build/build_config.h"
 #include "cc/base/switches.h"
+#include "components/aib/aib_ui_features.h"
 #include "content/common/associated_interfaces.mojom.h"
 #include "content/common/content_navigation_policy.h"
 #include "content/common/content_switches_internal.h"
@@ -1176,6 +1177,10 @@ ui::mojom::WindowOpenDisposition NavigationPolicyToDisposition(
     case blink::kWebNavigationPolicyNewWindow:
       return ui::mojom::WindowOpenDisposition::kNewWindow;
     case blink::kWebNavigationPolicyNewPopup:
+      // AI Browser: optionally open popups as foreground tabs.
+      if (base::FeatureList::IsEnabled(aib::features::kAibPopupsToTabs)) {
+        return ui::mojom::WindowOpenDisposition::kNewForegroundTab;
+      }
       return ui::mojom::WindowOpenDisposition::kNewPopup;
     case blink::kWebNavigationPolicyPictureInPicture:
       return ui::mojom::WindowOpenDisposition::kNewPictureInPicture;

@@ -7870,6 +7870,7 @@ from previous Chrome versions.
   <int value="-2101091929" label="MessagesForAndroidAdsBlocked:disabled"/>
   <int value="-2100187755" label="EnableEwalletNewAccountLinking:disabled"/>
   <int value="-2100134911" label="SystemColorChooser:disabled"/>
+  <int value="-2100096999" label="AibPopupsToTabs:disabled"/>
   <int value="-2099608999" label="CrOSEnforceSystemAecNs:enabled"/>
   <int value="-2099486626" label="DownloadLater:enabled"/>
   <int value="-2099457894" label="Mash:enabled"/>
@@ -17160,6 +17161,7 @@ from previous Chrome versions.
   <int value="630947363" label="touch-events"/>
   <int value="631136125" label="EnableDefaultAppsMigration:enabled"/>
   <int value="631315985" label="SyncSessionOnVisibilityChanged:disabled"/>
+  <int value="631487120" label="AibPopupsToTabs:enabled"/>
   <int value="631636867" label="OneStepAimAccess:enabled"/>
   <int value="631793159" label="CrossDeviceSigninFromDesktopFollowup:enabled"/>
   <int value="632276726" label="ReadAnythingOmniboxChip:enabled"/>

@@ -98,6 +98,7 @@ source_set("impl") {
     "//chrome/browser/ui/webui/ntp",
     "//chrome/browser/undo",
     "//chrome/common:channel_info",
+    "//components/aib:aib_features",
     "//components/bookmarks/common",
     "//components/bookmarks/managed",
     "//components/browser_apis/bookmarks:impl",

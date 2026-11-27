@@ -162,6 +162,7 @@ source_set("impl") {
     "//chrome/common:chrome_features",
     "//chrome/common:constants",
     "//chrome/common:non_code_constants",
+    "//components/aib:aib_features",
     "//components/autofill/core/common",
     "//components/bidi_mapper:buildflags",
     "//components/history_clusters/core",

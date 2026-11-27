@@ -278,6 +278,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-popups-to-tabs",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-reduced-system-info",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

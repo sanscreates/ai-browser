@@ -8743,6 +8743,11 @@ inline constexpr char kAibJitlessWhenJsOptimizerOffName[] =
 inline constexpr char kAibJitlessWhenJsOptimizerOffDescription[] =
     "Sites where the V8 optimizer is turned off also run without JIT.";
 
+// AI Browser.
+inline constexpr char kAibPopupsToTabsName[] = "Popups to tabs";
+inline constexpr char kAibPopupsToTabsDescription[] =
+    "Open window.open() popups as foreground tabs instead of popup windows.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

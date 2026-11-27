@@ -91,6 +91,7 @@ source_set("impl") {
     "//chrome/browser/ui/views/frame",
     "//chrome/browser/ui/web_applications",
     "//chrome/common:constants",
+    "//components/aib:aib_features",
     "//components/collaboration/public",
     "//components/prefs",
     "//components/strings",

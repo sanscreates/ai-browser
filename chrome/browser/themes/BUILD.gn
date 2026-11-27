@@ -36,6 +36,7 @@ source_set("themes") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/webui/cr_components/theme_color_picker",
     "//chrome/common",
+    "//components/aib:aib_features",
     "//components/infobars/content",
     "//components/keyed_service/content",
     "//components/pref_registry",

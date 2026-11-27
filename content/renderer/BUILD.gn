@@ -232,6 +232,7 @@ target(link_target_type, "renderer") {
     "//cc/mojo_embedder",
     "//cc/mojom",
     "//cc/paint",
+    "//components/aib:aib_features",
     "//components/discardable_memory/client",
     "//components/input",
     "//components/metrics",

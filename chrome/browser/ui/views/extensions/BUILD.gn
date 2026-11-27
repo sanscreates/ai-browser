@@ -965,6 +965,7 @@ source_set("extensions_toolbar_desktop") {
     "//chrome/browser/ui/views/frame:toolbar_button_provider",
     "//chrome/browser/ui/views/toolbar",
     "//chrome/browser/user_education",
+    "//components/aib:aib_features",
     "//ui/base/dragdrop/mojom",
   ]
 }

@@ -4,6 +4,8 @@ include_rules = [
   # *********************************** NOTE ***********************************
   # If adding a new component dependency, email content/OWNERS first.
   # ****************************************************************************
+  # AI Browser: our own feature switches.
+  "+components/aib",
   "+components/content_settings/core/common",
   "+components/discardable_memory/client",
   "+components/metrics",

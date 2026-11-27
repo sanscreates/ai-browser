@@ -347,6 +347,7 @@ source_set("impl") {
     "//chrome/common:buildflags",
     "//chrome/common:chrome_features",
     "//chrome/common:constants",
+    "//components/aib:aib_features",
     "//components/autofill/core/common:features",
     "//components/contextual_tasks/public",
     "//components/feature_engagement/public",
