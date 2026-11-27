@@ -30,3 +30,13 @@ Judgment calls made without the owner present, newest last. Each entry: what, wh
 - **Context rule:** a hostname is only rewritten in literal/URL context (after a quote, `/`, `@`, `*`, `=`, `:`, `\`, `%`, `>`, line start, or a dot that follows a non-identifier character). Without it, JS like `window.google.sn` (`sn` is a Google ccTLD) would break.
 - **Never scrubbed:** toolchains and build machinery (they download from Google at *build* time by design), tests, the HSTS preload JSON, the PSL, and read-only CIPD packages.
 - **Trade-off:** "Learn more" and help links to support.google.com stop working. That's the conservative privacy choice and matches the brief.
+
+## D7. Which AI/Google surfaces are removed at build level, and which in code
+Each candidate was tried with `gn gen`:
+- **Build level (works):** `enable_compose=false` (needed a small GN guard fix), `use_on_device_model_service=false`, `build_with_internal_optimization_guide=false`.
+- **Kept on, disabled in code instead:**
+  - `enable_screen_ai_service`: nine BUILD files assert on it, including the PDF service; removing it needs a ~1.6k-line guard patch. The ScreenAI library is a *downloaded component*, not shipped, so blocking its registration and download stops all traffic for far less upstream churn.
+  - `enable_lens_desktop`: off is an unsupported desktop configuration, since `chrome/browser` depends on `ui/lens` unconditionally. Lens only works by uploading to Google, so its runtime features are turned off and its hosts are scrubbed.
+- **Not available:** `enable_nacl` (NaCl is gone from our tree) and any `enable_glic` arg (Glic is runtime-gated only, so it's disabled through features in code).
+- **Kept:** `safe_browsing_mode=1` (local protection lists remain available but default off; reporting/pings are disabled in code). `safe_browsing_mode=0` would need a ~4k-line guard patch across ~100 files. ungoogled does that, but it touches large parts of the browser and makes rebasing hard.
+- **Kept:** `exclude_unwind_tables=false`. On mac, unwind tables are used by C++ and Objective-C exception propagation and by crash stack walks. The size win isn't worth a correctness risk we can't test yet.

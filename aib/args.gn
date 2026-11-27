@@ -1,0 +1,65 @@
+# AI Browser release build arguments (macOS, Apple silicon).
+# Every arg below was checked against our tree with `gn args out/aib --list`.
+# Copy to out/<dir>/args.gn (aib/scripts/build.sh does this).
+
+# ---------------------------------------------------------------- target --
+target_os = "mac"
+target_cpu = "arm64"            # Apple silicon only.
+
+# ----------------------------------------------------- release/optimizer --
+is_official_build = true        # Full optimization, official code paths, no
+                                # debug-only checks.
+is_debug = false
+dcheck_always_on = false        # No DCHECKs in release.
+is_component_build = false      # One monolithic framework: faster startup.
+chrome_pgo_phase = 2            # Use the official PGO profile fetched by
+                                # checkout_pgo_profiles (DECISIONS D4).
+use_thin_lto = true             # Cross-module inlining (default with
+                                # official builds; explicit for clarity).
+
+# ------------------------------------------------------------ symbols/size --
+symbol_level = 0                # No debug info in the shipped binary.
+blink_symbol_level = 0
+v8_symbol_level = 0
+enable_stripping = true         # Strip the final binaries.
+enable_dsyms = false            # Don't produce dSYMs (symbol_level=0 anyway).
+exclude_unwind_tables = false   # Kept: mac crash/exception handling and
+                                # Objective-C exceptions rely on unwind info.
+
+# ---------------------------------------------------------------- branding --
+is_chrome_branded = false       # Chromium branding base; our own names are
+                                # applied via chrome/app/theme/chromium/.
+
+# ------------------------------------------------- Google API keys/services --
+use_official_google_api_keys = false
+google_api_key = ""
+google_default_client_id = ""
+google_default_client_secret = ""
+
+# --------------------------------------------- telemetry / phoning home off --
+disable_fieldtrial_testing_config = true  # No baked-in field-trial configs.
+enable_reporting = false        # No Reporting API / NEL uploads.
+enable_rlz = false              # No RLZ promotional tracking.
+enable_hangout_services_extension = false  # No Hangouts component extension.
+enable_updater = false          # No Google updater/Keystone.
+enable_mdns = false             # No mDNS/LAN service discovery traffic.
+enable_service_discovery = false
+enable_remoting = false         # No Chrome Remote Desktop host.
+
+# --------------------------------------------------------- AI / ML surfaces --
+# enable_screen_ai_service: kept at default (see DECISIONS D7); the ScreenAI
+# component download is disabled in code instead.
+use_on_device_model_service = false  # No on-device LLM service.
+enable_compose = false               # No "Help me write".
+# enable_lens_desktop: kept at default (unsupported off on desktop); Lens is
+# disabled at runtime instead (DECISIONS D7).
+build_with_internal_optimization_guide = false  # No internal OptGuide models.
+
+# ------------------------------------------------------------------ media --
+proprietary_codecs = true       # H.264/AAC so normal web video works.
+ffmpeg_branding = "Chrome"
+enable_widevine = true          # Widevine CDM support (the CDM itself is a
+                                # user-initiated component download).
+
+# ------------------------------------------------------------------- misc --
+treat_warnings_as_errors = false  # Don't fail on new upstream warnings.
