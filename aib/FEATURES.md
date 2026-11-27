@@ -162,3 +162,9 @@ Covered by inox 0006, iridium download prompt, default-webrtc-ip-handling-policy
 | set-bundle-identifier | Custom bundle id | done (com.sanscreates.aibrowser) | d4374ba6cb |
 | add-local-network-usage-description | `NSLocalNetworkUsageDescription` | done | d4374ba6cb |
 | sign_and_package_app.sh, entitlements | Signing, notarization, DMG | todo (`aib/scripts/build.sh` package step, BUILDING.md) | |
+
+## 8. Beyond ungoogled-chromium
+
+| Our change | What it does | Our status | Commit |
+|---|---|---|---|
+| Built-in ad and tracker blocker | uBlock Origin 1.77.4 (Manifest V2, full `webRequestBlocking`) ships as a component extension that can't be removed or disabled, with an always-pinned toolbar button: blocked counts, domains, logger, and a per-site on/off switch. Off everywhere via `chrome://flags/#aib-content-blocker`. Denied Chromium's component-extension privileges (D13) | done (compiles; runtime check pending the full build) | 32ff695e3c, c778ecbbb1, e42e2c1ffa, 4c8284e48a |

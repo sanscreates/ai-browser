@@ -28,13 +28,13 @@ cd src
 ```sh
 aib/scripts/fetch_deps.sh
 ```
-This writes `~/aib-build/.gclient` (unmanaged solution, `checkout_configuration=small`, mac only, PGO profiles on) and runs `gclient sync --nohooks --no-history --shallow` followed by `gclient runhooks`. The hooks download the pinned clang/rust/gn/siso toolchains and the PGO profiles from Google storage; that is build-time only (DECISIONS D4).
+This writes `~/aib-build/.gclient` (unmanaged solution, `checkout_configuration=small`, mac only, PGO profiles on) and runs `gclient sync --nohooks --no-history --shallow` followed by `gclient runhooks`. The hooks download the pinned clang/rust/gn/siso toolchains and the PGO profiles from Google storage; that is build-time only (DECISIONS D4). It then runs `aib/scripts/fetch_ublock.py`, which downloads the pinned uBlock Origin release from GitHub and checks its SHA-256 (DECISIONS D13).
 
 ## 4. Build
 ```sh
 aib/scripts/build.sh --skip-fetch          # unsigned, ad-hoc-signed DMG
 ```
-Pipeline: apply `aib/patches/deps/` → `prune_binaries.py apply` → `scrub_domains.py apply` → `gn gen out/aib` with `aib/args.gn` → `autoninja -C out/aib chrome` → `scrub_domains.py revert` (always, even on failure) → package to `out/aib/dist/`.
+Pipeline: `fetch_ublock.py` (the built-in blocker's pinned uBlock Origin release, into `third_party/aib_ublock/src`; a no-op when present) → apply `aib/patches/deps/` → `prune_binaries.py apply` → `scrub_domains.py apply` → `gn gen out/aib` with `aib/args.gn` → `autoninja -C out/aib chrome` → `scrub_domains.py revert` (always, even on failure) → package to `out/aib/dist/`.
 
 A clean official build (ThinLTO + PGO, ~78k steps) takes many hours on a 10-core M-series Mac. It's incremental afterwards.
 
@@ -56,6 +56,7 @@ aib/scripts/bench.sh --label "my build"  # vs the same-commit Chromium snapshot
 
 ## Working on the code
 - Never commit while scrubbed or rebranded: `aib/scripts/scrub_domains.py status` and `aib/scripts/rebrand_strings.py status` must both say `clean`. `build.sh` reverts both on exit unless `--keep-scrubbed` is used.
+- To edit a few scrubbed files without restoring (and then rebuilding) the whole tree: `scrub_domains.py revert --only FILE...`, edit and commit, then `scrub_domains.py apply --only FILE...`.
 - Before rebasing onto a new Chromium: `scrub_domains.py revert`, `prune_binaries.py restore`, then `git rebase`, then regenerate the lists (`scrub_domains.py generate`, `prune_binaries.py generate --out out/aib`) and review the diffs.
 - New chrome://flags entries: `aib/scripts/register_flag.py spec.json` writes all four registration files.
 - Carry our changes to a fresh checkout: `aib/scripts/export_patches.sh`, then `git am aib/patches/*.patch`.

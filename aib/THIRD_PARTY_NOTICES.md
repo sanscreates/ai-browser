@@ -16,3 +16,11 @@ If a future change reuses a non-trivial piece of their code or data, its BSD-3 n
 > (BSD-3-Clause; full text at https://github.com/ungoogled-software/ungoogled-chromium/blob/master/LICENSE)
 
 No such reuse exists today.
+
+## uBlock Origin (the built-in ad and tracker blocker)
+- **What we ship:** the unmodified uBlock Origin 1.77.4 release for Chromium (`uBlock0_1.77.4.chromium.zip`, https://github.com/gorhill/uBlock), fetched and SHA-256-checked at build time by `aib/scripts/fetch_ublock.py`. It isn't checked into this repo.
+- **License:** GPL-3.0 (Copyright (C) Raymond Hill & contributors). Full text in `third_party/aib_ublock/LICENSE`, shipped in chrome://credits through `third_party/aib_ublock/README.chromium`. uBlock Origin is a separate program aggregated with the browser. The corresponding source is the `1.77.4` tag of the repository above; the shipped files are its own release build.
+- **Packaging changes only (no code changes):** `_locales/` trimmed to our UI locales; Peter Lowe's list not redistributed (see below); the manifest and packaged filter lists are served from a `.pak`; our public `key` and a plain description are added to the manifest at load time.
+- **Filter lists it bundles keep their own licenses:** uBlock Origin's filters and its EasyList/EasyPrivacy copies (GPL-3.0, uBlockOrigin/uAssets), the Public Suffix List (MPL-2.0), and the Online Malicious URL Blocklist (CC0-1.0 / MIT; its LICENSE.md is shipped with it). The libraries in the extension's `lib/` keep their notices in their own files.
+- **Not redistributed:** Peter Lowe's ad server list (pgl.yoyo.org, "McRae General Public License", no commercial use). uBlock Origin downloads it from pgl.yoyo.org itself (DECISIONS D13).
+- We don't use the uBlock Origin name to promote AI Browser. It names the built-in blocker, as attribution.
