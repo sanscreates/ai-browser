@@ -8815,6 +8815,12 @@ inline constexpr char kAibRemoveTabStripGrabHandleName[] =
 inline constexpr char kAibRemoveTabStripGrabHandleDescription[] =
     "Don't reserve empty window-drag space at the end of the tab strip.";
 
+// AI Browser.
+inline constexpr char kAibCustomNtpUrlName[] = "Custom New Tab page";
+inline constexpr char kAibCustomNtpUrlDescription[] =
+    "Open this URL as the New Tab page (http, https, file, chrome:// or "
+    "about:blank).";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

@@ -14424,6 +14424,12 @@ const FeatureEntry kFeatureEntries[] = {
      kOsDesktop,
      FEATURE_VALUE_TYPE(aib::features::kAibRemoveTabStripGrabHandle)},
 
+    {"aib-custom-ntp-url",
+     flag_descriptions::kAibCustomNtpUrlName,
+     flag_descriptions::kAibCustomNtpUrlDescription,
+     kOsDesktop,
+     STRING_VALUE_TYPE(aib::features::kAibCustomNtpUrlSwitch, "")},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

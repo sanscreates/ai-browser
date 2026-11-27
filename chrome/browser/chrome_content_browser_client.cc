@@ -257,6 +257,7 @@
 #include "chrome/installer/util/google_update_settings.h"
 #include "components/actor/core/actor_features.h"
 #include "components/aib/aib_net_features.h"
+#include "components/aib/aib_ui_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_switches.h"
 #include "components/blocked_content/popup_blocker.h"
@@ -947,6 +948,29 @@ bool IsIsolatedWebAppUrl(const GURL& url) {
 }
 #endif
 
+// AI Browser: returns the custom New Tab page set with kAibCustomNtpUrl (or
+// its command-line switch) if it is a valid http(s), file, chrome:// or
+// about:blank URL. Like the policy override, a missing scheme means https.
+std::optional<GURL> GetAibCustomNewTabPageUrl() {
+  std::string spec = aib::features::GetCustomNewTabPageUrl();
+  if (spec.empty()) {
+    return std::nullopt;
+  }
+  url::Component scheme;
+  if (!url::ExtractScheme(spec, &scheme)) {
+    spec =
+        base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator, spec});
+  }
+  GURL custom_url(spec);
+  if (!custom_url.is_valid() ||
+      !(custom_url.SchemeIsHTTPOrHTTPS() || custom_url.SchemeIsFile() ||
+        custom_url.SchemeIs(content::kChromeUIScheme) ||
+        custom_url.IsAboutBlank())) {
+    return std::nullopt;
+  }
+  return custom_url;
+}
+
 // Handles the rewriting of the new tab page URL based on group policy.
 bool HandleNewTabPageLocationOverride(
     GURL* url,
@@ -959,12 +983,26 @@ bool HandleNewTabPageLocationOverride(
 
   // Don't change the URL when incognito mode.
   if (profile->IsOffTheRecord()) {
+    // AI Browser: except for a custom New Tab page that is not a chrome://
+    // page (those may not be available off the record).
+    std::optional<GURL> custom_ntp = GetAibCustomNewTabPageUrl();
+    if (custom_ntp && !custom_ntp->SchemeIs(content::kChromeUIScheme)) {
+      *url = std::move(*custom_ntp);
+      return true;
+    }
     return false;
   }
 
   std::string ntp_location =
       profile->GetPrefs()->GetString(prefs::kNewTabPageLocationOverride);
   if (ntp_location.empty()) {
+    // AI Browser: the NewTabPageLocation policy wins; otherwise use the custom
+    // New Tab page from kAibCustomNtpUrl.
+    std::optional<GURL> custom_ntp = GetAibCustomNewTabPageUrl();
+    if (custom_ntp) {
+      *url = std::move(*custom_ntp);
+      return true;
+    }
     return false;
   }
   url::Component scheme;

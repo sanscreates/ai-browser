@@ -10691,6 +10691,7 @@ from previous Chrome versions.
       label="OmniboxSuggestionTransparencyOptions:disabled"/>
   <int value="-1292333085" label="CCTAdaptiveButtonTestSwitch:enabled"/>
   <int value="-1291963295" label="ComputePressure:disabled"/>
+  <int value="-1291307253" label="aib-custom-ntp-url"/>
   <int value="-1291113229" label="AppMenuGlowUp:disabled"/>
   <int value="-1290471006"
       label="EnableHistoryFaviconsGoogleServerQuery:enabled"/>
