@@ -988,6 +988,13 @@ bool AutofillCrowdsourcingManager::StartRequest(FormRequestData request_data) {
       (request_data.request_type == CrowdsourcingRequestType::kRequestUpload) ==
       !request_data.isolation_info);
 #endif
+  // AI Browser: never query or upload form-field types to Google's autofill
+  // crowdsourcing server. Local heuristics still classify fields.
+  constexpr bool kAllowCrowdsourcingRequests = false;
+  if (!kAllowCrowdsourcingRequests) {
+    return false;
+  }
+
   // Get the URL and method to use for this request.
   auto [request_url, method] = GetRequestURLAndMethod(request_data);
 
