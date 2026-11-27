@@ -78,6 +78,9 @@ EXCLUDE_PREFIXES = (
     'third_party/devtools-frontend/src/scripts',
     'third_party/wpt_tools', 'third_party/chromium-variations',
     'third_party/search_engines_data/resources/definitions/',
+    # Validated against an origin allowlist by bake_in_configs.py at build
+    # time; dead data anyway, since Domain Reliability is never enabled.
+    'components/domain_reliability/baked_in_configs/',
 )
 # Exact files we deliberately keep: security data, not network endpoints.
 EXCLUDE_FILES = {
