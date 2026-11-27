@@ -219,6 +219,44 @@ if (is_chromeos) {
   ]
 }
 
+# AI Browser: ship only a keep-list of UI locales on desktop to save space.
+declare_args() {
+  # UI locales to package (desktop only). An empty list ships every locale
+  # Chromium would. The default is en-US plus the most widely used
+  # languages; other locales fall back to English.
+  aib_keep_locales = [
+    "ar",
+    "de",
+    "en-GB",
+    "en-US",
+    "es",
+    "es-419",
+    "fr",
+    "hi",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "nl",
+    "pl",
+    "pt-BR",
+    "pt-PT",
+    "ru",
+    "sv",
+    "tr",
+    "uk",
+    "vi",
+    "zh-CN",
+    "zh-TW",
+  ]
+}
+if (!is_android && !is_ios && aib_keep_locales != []) {
+  _aib_kept_locales =
+      filter_include(platform_pak_locales, aib_keep_locales + pseudolocales)
+  platform_pak_locales = []
+  platform_pak_locales = _aib_kept_locales
+}
+
 # List for Android locale names in .xml exports. Note: needs to stay in sync
 # with |ToAndroidLocaleName| in build/android/gyp/util/resource_utils.py.
 if (is_android) {

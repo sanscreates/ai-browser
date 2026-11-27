@@ -58,3 +58,7 @@ Each candidate was tried with `gn gen`:
 - **CT enforcement on, SCT auditing off:** certificates must be CT-logged as in Chrome. The k-anonymous "hashdance" lookups to Google are disabled.
 - **Expired flags stay usable**, so our long-lived `aib-*` options and upstream flags don't silently stop working.
 - **Flag plumbing:** our features live in `components/aib` (browser and components), `third_party/blink/public/common/aib_features.h` (Blink) and the net/content/storage feature files (layers that can't depend on components). `aib/scripts/register_flag.py` writes the about_flags.cc entry, flag_descriptions.h, flag-metadata.json (owner `//components/aib/OWNERS`, expiry milestone 200) and enums.xml hashes.
+
+## D10. Locales
+- **Keep-list:** `aib_keep_locales` (a new GN arg in build/config/locales.gni) defaults to en-US plus 22 widely used languages (ar, de, en-GB, es, es-419, fr, hi, id, it, ja, ko, nl, pl, pt-BR, pt-PT, ru, sv, tr, uk, vi, zh-CN, zh-TW). Other system languages fall back to English UI. Set `aib_keep_locales = []` to ship all 54 desktop locales.
+- **`translate_genders = false`:** Chromium 160 ships four packs per locale (default plus feminine, masculine and neuter variants for strings that address the user). We ship one, so those strings use the default wording. `gn gen` shows 92 locale bundle entries with gender variants versus 23 without; size deltas are measured in BENCHMARKS.md once built.
