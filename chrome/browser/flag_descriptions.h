@@ -8700,6 +8700,11 @@ inline constexpr char kAibMaxConnectionsPerHostName[] =
 inline constexpr char kAibMaxConnectionsPerHostDescription[] =
     "Raise the per-host HTTP connection limit.";
 
+// AI Browser.
+inline constexpr char kAibDisableTlsGreaseName[] = "Disable TLS GREASE";
+inline constexpr char kAibDisableTlsGreaseDescription[] =
+    "Don't send GREASE values in TLS handshakes.";
+
 }  // namespace flag_descriptions
 
 #endif  // CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

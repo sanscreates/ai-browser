@@ -20969,6 +20969,7 @@ from previous Chrome versions.
       label="ContextualTasksBackButtonExpandsSidePanel:enabled"/>
   <int value="1741751043"
       label="MinorModeRestrictionsForHistorySyncOptIn:enabled"/>
+  <int value="1741295593" label="AibDisableTlsGrease:enabled"/>
   <int value="1741851701" label="ReadAnythingReadAloud:disabled"/>
   <int value="1741855651"
       label="OmniboxTabSwitchSuggestionsDedicatedRow:disabled"/>
@@ -21635,6 +21636,7 @@ from previous Chrome versions.
   <int value="1933376478" label="IsolatePrerenders:enabled"/>
   <int value="1933612277" label="EnablePortBoundCookies:disabled"/>
   <int value="1934067725" label="UserMediaElement:disabled"/>
+  <int value="1934315488" label="AibDisableTlsGrease:disabled"/>
   <int value="1934470615" label="AppIconInIntentChip:disabled"/>
   <int value="1935405622" label="AppServiceInstanceRegistry:disabled"/>
   <int value="1935448090"

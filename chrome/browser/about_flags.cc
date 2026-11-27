@@ -14237,6 +14237,12 @@ const FeatureEntry kFeatureEntries[] = {
                                     kAibMaxConnectionsPerHostVariations,
                                     "AibMaxConnectionsPerHost")},
 
+    {"aib-disable-tls-grease",
+     flag_descriptions::kAibDisableTlsGreaseName,
+     flag_descriptions::kAibDisableTlsGreaseDescription,
+     kOsAll,
+     FEATURE_VALUE_TYPE(net::features::kAibDisableTlsGrease)},
+
     // Add new entries above this line.
     // NOTE: Adding a new flag requires adding a corresponding entry to enum
     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag

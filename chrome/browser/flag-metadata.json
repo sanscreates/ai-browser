@@ -218,6 +218,11 @@
     "expiry_milestone": 200
   },
   {
+    "name": "aib-disable-tls-grease",
+    "owners": [ "//components/aib/OWNERS" ],
+    "expiry_milestone": 200
+  },
+  {
     "name": "aib-extension-mime-handling",
     "owners": [ "//components/aib/OWNERS" ],
     "expiry_milestone": 200

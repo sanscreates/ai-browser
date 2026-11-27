@@ -207,7 +207,11 @@ class SSLClientSocketImpl::SSLContext {
     SSL_CTX_sess_set_new_cb(ssl_ctx_.get(), NewSessionCallback);
     SSL_CTX_set_timeout(ssl_ctx_.get(), 1 * 60 * 60 /* one hour */);
 
-    SSL_CTX_set_grease_enabled(ssl_ctx_.get(), 1);
+    // AI Browser: kAibDisableTlsGrease turns GREASE off. ECH GREASE is
+    // configured separately and is not affected.
+    SSL_CTX_set_grease_enabled(
+        ssl_ctx_.get(),
+        base::FeatureList::IsEnabled(features::kAibDisableTlsGrease) ? 0 : 1);
 
     // Deduplicate all certificates minted from the SSL_CTX in memory.
     SSL_CTX_set0_buffer_pool(ssl_ctx_.get(), x509_util::GetBufferPool());
