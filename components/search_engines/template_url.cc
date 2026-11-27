@@ -1311,44 +1311,7 @@ std::string TemplateURLRef::HandleReplacements(
                             &url);
         }
 
-        const size_t searchbox_stats_size =
-            search_terms_args.searchbox_stats.ByteSizeLong();
-        if (searchbox_stats_size == 0) {
-          break;
-        }
-
-        // Don't have to attach the searchbox stats to prefetch requests.
-        if (is_search_prefetch &&
-            base::FeatureList::IsEnabled(
-                switches::kRemoveSearchboxStatsParamFromPrefetchRequests)) {
-          break;
-        }
-
-        // Get the base URL without substituting gs_lcrp to avoid infinite
-        // recursion and unwanted replacement respectively. We need the URL to
-        // find out if it meets all gs_lcrp requirements (e.g. HTTPS protocol
-        // check). See TemplateURLRef::SearchTermsArgs for more details.
-        SearchTermsArgs sanitized_search_terms_args(search_terms_args);
-        // Clear the proto. Its empty state has a serialized size of zero.
-        sanitized_search_terms_args.searchbox_stats.Clear();
-        GURL base_url(ReplaceSearchTerms(sanitized_search_terms_args,
-                                         search_terms_data, nullptr));
-        if (base_url.SchemeIsCryptographic()) {
-          TRACE_EVENT0(
-              "omnibox",
-              "TemplateURLRef::HandleReplacement:serialize_searchbox_stats");
-          std::vector<uint8_t> serialized_searchbox_stats(searchbox_stats_size);
-          search_terms_args.searchbox_stats.SerializeWithCachedSizesToArray(
-              &serialized_searchbox_stats[0]);
-          std::string encoded_searchbox_stats =
-              base::Base64UrlEncode(serialized_searchbox_stats,
-                                    base::Base64UrlEncodePolicy::OMIT_PADDING);
-          HandleReplacement("gs_lcrp", encoded_searchbox_stats, replacement,
-                            &url);
-          base::UmaHistogramCounts1000(
-              "Omnibox.SearchboxStats.Length",
-              static_cast<int>(encoded_searchbox_stats.length()));
-        }
+        // AI Browser: never attach omnibox interaction stats (gs_lcrp).
         break;
       }
 
@@ -1513,26 +1476,9 @@ std::string TemplateURLRef::HandleReplacements(
         // url.insert(replacement.index, used_www ? "gcx=w&" : "gcx=c&");
         break;
 
-      case GOOGLE_SEARCH_SOURCE: {
-        DCHECK(!replacement.is_post_param);
-        using OEP = ::metrics::OmniboxEventProto;
-        std::string source_param;
-        const auto pc = search_terms_args.page_classification;
-        if (pc == OEP::NTP ||
-            pc == OEP::INSTANT_NTP_WITH_OMNIBOX_AS_STARTING_FOCUS ||
-            pc == OEP::SEARCH_RESULT_PAGE_NO_SEARCH_TERM_REPLACEMENT ||
-            pc == OEP::SEARCH_RESULT_PAGE_DOING_SEARCH_TERM_REPLACEMENT ||
-            pc == OEP::SEARCH_RESULT_PAGE_ON_CCT ||
-            pc == OEP::SRP_ZPS_PREFETCH || pc == OEP::OTHER) {
-          source_param = "chrome.ob";
-        } else if (pc == OEP::NTP_REALBOX) {
-          source_param = "chrome.rb";
-        }
-        if (!source_param.empty()) {
-          HandleReplacement("source", source_param, replacement, &url);
-        }
+      case GOOGLE_SEARCH_SOURCE:
+        // AI Browser: no source=chrome.* attribution parameter.
         break;
-      }
 
       case GOOGLE_SEARCH_SOURCE_ID: {
         DCHECK(!replacement.is_post_param);
@@ -1560,13 +1506,9 @@ std::string TemplateURLRef::HandleReplacements(
         HandleReplacement("gs_rn", "42", replacement, &url);
         break;
 
-      case GOOGLE_SESSION_TOKEN: {
-        std::string token = search_terms_args.session_token;
-        if (!token.empty()) {
-          HandleReplacement("psi", token, replacement, &url);
-        }
+      case GOOGLE_SESSION_TOKEN:
+        // AI Browser: no omnibox session token (psi).
         break;
-      }
 
       case GOOGLE_SUGGEST_CLIENT: {
         std::string client_name =
